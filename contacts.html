@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Kontakte</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/contacts.css">
+</head>
+<body>
+    <header>
+        <h1>Join</h1>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="board.html">Board</a>
+            <a href="add-task.html">Aufgabe hinzufügen</a>
+            <a href="login.html">Abmelden</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Kontakte</h2>
+        <button class="add-contact-btn" onclick="openAddContactModal()">Kontakt hinzufügen</button>
+        <div class="contacts-list">
+            <div class="contact-section" data-letter="A">
+                <h3>A</h3>
+                <div class="contact" data-contact-id="1" onclick="showContactDetails('1')">
+                    <h4>Anna Becker</h4>
+                    <p>anna.becker@example.com</p>
+                    <p>0123-456789</p>
+                    <button class="edit-btn" onclick="editContact('1', event)">Bearbeiten</button>
+                    <button class="delete-btn" onclick="openDeleteModal('1')">Löschen</button>
+                </div>
+            </div>
+            <div class="contact-section" data-letter="C">
+                <h3>C</h3>
+                <div class="contact" data-contact-id="2" onclick="showContactDetails('2')">
+                    <h4>Clara Schmidt</h4>
+                    <p>clara.schmidt@example.com</p>
+                    <p>0987-654321</p>
+                    <button class="edit-btn" onclick="editContact('2', event)">Bearbeiten</button>
+                    <button class="delete-btn" onclick="openDeleteModal('2')">Löschen</button>
+                </div>
+            </div>
+        </div>
+        <div id="add-contact-modal" class="contact-modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Neuen Kontakt hinzufügen</h3>
+                <input type="text" id="new-name" placeholder="Name" required>
+                <input type="email" id="new-email" placeholder="E-Mail" required>
+                <input type="tel" id="new-phone" placeholder="Telefon" required>
+                <button onclick="saveNewContact()">Speichern</button>
+                <button onclick="closeAddContactModal()">Abbrechen</button>
+            </div>
+        </div>
+        <div id="contact-edit" class="contact-edit" style="display: none;">
+            <h3>Kontakt bearbeiten</h3>
+            <input type="text" id="edit-name" placeholder="Name">
+            <input type="email" id="edit-email" placeholder="E-Mail">
+            <input type="tel" id="edit-phone" placeholder="Telefon">
+            <button onclick="saveEdit()">Speichern</button>
+            <button onclick="closeEdit()">Abbrechen</button>
+        </div>
+        <div id="delete-modal" class="contact-modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Kontakt löschen</h3>
+                <p>Möchtest du diesen Kontakt wirklich löschen?</p>
+                <div class="modal-buttons">
+                    <button onclick="confirmDelete()">Ja</button>
+                    <button onclick="closeDeleteModal()">Nein</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 Join - Alle Rechte vorbehalten</p>
+    </footer>
+    <script src="js/global.js"></script>
+    <script src="js/contacts.js"></script>
+</body>
+</html>

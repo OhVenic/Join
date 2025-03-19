@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Join - Kanban-Board</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/board.css">
+</head>
+<body>
+    <header>
+        <h1>Join</h1>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="add-task.html">Aufgabe hinzufügen</a>
+            <a href="board.html">Kanban-Board</a>
+            <a href="contacts.html">Kontakte</a>
+            <a href="login.html" onclick="logout()">Abmelden</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Kanban-Board</h2>
+        <div class="search-bar">
+            <select id="task-filter" onchange="filterTasks()">
+                <option value="all">Alle Tasks</option>
+                <option value="priority-urgent">Priorität: Dringend</option>
+                <option value="priority-medium">Priorität: Mittel</option>
+                <option value="priority-low">Priorität: Niedrig</option>
+                <option value="category-technical-task">Kategorie: Technical Task</option>
+                <option value="category-user-story">Kategorie: User Story</option>
+                <option value="assigned-Anna Berger">Zugewiesen: Anna Berger</option>
+                <option value="assigned-Max Schuster">Zugewiesen: Max Schuster</option>
+                <option value="assigned-Lena Müller">Zugewiesen: Lena Müller</option>
+                <option value="assigned-Jonas Weber">Zugewiesen: Jonas Weber</option>
+                <option value="assigned-Sophie Klein">Zugewiesen: Sophie Klein</option>
+                <option value="assigned-Thomas Fischer">Zugewiesen: Thomas Fischer</option>
+                <option value="assigned-Klara Hoffmann">Zugewiesen: Klara Hoffmann</option>
+                <option value="assigned-Peter Schmidt">Zugewiesen: Peter Schmidt</option>
+                <option value="assigned-Julia Wagner">Zugewiesen: Julia Wagner</option>
+                <option value="assigned-Markus Becker">Zugewiesen: Markus Becker</option>
+            </select>
+            <input type="text" id="task-search" placeholder="Suche nach Tasks..." oninput="searchTasks()">
+        </div>
+        <div class="board" id="board">
+            <section class="column" data-status="todo" ondragover="allowDrop(event)" ondrop="drop(event)" ondragleave="this.style.background='#f9f9f9';this.style.border='none'">
+                <h3>Zu erledigen <button class="add-task-btn" onclick="openAddTaskModal('todo')">+</button></h3>
+            </section>
+            <section class="column" data-status="in-progress" ondragover="allowDrop(event)" ondrop="drop(event)" ondragleave="this.style.background='#f9f9f9';this.style.border='none'">
+                <h3>In Bearbeitung <button class="add-task-btn" onclick="openAddTaskModal('in-progress')">+</button></h3>
+            </section>
+            <section class="column" data-status="awaiting-feedback" ondragover="allowDrop(event)" ondrop="drop(event)" ondragleave="this.style.background='#f9f9f9';this.style.border='none'">
+                <h3>Auf Rückmeldung wartend <button class="add-task-btn" onclick="openAddTaskModal('awaiting-feedback')">+</button></h3>
+            </section>
+            <section class="column" data-status="done" ondragover="allowDrop(event)" ondrop="drop(event)" ondragleave="this.style.background='#f9f9f9';this.style.border='none'">
+                <h3>Erledigt <button class="add-task-btn" onclick="openAddTaskModal('done')">+</button></h3>
+            </section>
+        </div>
+        <div id="task-details" class="task-details" style="display: none;">
+            <h3>Aufgabe Details</h3>
+            <p id="detail-title"></p>
+            <p id="detail-description"></p>
+            <p id="detail-due-date"></p>
+            <p id="detail-priority"></p>
+            <p id="detail-assigned"></p>
+            <p id="detail-category"></p>
+            <button id="close-details-btn" onclick="closeTaskDetails()">Schließen</button>
+        </div>
+        <div id="edit-task-modal" class="task-modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Aufgabe bearbeiten</h3>
+                <label for="edit-title">Titel:*</label>
+                <input type="text" id="edit-title" placeholder="Titel" oninput="validateForm('edit')">
+                <label for="edit-description">Beschreibung:</label>
+                <textarea id="edit-description" placeholder="Beschreibung"></textarea>
+                <label for="edit-due-date">Fälligkeitsdatum:</label>
+                <input type="date" id="edit-due-date" oninput="validateForm('edit')">
+                <label for="edit-priority">Priorität:</label>
+                <select id="edit-priority">
+                    <option value="low">Niedrig</option>
+                    <option value="medium">Mittel</option>
+                    <option value="urgent">Dringend</option>
+                </select>
+                <label for="edit-assigned">Zugewiesen:</label>
+                <select id="edit-assigned">
+                    <option value="Anna Berger">Anna Berger (AB)</option>
+                    <option value="Max Schuster">Max Schuster (MS)</option>
+                    <option value="Lena Müller">Lena Müller (LM)</option>
+                    <option value="Jonas Weber">Jonas Weber (JW)</option>
+                    <option value="Sophie Klein">Sophie Klein (SK)</option>
+                    <option value="Thomas Fischer">Thomas Fischer (TF)</option>
+                    <option value="Klara Hoffmann">Klara Hoffmann (KH)</option>
+                    <option value="Peter Schmidt">Peter Schmidt (PS)</option>
+                    <option value="Julia Wagner">Julia Wagner (JW)</option>
+                    <option value="Markus Becker">Markus Becker (MB)</option>
+                </select>
+                <p>Kategorie: <span id="edit-category"></span> (nicht editierbar)</p>
+                <div id="edit-subtasks" class="subtasks"></div>
+                <button onclick="saveEditedTask()" id="save-edit-btn" disabled>Speichern</button>
+                <button onclick="document.getElementById('edit-task-modal').style.display='none'">Abbrechen</button>
+            </div>
+        </div>
+        <div id="add-task-modal" class="task-modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Neue Aufgabe hinzufügen</h3>
+                <label for="add-title">Titel:*</label>
+                <input type="text" id="add-title" placeholder="Titel" oninput="validateForm('add')">
+                <label for="add-description">Beschreibung:</label>
+                <textarea id="add-description" placeholder="Beschreibung"></textarea>
+                <label for="add-due-date">Fälligkeitsdatum:</label>
+                <input type="date" id="add-due-date" oninput="validateForm('add')">
+                <label for="add-priority">Priorität:</label>
+                <select id="add-priority" oninput="validateForm('add')">
+                    <option value="medium" selected>Mittel</option>
+                    <option value="low">Niedrig</option>
+                    <option value="urgent">Dringend</option>
+                </select>
+                <label for="add-assigned">Zugewiesen:</label>
+                <select id="add-assigned" oninput="validateForm('add')">
+                    <option value="Anna Berger">Anna Berger (AB)</option>
+                    <option value="Max Schuster">Max Schuster (MS)</option>
+                    <option value="Lena Müller">Lena Müller (LM)</option>
+                    <option value="Jonas Weber">Jonas Weber (JW)</option>
+                    <option value="Sophie Klein">Sophie Klein (SK)</option>
+                    <option value="Thomas Fischer">Thomas Fischer (TF)</option>
+                    <option value="Klara Hoffmann">Klara Hoffmann (KH)</option>
+                    <option value="Peter Schmidt">Peter Schmidt (PS)</option>
+                    <option value="Julia Wagner">Julia Wagner (JW)</option>
+                    <option value="Markus Becker">Markus Becker (MB)</option>
+                </select>
+                <label for="add-category">Kategorie:*</label>
+                <select id="add-category" oninput="validateForm('add')">
+                    <option value="technical-task">Technical Task</option>
+                    <option value="user-story">User Story</option>
+                </select>
+                <label for="add-subtask-input">Subtasks:</label>
+                <div class="subtasks">
+                    <input type="text" id="add-subtask-input" placeholder="Subtask hinzufügen" onkeypress="addSubtask(event, null)">
+                    <div id="add-subtasks-list"></div>
+                </div>
+                <button onclick="saveNewTask()" id="save-new-task-btn" disabled>Speichern</button>
+                <button onclick="document.getElementById('add-task-modal').style.display='none'">Abbrechen</button>
+            </div>
+        </div>
+        <div id="toast" class="toast"></div>
+    </main>
+    <footer>
+        <p>© 2025 Join - Alle Rechte vorbehalten</p>
+    </footer>
+    <script src="js/global.js"></script>
+    <script src="js/board.js"></script>
+    <script>
+        initializeBoard();
+    </script>
+</body>
+</html>
