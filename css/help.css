@@ -1,0 +1,159 @@
+@font-face {
+  font-family: "Inter";
+  src: url(/fonts/Inter/Inter_18pt-Regular.ttf);
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  height: 100vh;
+}
+
+/* Header  */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  height: 96px;
+  padding: 20px 40px 20px 348px;
+  align-items: center;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.header-icon {
+  border: 3px solid #2a3647;
+  border-radius: 50%;
+  padding: 10px;
+  font-weight: 700;
+}
+
+.header-icon:hover {
+  cursor: pointer;
+  background-color: #7d7f8149;
+}
+
+.light-blue {
+  color: #29abe2;
+}
+
+/* Help Main */
+
+.main-title-img {
+  width: 37px;
+  height: 37px;
+  top: 225px;
+  left: 1307px;
+}
+
+.main-title-img:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.help-text-content {
+  padding: 100px;
+  margin: 100px;
+  margin-left: 200px;
+  padding-top: 50px;
+}
+
+.help-title-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 61px;
+}
+
+.nr {
+  font-size: 27px;
+  font-weight: 700;
+}
+
+td:nth-child(1) {
+  width: 40px;
+}
+td {
+  vertical-align: top;
+  padding: 10px;
+}
+
+/* Navbar */
+
+.frame-3 {
+  width: 230px;
+  background-color: #2a3647;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.frame-3-icon {
+  width: 100px;
+  height: 121px;
+}
+
+.frame-3-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #cdcdcd;
+  height: 46px;
+  width: 232px;
+  padding: 8px 56px;
+}
+
+.menu-btns:hover {
+  cursor: pointer;
+  background-color: #3e5779;
+}
+
+.menu-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.frame-22 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #cdcdcd;
+}
+.frame-22-btns {
+  width: 121px;
+  height: 35px;
+}
+
+.frame-22-btns:hover {
+  cursor: pointer;
+  color: #29abe2;
+  transform: scale(1.05);
+  font-weight: 700;
+}
