@@ -47,6 +47,22 @@ header {
   color: #29abe2;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.help-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.help-icon:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 /* Help Main */
 
 .main-title-img {
