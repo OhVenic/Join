@@ -157,7 +157,6 @@ function showSelectedAvatar(i) {
       "selected-avatars"
     ).innerHTML += `<div class="selected-avatar" id="avatar-${i}">${contacts[i].avatar}</div>`;
   }
-  s;
 }
 
 function removeUnSelectedAvatar(i) {
