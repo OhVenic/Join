@@ -1,50 +1,49 @@
-/*Contact list should be later in Firebase databank! */
-
-let contactList = [
-  {
-    avatar: "JD",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1234567890",
-  },
-  {
-    avatar: "JS",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phoneNumber: "+0987654321",
-  },
-  {
-    avatar: "BW",
-    name: "Bruce Wayne",
-    email: "bruce.wayne@example.com",
-    phoneNumber: "+1122334455",
-  },
-  {
-    avatar: "CK",
-    name: "Clark Kent",
-    email: "clark.kent@example.com",
-    phoneNumber: "+5566778899",
-  },
-  {
-    avatar: "PP",
-    name: "Peter Parker",
-    email: "peter.parker@example.com",
-    phoneNumber: "+6677889900",
-  },
-  {
-    avatar: "TS",
-    name: "Tony Stark",
-    email: "tony.stark@example.com",
-    phoneNumber: "+9988776655",
-  },
-];
+const BASE_URL =
+  "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let category = ["Technical Task", "User Story"];
+
+function init() {
+  loadData("contactList");
+}
+let contacts = [];
+async function loadData(path = "") {
+  try {
+    let response = await fetch(BASE_URL + path + ".json");
+    let responseToJson = await response.json();
+
+    for (let key in responseToJson) {
+      contacts.push(responseToJson[key]);
+    }
+  } catch (error) {
+    console.error("Response Failed");
+  }
+}
+
+function renderContactList() {
+  document.getElementById("drop-down-contact-list").innerHTML += "";
+  for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
+    document.getElementById("drop-down-contact-list").innerHTML +=
+      contactListDropDownTemplate(indexContact);
+    if (selectedContacts.includes(indexContact)) {
+      selectContact(indexContact);
+    }
+  }
+}
+
+function contactListDropDownTemplate(i) {
+  return `<div class="contactListElement" id="${i}" onclick="toggleContactSelection(${i})">
+          <div class="contact">
+          <span class="avatar">${contacts[i].avatar}</span>
+          <span>${contacts[i].name}</span>
+          </div>
+          <div><img id="btn-checkbox-${i}" src="./assets/icons/btn-unchecked.svg" alt="Button Unchecked"/></div>
+          </div>`;
+}
 
 function preventBubbling(event) {
   event.stopPropagation();
 }
-
 /* Functions with the Priority Buttons*/
 
 function selectPrio(prio) {
@@ -85,33 +84,6 @@ function getPrioColor(prio) {
     default:
       return "white";
   }
-}
-
-/*Assigned to-section - functions with rendering and adding contacts */
-
-function renderContactList() {
-  document.getElementById("drop-down-contact-list").innerHTML += "";
-  for (
-    let indexContact = 0;
-    indexContact < contactList.length;
-    indexContact++
-  ) {
-    document.getElementById("drop-down-contact-list").innerHTML +=
-      contactListDropDownTemplate(indexContact);
-    if (selectedContacts.includes(indexContact)) {
-      selectContact(indexContact);
-    }
-  }
-}
-
-function contactListDropDownTemplate(i) {
-  return `<div class="contactListElement" id="${i}" onclick="toggleContactSelection(${i})">
-            <div class="contact">
-            <span class="avatar">${contactList[i].avatar}</span>
-            <span>${contactList[i].name}</span>
-            </div>
-            <div><img id="btn-checkbox-${i}" src="./assets/icons/btn-unchecked.svg" alt="Button Unchecked"/></div>
-            </div>`;
 }
 
 function showContactList(event) {
@@ -183,8 +155,9 @@ function showSelectedAvatar(i) {
   if (!element) {
     document.getElementById(
       "selected-avatars"
-    ).innerHTML += `<div class="selected-avatar" id="avatar-${i}">${contactList[i].avatar}</div>`;
+    ).innerHTML += `<div class="selected-avatar" id="avatar-${i}">${contacts[i].avatar}</div>`;
   }
+  s;
 }
 
 function removeUnSelectedAvatar(i) {
@@ -219,8 +192,8 @@ function renderCategoryList() {
 
 function categoryDropDownTemplate(indexCategory) {
   return `<div class="categoryListElement" onclick="selectCategory(${indexCategory})">
-            <span class="category">${category[indexCategory]}</span>
-            </div>`;
+          <span class="category">${category[indexCategory]}</span>
+          </div>`;
 }
 
 function selectCategory(i) {
@@ -332,9 +305,9 @@ function removeFieldRequired() {
 
 function showLog() {
   document.getElementById("log").innerHTML += `<div class="added-to-board-msg">
-          <p>Task added to board</p>
-          <img src="./assets/icons/added-to-board.svg" alt="Board image" />
-        </div>`;
+        <p>Task added to board</p>
+        <img src="./assets/icons/added-to-board.svg" alt="Board image" />
+      </div>`;
 }
 
 function goToBoards() {

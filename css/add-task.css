@@ -419,3 +419,51 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .requiredText {
   font-size: 13px;
 }
+
+/*General - Submenu in Header*/
+
+.subMenu {
+  background-color: #2a3647;
+  width: 150px;
+  height: 158px;
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.subMenu-btns {
+  padding: 10px;
+  color: #cdcdcd;
+}
+.subMenu-btns:hover {
+  cursor: pointer;
+  background-color: #2a3d59;
+}
+
+.dp-none {
+  display: none;
+}
+
+.subMenu {
+  animation-duration: 0.25s;
+  animation-name: slide-in;
+}
+
+@keyframes slide-in {
+  from {
+    top: 110px;
+    right: -280px;
+  }
+
+  to {
+    top: 110px;
+    right: 40px;
+  }
+}
