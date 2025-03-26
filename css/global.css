@@ -1,44 +1,75 @@
+@font-face {
+  font-family: "Inter";
+  src: url(/fonts/Inter/Inter_18pt-Regular.ttf);
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  text-decoration: none;
+}
+
+html,
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #ecf0f1;
+  height: 100%;
+  margin: 0;
 }
 
-header {
-    background: #2c3e50;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+body {
+  font-family: "Inter", sans-serif;
+  height: 100vh;
+  overflow-x: hidden;
 }
 
-header nav a {
-    color: white;
-    margin-left: 15px;
-    text-decoration: none;
+h1 {
+  font-size: 61px;
 }
 
-header nav a:hover {
-    text-decoration: underline;
+/*General - Submenu*/
+
+.subMenu {
+  background-color: #2a3647;
+  width: 150px;
+  height: 158px;
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-main {
-    padding: 20px;
+.subMenu-btns {
+  padding: 10px;
+  color: #cdcdcd;
+}
+.subMenu-btns:hover {
+  cursor: pointer;
+  background-color: #2a3d59;
 }
 
-footer {
-    background: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.dp-none {
+  display: none;
 }
 
-button {
-    cursor: pointer;
-    border: unset;
+.subMenu {
+  animation-duration: 0.25s;
+  animation-name: menu;
+}
+
+@keyframes menu {
+  from {
+    top: 110px;
+    right: -280px;
+  }
+
+  to {
+    top: 110px;
+    right: 40px;
+  }
 }

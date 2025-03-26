@@ -1,3 +1,5 @@
+/*Contact list should be later in Firebase databank! */
+
 const BASE_URL =
   "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
@@ -15,6 +17,7 @@ async function loadData(path = "") {
     for (let key in responseToJson) {
       contacts.push(responseToJson[key]);
     }
+    console.log(contacts);
   } catch (error) {
     console.error("Response Failed");
   }
@@ -303,7 +306,7 @@ function removeFieldRequired() {
 }
 
 function showLog() {
-  document.getElementById("log").innerHTML += `<div class="added-to-board-msg">
+  document.getElementById("log").innerHTML = `<div class="added-to-board-msg">
         <p>Task added to board</p>
         <img src="./assets/icons/added-to-board.svg" alt="Board image" />
       </div>`;
@@ -312,5 +315,5 @@ function showLog() {
 function goToBoards() {
   setTimeout(() => {
     window.location.href = "./board.html";
-  }, 700);
+  }, 1000);
 }
