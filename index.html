@@ -6,13 +6,22 @@
     <link rel="stylesheet" href="./css/help.css" />
     <link rel="stylesheet" href="./css/add-task.css" />
     <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/navbar_header.css">
+    <link rel="stylesheet" href="./css/global.css">
     <title>Summary user</title>
 </head>
 <body>
-    <header>
-        <p>Kanban Project Management Tool</p>
-        <p><span class="header-icon light-blue">SM</span></p>
-      </header>
+  <header class="header-general">
+    <p>Kanban Project Management Tool</p>
+    <p>
+      <span
+        class="header-icon light-blue"
+        onclick="showSubMenu();preventBubbling(event)"
+        >SM</span
+      >
+    </p>
+    <div id="subMenu" class="subMenu dp-none"></div>
+  </header>
     <nav class="frame-3">
         <img
           class="frame-3-icon"
@@ -134,5 +143,6 @@
 <p class="dashboard-name">Sofia Müller</p>
 </div>
 </div>
+<script src="./js/global.js"></script>
 </body>
 </html>
