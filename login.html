@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/global_Dora.css" />
     <link rel="stylesheet" href="./css/login.css" />
   </head>
   <body>
@@ -13,26 +13,41 @@
         <img src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
         <div class="header-login-signup">
           <p class="signup-1">Not a Join user?</p>
-          <span class="signup-2">Sign up</span>
+          <a href="./sign-up.html"><span class="signup-2">Sign up</span></a>
         </div>
       </header>
       <main>
-        <div class="log-in-window">
+        <div class="login-window">
           <h1>Log in</h1>
-          <div class="log-in-separator"></div>
-          <input type="email" />
-          <input type="password" />
-          <div class="log-in-btns">
-            <div>Log in</div>
-            <div>Guest Log in</div>
+          <div class="login-separator"></div>
+          <div class="login-inputs">
+            <input class="email" type="email" placeholder="Email" />
+            <img
+              class="login-input-imgs mail-img"
+              src="./assets/icons/mail.svg"
+              alt=""
+            />
+            <input class="password" type="password" placeholder="Password" />
+            <img
+              class="login-input-imgs pw-img"
+              src="./assets/icons/lock.svg"
+              alt=""
+            />
+          </div>
+          <div class="login-btns">
+            <div class="login-btn">Log in</div>
+            <div class="guest-login-btn">Guest Log in</div>
           </div>
         </div>
       </main>
-      <footer>
-        <div class="footer-content">
-          <p>Privacy Policy</p>
-          <p>Legal notice</p>
-          <p>hello all</p>
+      <footer class="footer-login">
+        <div class="footer-btns">
+          <a href="./privacy-policy.html"
+            ><div class="footer-btn">Privacy Policy</div></a
+          >
+          <a href="./legal-notice.html"
+            ><div class="footer-btn">Legal notice</div></a
+          >
         </div>
       </footer>
     </div>
