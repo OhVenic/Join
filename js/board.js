@@ -1,181 +1,352 @@
-function showToast(message) {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
-}
 
 
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
 
-let currentContactId = null;
-
-function showContactDetails(contactId) {
-  currentContactId = contactId;
-  const contact = contacts[contactId];
-  document.getElementById('contact-name').textContent = contact.name;
-  document.getElementById('contact-email').textContent = contact.email;
-  document.getElementById('contact-email').href = `mailto:${contact.email}`;
-  document.getElementById('contact-phone').textContent = contact.phone;
-  const badge = document.querySelector('.user-badge.large');
-  badge.textContent = contactId.split('-')[0].charAt(0).toUpperCase() + contactId.split('-')[1]?.charAt(0).toUpperCase() || '';
-  badge.className = `user-badge large ${contact.name.charAt(0).toLowerCase()}`;
-  document.getElementById('contact-details').classList.remove('hidden');
-}
-
-function openAddContactModal() {
-  document.getElementById('add-contact-modal').classList.remove('hidden');
-}
-
-function openEditContactModal() {
-  const contact = contacts[currentContactId];
-  document.getElementById('edit-name').value = contact.name;
-  document.getElementById('edit-email').value = contact.email;
-  document.getElementById('edit-phone').value = contact.phone;
-  document.getElementById('edit-contact-modal').classList.remove('hidden');
-}
-
-function getContactDataFromForm(formId) {
-  const name = document.getElementById(`${formId}-name`).value.trim();
-  const email = document.getElementById(`${formId}-email`).value.trim();
-  const phone = document.getElementById(`${formId}-phone`).value.trim();
-  return { name, email, phone };
-}
-
-function createLetterSection(firstLetter) {
-  const letterSection = document.createElement('div');
-  letterSection.className = 'letter-section';
-  letterSection.innerHTML = `
-    <h2 data-letter="${firstLetter}">${firstLetter}</h2>
-    <hr class="section-divider" />
-  `;
-  return letterSection;
-}
-
-function insertLetterSection(letterSection, firstLetter) {
-  const sections = document.querySelectorAll('.letter-section');
-  let inserted = false;
-  for (let section of sections) {
-    if (section.querySelector('h2').textContent > firstLetter) {
-      section.before(letterSection);
-      inserted = true;
-      break;
-    }
-  }
-  if (!inserted) {
-    document.querySelector('.contacts-list').appendChild(letterSection);
-  }
-}
-
-function createContactCard(contactId, contact) {
-  const contactCard = document.createElement('div');
-  contactCard.className = 'contact-card';
-  contactCard.setAttribute('onclick', `showContactDetails('${contactId}')`);
-  contactCard.innerHTML = `
-    <div class="user-badge ${contact.name.charAt(0).toLowerCase()}">${contact.name.charAt(0).toUpperCase()}${contact.name.split(' ')[1]?.charAt(0).toUpperCase() || ''}</div>
-    <div class="contact-info">
-      <p>${contact.name}</p>
-      <p class="email">${contact.email}</p>
-    </div>
-  `;
-  return contactCard;
-}
-
-function addContact(event) {
+function allowDrop(event) {
   event.preventDefault();
-  const contactData = getContactDataFromForm('add');
-  if (!validateEmail(contactData.email)) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
-  const contactId = contactData.name.toLowerCase().replace(' ', '-');
-  contacts[contactId] = contactData;
-  const firstLetter = contactData.name.charAt(0).toUpperCase();
-  let letterSection = document.querySelector(`.letter-section h2[data-letter="${firstLetter}"]`)?.parentElement;
-  if (!letterSection) {
-    letterSection = createLetterSection(firstLetter);
-    insertLetterSection(letterSection, firstLetter);
-  }
-  const contactCard = createContactCard(contactId, contactData);
-  letterSection.appendChild(contactCard);
-  showToast('Contact added successfully!');
-  closeModal();
+  event.currentTarget.classList.add('drag-over');
 }
 
-function updateContactCard(contact) {
-  const contactCard = document.querySelector(`.contact-card[onclick="showContactDetails('${currentContactId}')"]`);
-  contactCard.querySelector('p').textContent = contact.name;
-  contactCard.querySelector('.email').textContent = contact.email;
-  const badge = contactCard.querySelector('.user-badge');
-  badge.textContent = contact.name.charAt(0).toUpperCase() + (contact.name.split(' ')[1]?.charAt(0).toUpperCase() || '');
-  badge.className = `user-badge ${contact.name.charAt(0).toLowerCase()}`;
+function drag(event) {
+  event.dataTransfer.setData('text', event.target.id);
 }
 
-function handleLetterSectionChange(contact, oldFirstLetter) {
-  const contactCard = document.querySelector(`.contact-card[onclick="showContactDetails('${currentContactId}')"]`);
-  const letterSection = contactCard.parentElement;
-  const newFirstLetter = contact.name.charAt(0).toUpperCase();
-  if (oldFirstLetter !== newFirstLetter) {
-    contactCard.remove();
-    if (letterSection.querySelectorAll('.contact-card').length === 0) {
-      letterSection.remove();
-    }
-    addContact({ preventDefault: () => {} });
-  }
-}
-
-function saveContactEdit(event) {
+function drop(event) {
   event.preventDefault();
-  const contact = contacts[currentContactId];
-  const oldFirstLetter = contact.name.charAt(0).toUpperCase();
-  const contactData = getContactDataFromForm('edit');
-  if (!validateEmail(contactData.email)) {
-    showToast('Please enter a valid email address.');
-    return;
-  }
-  contact.name = contactData.name;
-  contact.email = contactData.email;
-  contact.phone = contactData.phone;
-  updateContactCard(contact);
-  handleLetterSectionChange(contact, oldFirstLetter);
-  showContactDetails(currentContactId);
-  showToast('Contact updated successfully!');
-  closeModal();
+  const taskId = event.dataTransfer.getData('text');
+  const task = document.getElementById(taskId);
+  const targetColumn = event.currentTarget.querySelector('.task-list');
+  targetColumn.appendChild(task);
+  event.currentTarget.classList.remove('drag-over');
+  tasks[taskId].status = event.currentTarget.id;
 }
 
-function removeContactFromTasks() {
-  Object.values(tasks).forEach(task => {
-    task.assigned = task.assigned.filter(person => person !== currentContactId.split('-')[0].toUpperCase() + currentContactId.split('-')[1]?.charAt(0).toUpperCase());
-    const taskCard = document.querySelector(`.task-card[id="${task.id}"]`);
-    if (taskCard) {
-      const userBadges = taskCard.querySelector('.user-badges');
-      userBadges.innerHTML = task.assigned.map(person => `
-        <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
-      `).join('');
+
+function searchTasks() {
+  const searchTerm = document.getElementById('search-input').value.toLowerCase();
+  const tasksElements = document.querySelectorAll('.task-card');
+  tasksElements.forEach(task => {
+    const title = task.querySelector('h4').textContent.toLowerCase();
+    if (title.includes(searchTerm)) {
+      task.style.display = 'block';
+    } else {
+      task.style.display = 'none';
     }
   });
 }
 
-function deleteContact() {
-  const contactCard = document.querySelector(`.contact-card[onclick="showContactDetails('${currentContactId}')"]`);
-  const letterSection = contactCard.parentElement;
-  contactCard.remove();
-  if (letterSection.querySelectorAll('.contact-card').length === 0) {
-    letterSection.remove();
+
+let currentStatus = 'todo';
+let subtasks = [];
+
+function openAddTaskModal(status) {
+  currentStatus = status;
+  subtasks = [];
+  document.getElementById('add-title').value = '';
+  document.getElementById('add-description').value = '';
+  document.getElementById('add-due-date').value = '';
+  document.getElementById('add-priority').value = 'medium';
+  const assignedSelect = document.getElementById('add-assigned');
+  Array.from(assignedSelect.options).forEach(option => option.selected = false);
+  document.getElementById('add-category').value = 'User Story';
+  document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById('subtask-input').value = '';
+  document.getElementById('add-task-modal').classList.remove('hidden');
+}
+
+function addSubtask() {
+  const subtaskInput = document.getElementById('subtask-input');
+  const subtaskText = subtaskInput.value.trim();
+  if (subtaskText) {
+    subtasks.push(subtaskText);
+    const subtaskList = document.getElementById('subtask-list');
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item';
+    subtaskItem.innerHTML = `
+      <span>${subtaskText}</span>
+      <button type="button" onclick="removeSubtask(${subtasks.length - 1})">Remove</button>
+    `;
+    subtaskList.appendChild(subtaskItem);
+    subtaskInput.value = '';
   }
-  removeContactFromTasks();
-  delete contacts[currentContactId];
-  document.getElementById('contact-details').classList.add('hidden');
-  showToast('Contact deleted successfully!');
+}
+
+function removeSubtask(index) {
+  subtasks.splice(index, 1);
+  const subtaskList = document.getElementById('subtask-list');
+  subtaskList.innerHTML = '';
+  subtasks.forEach((subtask, i) => {
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item';
+    subtaskItem.innerHTML = `
+      <span>${subtask}</span>
+      <button type="button" onclick="removeSubtask(${i})">Remove</button>
+    `;
+    subtaskList.appendChild(subtaskItem);
+  });
+}
+
+function getTaskDataFromForm() {
+  const title = document.getElementById('add-title').value;
+  const description = document.getElementById('add-description').value;
+  const dueDate = document.getElementById('add-due-date').value;
+  const priority = document.getElementById('add-priority').value;
+  const assignedSelect = document.getElementById('add-assigned');
+  const assigned = Array.from(assignedSelect.selectedOptions).map(option => option.value);
+  const category = document.getElementById('add-category').value;
+  return { title, description, dueDate, priority, assigned, category };
+}
+
+function createTaskCard(taskId, taskData) {
+  const taskList = document.getElementById(`${currentStatus}-list`);
+  const taskCard = document.createElement('div');
+  taskCard.className = 'task-card';
+  taskCard.draggable = true;
+  taskCard.id = taskId;
+  taskCard.setAttribute('ondragstart', 'drag(event)');
+  taskCard.addEventListener('click', () => openTaskModal(taskId));
+  taskCard.innerHTML = `
+    <div class="task-category">${taskData.category}</div>
+    <h4>${taskData.title}</h4>
+    <p>${taskData.description}</p>
+    <div class="task-footer">
+      <div class="subtask-progress">
+        <span>0/${subtasks.length} Subtasks</span>
+        <div class="progress-bar">
+          <div class="progress" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="task-meta">
+        <div class="user-badges">
+          ${taskData.assigned.map(person => `<div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>`).join('')}
+        </div>
+        <div class="priority ${taskData.priority}"></div>
+      </div>
+    </div>
+  `;
+  return taskCard;
+}
+
+function addTask(event) {
+  event.preventDefault();
+  const taskData = getTaskDataFromForm();
+  const taskId = `task-${Object.keys(tasks).length + 1}`;
+  tasks[taskId] = {
+    title: taskData.title,
+    description: taskData.description,
+    dueDate: taskData.dueDate,
+    priority: taskData.priority,
+    assigned: taskData.assigned,
+    subtasks: [...subtasks],
+    completedSubtasks: 0,
+    status: currentStatus,
+    category: taskData.category
+  };
+  const taskCard = createTaskCard(taskId, taskData);
+  const taskList = document.getElementById(`${currentStatus}-list`);
+  taskList.appendChild(taskCard);
+  removeNoTasksMessage(taskList);
+  closeModal();
+}
+
+function removeNoTasksMessage(taskList) {
+  const noTasks = taskList.querySelector('.no-tasks');
+  if (noTasks) {
+    noTasks.remove();
+  }
+}
+
+
+let currentTaskId = null;
+
+function updateTaskModalDetails(task) {
+  document.getElementById('modal-title').textContent = task.title;
+  document.getElementById('modal-description').textContent = task.description;
+  document.getElementById('modal-due-date').textContent = task.dueDate;
+  document.getElementById('modal-priority').textContent = task.priority;
+}
+
+function updateTaskModalAssigned(task) {
+  const assignedBadges = document.getElementById('modal-assigned-badges');
+  assignedBadges.innerHTML = task.assigned.map(person => `
+    <div class="user-badge ${person.charAt(0).toLowerCase()}">
+      ${person}
+      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
+    </div>
+  `).join('');
+  document.getElementById('modal-add-assigned').value = '';
+}
+
+function updateTaskModalSubtasks(task) {
+  const subtasksList = document.getElementById('modal-subtasks');
+  subtasksList.innerHTML = '';
+  task.subtasks.forEach((subtask, index) => {
+    const li = document.createElement('li');
+    li.textContent = subtask;
+    if (index < task.completedSubtasks) {
+      li.style.textDecoration = 'line-through';
+    }
+    subtasksList.appendChild(li);
+  });
+}
+
+function openTaskModal(taskId) {
+  currentTaskId = taskId;
+  const task = tasks[taskId];
+  updateTaskModalDetails(task);
+  updateTaskModalAssigned(task);
+  updateTaskModalSubtasks(task);
+  document.getElementById('task-modal').classList.remove('hidden');
+}
+
+function addPersonToTask(person) {
+  if (!person) return;
+  const task = tasks[currentTaskId];
+  if (!task.assigned.includes(person)) {
+    task.assigned.push(person);
+    updateAssignedDisplay();
+  }
+  document.getElementById('modal-add-assigned').value = '';
+}
+
+function removePersonFromTask(person) {
+  const task = tasks[currentTaskId];
+  task.assigned = task.assigned.filter(p => p !== person);
+  updateAssignedDisplay();
+}
+
+function updateAssignedDisplay() {
+  const task = tasks[currentTaskId];
+  const assignedBadges = document.getElementById('modal-assigned-badges');
+  assignedBadges.innerHTML = task.assigned.map(person => `
+    <div class="user-badge ${person.charAt(0).toLowerCase()}">
+      ${person}
+      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
+    </div>
+  `).join('');
+  const taskCard = document.getElementById(currentTaskId);
+  const userBadges = taskCard.querySelector('.user-badges');
+  userBadges.innerHTML = task.assigned.map(person => `
+    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
+  `).join('');
+}
+
+function populateEditSubtasks(task) {
+  subtasks = [...task.subtasks];
+  const subtaskList = document.getElementById('edit-subtask-list');
+  subtaskList.innerHTML = '';
+  subtasks.forEach((subtask, index) => {
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item';
+    subtaskItem.innerHTML = `
+      <input type="text" value="${subtask}" oninput="updateSubtask(${index}, this.value)">
+      <button type="button" onclick="removeSubtaskInEdit(${index})">Remove</button>
+    `;
+    subtaskList.appendChild(subtaskItem);
+  });
+}
+
+function openEditTaskModal() {
+  const task = tasks[currentTaskId];
+  document.getElementById('edit-title').value = task.title;
+  document.getElementById('edit-description').value = task.description;
+  document.getElementById('edit-due-date').value = task.dueDate;
+  document.getElementById('edit-priority').value = task.priority;
+  const assignedSelect = document.getElementById('edit-assigned');
+  Array.from(assignedSelect.options).forEach(option => {
+    option.selected = task.assigned.includes(option.value);
+  });
+  populateEditSubtasks(task);
+  document.getElementById('edit-subtask-input').value = '';
+  document.getElementById('task-modal').classList.add('hidden');
+  document.getElementById('edit-task-modal').classList.remove('hidden');
+}
+
+function addSubtaskInEdit() {
+  const subtaskInput = document.getElementById('edit-subtask-input');
+  const subtaskText = subtaskInput.value.trim();
+  if (subtaskText) {
+    subtasks.push(subtaskText);
+    const subtaskList = document.getElementById('edit-subtask-list');
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item';
+    subtaskItem.innerHTML = `
+      <input type="text" value="${subtaskText}" oninput="updateSubtask(${subtasks.length - 1}, this.value)">
+      <button type="button" onclick="removeSubtaskInEdit(${subtasks.length - 1})">Remove</button>
+    `;
+    subtaskList.appendChild(subtaskItem);
+    subtaskInput.value = '';
+  }
+}
+
+function updateSubtask(index, value) {
+  subtasks[index] = value;
+}
+
+function removeSubtaskInEdit(index) {
+  subtasks.splice(index, 1);
+  const subtaskList = document.getElementById('edit-subtask-list');
+  subtaskList.innerHTML = '';
+  subtasks.forEach((subtask, i) => {
+    const subtaskItem = document.createElement('div');
+    subtaskItem.className = 'subtask-item';
+    subtaskItem.innerHTML = `
+      <input type="text" value="${subtask}" oninput="updateSubtask(${i}, this.value)">
+      <button type="button" onclick="removeSubtaskInEdit(${i})">Remove</button>
+    `;
+    subtaskList.appendChild(subtaskItem);
+  });
+}
+
+function updateTaskCard(task) {
+  const taskCard = document.getElementById(currentTaskId);
+  taskCard.querySelector('h4').textContent = task.title;
+  taskCard.querySelector('p').textContent = task.description;
+  taskCard.querySelector('.priority').className = `priority ${task.priority}`;
+  const userBadges = taskCard.querySelector('.user-badges');
+  userBadges.innerHTML = task.assigned.map(person => `
+    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
+  `).join('');
+  taskCard.querySelector('.subtask-progress span').textContent = `${task.completedSubtasks}/${task.subtasks.length} Subtasks`;
+}
+
+function saveTaskEdit(event) {
+  event.preventDefault();
+  const task = tasks[currentTaskId];
+  task.title = document.getElementById('edit-title').value;
+  task.description = document.getElementById('edit-description').value;
+  task.dueDate = document.getElementById('edit-due-date').value;
+  task.priority = document.getElementById('edit-priority').value;
+  const assignedSelect = document.getElementById('edit-assigned');
+  task.assigned = Array.from(assignedSelect.selectedOptions).map(option => option.value);
+  task.subtasks = subtasks.filter(subtask => subtask.trim() !== '');
+  updateTaskCard(task);
+  closeModal();
+}
+
+function addNoTasksMessage(taskList) {
+  if (taskList.children.length === 0) {
+    const noTasks = document.createElement('span');
+    noTasks.className = 'no-tasks';
+    noTasks.textContent = `No tasks in ${taskList.id.replace('-list', '')}`;
+    taskList.appendChild(noTasks);
+  }
+}
+
+function deleteTask() {
+  const taskCard = document.getElementById(currentTaskId);
+  const taskList = taskCard.parentElement;
+  taskCard.remove();
+  delete tasks[currentTaskId];
+  addNoTasksMessage(taskList);
+  closeModal();
 }
 
 function closeModal() {
-  document.getElementById('add-contact-modal').classList.add('hidden');
-  document.getElementById('edit-contact-modal').classList.add('hidden');
+  document.getElementById('add-task-modal').classList.add('hidden');
+  document.getElementById('task-modal').classList.add('hidden');
+  document.getElementById('edit-task-modal').classList.add('hidden');
 }
+
+document.querySelectorAll('.task-card').forEach(task => {
+  task.addEventListener('click', () => openTaskModal(task.id));
+});

@@ -1,0 +1,43 @@
+/* Help Main */
+
+.main-title-img {
+  width: 37px;
+  height: 37px;
+  top: 225px;
+  left: 1307px;
+}
+
+.main-title-img:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.help-text-content {
+  padding: 100px;
+  margin: 100px;
+  margin-left: 200px;
+  padding-top: 50px;
+}
+
+.help-title-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 61px;
+}
+
+.nr {
+  font-size: 27px;
+  font-weight: 700;
+}
+
+td:nth-child(1) {
+  width: 40px;
+}
+td {
+  vertical-align: top;
+  padding: 10px;
+}

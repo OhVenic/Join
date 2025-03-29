@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* global.css – Gemeinsame Stile für alle Seiten */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -80,10 +81,33 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+=======
+@font-face {
+  font-family: "Inter";
+  src: url(/fonts/Inter/Inter_18pt-Regular.ttf);
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+>>>>>>> ad071c240897b35ae4f201df2352990bf9f6a8d6
   height: 100vh;
   overflow-x: hidden;
 }
 
+<<<<<<< HEAD
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -192,3 +216,56 @@ body {
     margin-left: 0;
   }
 }
+=======
+h1 {
+  font-size: 61px;
+}
+
+/*General - Submenu*/
+
+.subMenu {
+  background-color: #2a3647;
+  width: 150px;
+  height: 158px;
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.subMenu-btns {
+  padding: 10px;
+  color: #cdcdcd;
+}
+.subMenu-btns:hover {
+  cursor: pointer;
+  background-color: #2a3d59;
+}
+
+.dp-none {
+  display: none;
+}
+
+.subMenu {
+  animation-duration: 0.25s;
+  animation-name: menu;
+}
+
+@keyframes menu {
+  from {
+    top: 110px;
+    right: -280px;
+  }
+
+  to {
+    top: 110px;
+    right: 40px;
+  }
+}
+>>>>>>> ad071c240897b35ae4f201df2352990bf9f6a8d6
