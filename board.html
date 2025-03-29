@@ -2,261 +2,277 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
-    />
-    <title>Join - Kanban-Board</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join - Board</title>
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/board.css" />
+    <script src="js/board.js" defer></script>
+    <script src="js/data.js" defer></script>
   </head>
   <body>
-    <header>
-      <h1>Join</h1>
+    <aside class="sidebar">
+      <div class="logo">J<br />OIN</div>
       <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="add-task.html">Aufgabe hinzufügen</a>
-        <a href="board.html">Kanban-Board</a>
-        <a href="contacts.html">Kontakte</a>
-        <a href="login.html" onclick="logout()">Abmelden</a>
+        <a href="summary.html"><i class="fas fa-chart-line icon"></i>Summary</a>
+        <a href="add-task.html"><i class="fas fa-plus-circle icon"></i>Add Task</a>
+        <a href="board.html" class="active"><i class="fas fa-columns icon"></i>Board</a>
+        <a href="contacts.html"><i class="fas fa-address-book icon"></i>Contacts</a>
       </nav>
-    </header>
-    <main>
-      <h2>Kanban-Board</h2>
-      <div class="search-bar">
-        <select id="task-filter" onchange="filterTasks()">
-          <option value="all">Alle Tasks</option>
-          <option value="priority-urgent">Priorität: Dringend</option>
-          <option value="priority-medium">Priorität: Mittel</option>
-          <option value="priority-low">Priorität: Niedrig</option>
-          <option value="category-technical-task">
-            Kategorie: Technical Task
-          </option>
-          <option value="category-user-story">Kategorie: User Story</option>
-          <option value="assigned-Anna Berger">Zugewiesen: Anna Berger</option>
-          <option value="assigned-Max Schuster">
-            Zugewiesen: Max Schuster
-          </option>
-          <option value="assigned-Lena Müller">Zugewiesen: Lena Müller</option>
-          <option value="assigned-Jonas Weber">Zugewiesen: Jonas Weber</option>
-          <option value="assigned-Sophie Klein">
-            Zugewiesen: Sophie Klein
-          </option>
-          <option value="assigned-Thomas Fischer">
-            Zugewiesen: Thomas Fischer
-          </option>
-          <option value="assigned-Klara Hoffmann">
-            Zugewiesen: Klara Hoffmann
-          </option>
-          <option value="assigned-Peter Schmidt">
-            Zugewiesen: Peter Schmidt
-          </option>
-          <option value="assigned-Julia Wagner">
-            Zugewiesen: Julia Wagner
-          </option>
-          <option value="assigned-Markus Becker">
-            Zugewiesen: Markus Becker
-          </option>
-        </select>
-        <input
-          type="text"
-          id="task-search"
-          placeholder="Suche nach Tasks..."
-          oninput="searchTasks()"
-        />
+      <div class="legal">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="legal-notice.html">Legal Notice</a>
       </div>
-      <div class="board" id="board">
-        <section
-          class="column"
-          data-status="todo"
-          ondragover="allowDrop(event)"
-          ondrop="drop(event)"
-          ondragleave="this.style.background='#f9f9f9';this.style.border='none'"
-        >
-          <h3>
-            Zu erledigen
-            <button class="add-task-btn" onclick="openAddTaskModal('todo')">
-              +
-            </button>
-          </h3>
-        </section>
-        <section
-          class="column"
-          data-status="in-progress"
-          ondragover="allowDrop(event)"
-          ondrop="drop(event)"
-          ondragleave="this.style.background='#f9f9f9';this.style.border='none'"
-        >
-          <h3>
-            In Bearbeitung
-            <button
-              class="add-task-btn"
-              onclick="openAddTaskModal('in-progress')"
-            >
-              +
-            </button>
-          </h3>
-        </section>
-        <section
-          class="column"
-          data-status="awaiting-feedback"
-          ondragover="allowDrop(event)"
-          ondrop="drop(event)"
-          ondragleave="this.style.background='#f9f9f9';this.style.border='none'"
-        >
-          <h3>
-            Auf Rückmeldung wartend
-            <button
-              class="add-task-btn"
-              onclick="openAddTaskModal('awaiting-feedback')"
-            >
-              +
-            </button>
-          </h3>
-        </section>
-        <section
-          class="column"
-          data-status="done"
-          ondragover="allowDrop(event)"
-          ondrop="drop(event)"
-          ondragleave="this.style.background='#f9f9f9';this.style.border='none'"
-        >
-          <h3>
-            Erledigt
-            <button class="add-task-btn" onclick="openAddTaskModal('done')">
-              +
-            </button>
-          </h3>
-        </section>
-      </div>
-      <div id="task-details" class="task-details" style="display: none">
-        <h3>Aufgabe Details</h3>
-        <p id="detail-title"></p>
-        <p id="detail-description"></p>
-        <p id="detail-due-date"></p>
-        <p id="detail-priority"></p>
-        <p id="detail-assigned"></p>
-        <p id="detail-category"></p>
-        <button id="close-details-btn" onclick="closeTaskDetails()">
-          Schließen
-        </button>
-      </div>
-      <div id="edit-task-modal" class="task-modal" style="display: none">
-        <div class="modal-content">
-          <h3>Aufgabe bearbeiten</h3>
-          <label for="edit-title">Titel:*</label>
-          <input
-            type="text"
-            id="edit-title"
-            placeholder="Titel"
-            oninput="validateForm('edit')"
-          />
-          <label for="edit-description">Beschreibung:</label>
-          <textarea id="edit-description" placeholder="Beschreibung"></textarea>
-          <label for="edit-due-date">Fälligkeitsdatum:</label>
-          <input
-            type="date"
-            id="edit-due-date"
-            oninput="validateForm('edit')"
-          />
-          <label for="edit-priority">Priorität:</label>
-          <select id="edit-priority">
-            <option value="low">Niedrig</option>
-            <option value="medium">Mittel</option>
-            <option value="urgent">Dringend</option>
-          </select>
-          <label for="edit-assigned">Zugewiesen:</label>
-          <select id="edit-assigned">
-            <option value="Anna Berger">Anna Berger (AB)</option>
-            <option value="Max Schuster">Max Schuster (MS)</option>
-            <option value="Lena Müller">Lena Müller (LM)</option>
-            <option value="Jonas Weber">Jonas Weber (JW)</option>
-            <option value="Sophie Klein">Sophie Klein (SK)</option>
-            <option value="Thomas Fischer">Thomas Fischer (TF)</option>
-            <option value="Klara Hoffmann">Klara Hoffmann (KH)</option>
-            <option value="Peter Schmidt">Peter Schmidt (PS)</option>
-            <option value="Julia Wagner">Julia Wagner (JW)</option>
-            <option value="Markus Becker">Markus Becker (MB)</option>
-          </select>
-          <p>Kategorie: <span id="edit-category"></span> (nicht editierbar)</p>
-          <div id="edit-subtasks" class="subtasks"></div>
-          <button onclick="saveEditedTask()" id="save-edit-btn" disabled>
-            Speichern
-          </button>
-          <button
-            onclick="document.getElementById('edit-task-modal').style.display='none'"
-          >
-            Abbrechen
-          </button>
+    </aside>
+
+    <div class="main-content">
+      <header class="topbar">
+        <div class="header-content">
+          <span class="header-label">Kanban Project Management Tool</span>
+          <h1>Board</h1>
         </div>
-      </div>
-      <div id="add-task-modal" class="task-modal" style="display: none">
-        <div class="modal-content">
-          <h3>Neue Aufgabe hinzufügen</h3>
-          <label for="add-title">Titel:*</label>
-          <input
-            type="text"
-            id="add-title"
-            placeholder="Titel"
-            oninput="validateForm('add')"
-          />
-          <label for="add-description">Beschreibung:</label>
-          <textarea id="add-description" placeholder="Beschreibung"></textarea>
-          <label for="add-due-date">Fälligkeitsdatum:</label>
-          <input type="date" id="add-due-date" oninput="validateForm('add')" />
-          <label for="add-priority">Priorität:</label>
-          <select id="add-priority" oninput="validateForm('add')">
-            <option value="medium" selected>Mittel</option>
-            <option value="low">Niedrig</option>
-            <option value="urgent">Dringend</option>
-          </select>
-          <label for="add-assigned">Zugewiesen:</label>
-          <select id="add-assigned" oninput="validateForm('add')">
-            <option value="Anna Berger">Anna Berger (AB)</option>
-            <option value="Max Schuster">Max Schuster (MS)</option>
-            <option value="Lena Müller">Lena Müller (LM)</option>
-            <option value="Jonas Weber">Jonas Weber (JW)</option>
-            <option value="Sophie Klein">Sophie Klein (SK)</option>
-            <option value="Thomas Fischer">Thomas Fischer (TF)</option>
-            <option value="Klara Hoffmann">Klara Hoffmann (KH)</option>
-            <option value="Peter Schmidt">Peter Schmidt (PS)</option>
-            <option value="Julia Wagner">Julia Wagner (JW)</option>
-            <option value="Markus Becker">Markus Becker (MB)</option>
-          </select>
-          <label for="add-category">Kategorie:*</label>
-          <select id="add-category" oninput="validateForm('add')">
-            <option value="technical-task">Technical Task</option>
-            <option value="user-story">User Story</option>
-          </select>
-          <label for="add-subtask-input">Subtasks:</label>
-          <div class="subtasks">
-            <input
-              type="text"
-              id="add-subtask-input"
-              placeholder="Subtask hinzufügen"
-              onkeypress="addSubtask(event, null)"
-            />
-            <div id="add-subtasks-list"></div>
+        <div class="topbar-actions">
+          <input type="text" placeholder="Find Task" id="search-input" onkeyup="searchTasks()" />
+          <button class="add-task-btn" onclick="openAddTaskModal('todo')">Add Task +</button>
+        </div>
+      </header>
+
+      <main class="board-wrapper">
+        <div class="board-column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="board-column-header">
+            To do <button class="add-column-task" onclick="openAddTaskModal('todo')">+</button>
           </div>
-          <button onclick="saveNewTask()" id="save-new-task-btn" disabled>
-            Speichern
-          </button>
-          <button
-            onclick="document.getElementById('add-task-modal').style.display='none'"
-          >
-            Abbrechen
-          </button>
+          <div class="task-list" id="todo-list">
+            <div class="task-card" draggable="true" ondragstart="drag(event)" id="task-1">
+              <div class="task-category">User Story</div>
+              <h4>Implement Login Page</h4>
+              <p>Design and code the login page for Join.</p>
+              <div class="task-footer">
+                <div class="subtask-progress">
+                  <span>2/5 Subtasks</span>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 40%;"></div>
+                  </div>
+                </div>
+                <div class="task-meta">
+                  <div class="user-badges">
+                    <div class="user-badge a">AW</div>
+                    <div class="user-badge t">TW</div>
+                  </div>
+                  <div class="priority urgent"></div>
+                </div>
+              </div>
+            </div>
+            <div class="task-card" draggable="true" ondragstart="drag(event)" id="task-4">
+              <div class="task-category">Technical Task</div>
+              <h4>Optimize Database</h4>
+              <p>Improve the performance of the database queries.</p>
+              <div class="task-footer">
+                <div class="subtask-progress">
+                  <span>0/4 Subtasks</span>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 0%;"></div>
+                  </div>
+                </div>
+                <div class="task-meta">
+                  <div class="user-badges">
+                    <div class="user-badge d">DF</div>
+                    <div class="user-badge a">AW</div>
+                  </div>
+                  <div class="priority medium"></div>
+                </div>
+              </div>
+            </div>
+            <div class="task-card" draggable="true" ondragstart="drag(event)" id="task-5">
+              <div class="task-category">User Story</div>
+              <h4>Add User Authentication</h4>
+              <p>Implement user authentication for Join.</p>
+              <div class="task-footer">
+                <div class="subtask-progress">
+                  <span>1/5 Subtasks</span>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 20%;"></div>
+                  </div>
+                </div>
+                <div class="task-meta">
+                  <div class="user-badges">
+                    <div class="user-badge t">TW</div>
+                    <div class="user-badge d">DF</div>
+                    <div class="user-badge a">AW</div>
+                  </div>
+                  <div class="priority urgent"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="board-column" id="in-progress" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="board-column-header">
+            In progress <button class="add-column-task" onclick="openAddTaskModal('in-progress')">+</button>
+          </div>
+          <div class="task-list" id="in-progress-list">
+            <div class="task-card" draggable="true" ondragstart="drag(event)" id="task-2">
+              <div class="task-category">Technical Task</div>
+              <h4>Fix API Integration</h4>
+              <p>Resolve issues with the API for task creation.</p>
+              <div class="task-footer">
+                <div class="subtask-progress">
+                  <span>1/3 Subtasks</span>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 33%;"></div>
+                  </div>
+                </div>
+                <div class="task-meta">
+                  <div class="user-badges">
+                    <div class="user-badge t">TW</div>
+                    <div class="user-badge d">DF</div>
+                  </div>
+                  <div class="priority medium"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="board-column" id="await-feedback" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="board-column-header">
+            Await feedback <button class="add-column-task" onclick="openAddTaskModal('await-feedback')">+</button>
+          </div>
+          <div class="task-list" id="await-feedback-list">
+            <span class="no-tasks">No tasks awaiting feedback</span>
+          </div>
+        </div>
+
+        <div class="board-column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <div class="board-column-header">
+            Done <button class="add-column-task" onclick="openAddTaskModal('done')">+</button>
+          </div>
+          <div class="task-list" id="done-list">
+            <div class="task-card" draggable="true" ondragstart="drag(event)" id="task-3">
+              <div class="task-category">User Story</div>
+              <h4>Design Homepage</h4>
+              <p>Create the homepage layout for Join.</p>
+              <div class="task-footer">
+                <div class="subtask-progress">
+                  <span>3/3 Subtasks</span>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 100%;"></div>
+                  </div>
+                </div>
+                <div class="task-meta">
+                  <div class="user-badges">
+                    <div class="user-badge d">DF</div>
+                  </div>
+                  <div class="priority low"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="add-task-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Add Task</h2>
+        <form id="add-task-form" onsubmit="addTask(event)">
+          <label>Title: <input type="text" id="add-title" required /></label>
+          <label>Description: <textarea id="add-description"></textarea></label>
+          <label>Due Date: <input type="date" id="add-due-date" required /></label>
+          <label>Priority:
+            <select id="add-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </label>
+          <label>Assigned to:
+            <select id="add-assigned" multiple>
+              <option value="AW">Anton Wolf</option>
+              <option value="TW">Tatjana Wolf</option>
+              <option value="DF">David Fischer</option>
+            </select>
+          </label>
+          <label>Category:
+            <select id="add-category" required>
+              <option value="User Story">User Story</option>
+              <option value="Technical Task">Technical Task</option>
+            </select>
+          </label>
+          <label>Subtasks:
+            <div id="subtask-list"></div>
+            <div class="subtask-input">
+              <input type="text" id="subtask-input" placeholder="Add a subtask" />
+              <button type="button" onclick="addSubtask()">Add</button>
+            </div>
+          </label>
+          <button type="submit">Save</button>
+          <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
       </div>
-      <div id="toast" class="toast"></div>
-    </main>
-    <footer>
-      <p>© 2025 Join - Alle Rechte vorbehalten</p>
-    </footer>
-    <script src="js/global.js"></script>
-    <script src="js/board.js"></script>
-    <script>
-      initializeBoard();
-    </script>
+    </div>
+
+   
+    <div id="task-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Task Details</h2>
+        <div id="task-details">
+          <p><strong>Title:</strong> <span id="modal-title"></span></p>
+          <p><strong>Description:</strong> <span id="modal-description"></span></p>
+          <p><strong>Due Date:</strong> <span id="modal-due-date"></span></p>
+          <p><strong>Priority:</strong> <span id="modal-priority"></span></p>
+          <p><strong>Assigned to:</strong></p>
+          <div class="modal-assigned">
+            <div id="modal-assigned-badges"></div>
+            <select id="modal-add-assigned" onchange="addPersonToTask(this.value)">
+              <option value="">Add Person</option>
+              <option value="AW">Anton Wolf</option>
+              <option value="TW">Tatjana Wolf</option>
+              <option value="DF">David Fischer</option>
+            </select>
+          </div>
+          <p><strong>Subtasks:</strong></p>
+          <ul id="modal-subtasks"></ul>
+        </div>
+        <button onclick="openEditTaskModal()">Edit</button>
+        <button onclick="deleteTask()">Delete</button>
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+
+    
+    <div id="edit-task-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Edit Task</h2>
+        <form id="edit-task-form" onsubmit="saveTaskEdit(event)">
+          <label>Title: <input type="text" id="edit-title" required /></label>
+          <label>Description: <textarea id="edit-description"></textarea></label>
+          <label>Due Date: <input type="date" id="edit-due-date" required /></label>
+          <label>Priority:
+            <select id="edit-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </label>
+          <label>Assigned to:
+            <select id="edit-assigned" multiple>
+              <option value="AW">Anton Wolf</option>
+              <option value="TW">Tatjana Wolf</option>
+              <option value="DF">David Fischer</option>
+            </select>
+          </label>
+          <label>Subtasks:
+            <div id="edit-subtask-list"></div>
+            <div class="subtask-input">
+              <input type="text" id="edit-subtask-input" placeholder="Add a subtask" />
+              <button type="button" onclick="addSubtaskInEdit()">Add</button>
+            </div>
+          </label>
+          <button type="submit">Save</button>
+          <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
