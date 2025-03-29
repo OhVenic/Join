@@ -1,0 +1,306 @@
+
+
+.topbar-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.topbar input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 180px;
+  border: unset; 
+}
+
+.add-task-btn {
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: unset; 
+}
+
+.add-task-btn:hover {
+  background-color: #29abe2;
+}
+
+.board-wrapper {
+  display: flex;
+  gap: 24px;
+  padding: 24px 64px; 
+  flex: 1;
+  overflow-x: auto;
+  justify-content: flex-start;
+}
+
+.board-column {
+  background-color: #f6f7f8;
+  border-radius: 12px;
+  padding: 16px;
+  width: 250px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.board-column-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.board-column-header .add-column-task {
+  background-color: #d1d1d1;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  color: #2a3647;
+  padding: 0;
+  line-height: 1;
+  border: unset; 
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 60px;
+}
+
+.no-tasks {
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.task-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.1s ease-in-out;
+  cursor: grab; 
+}
+
+.task-card:hover {
+  transform: scale(1.02);
+}
+
+.task-card h4 {
+  font-size: 16px;
+  margin: 12px 0; 
+}
+
+.task-card p {
+  font-size: 14px;
+  color: #4a4a4a;
+  margin-bottom: 16px; 
+}
+
+.task-category {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  width: fit-content;
+  background-color: #29abe2;
+  color: white;
+  text-transform: uppercase;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.subtask-progress {
+  font-size: 12px;
+  color: #4a4a4a;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-bar {
+  width: 100px;
+  height: 10px; 
+  background-color: #e0e0e0;
+  border-radius: 5px; 
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #29abe2;
+  border-radius: 5px; 
+  transition: width 0.3s ease-in-out;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-badges {
+  display: flex;
+  gap: 4px;
+}
+
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-content label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  border: unset; 
+}
+
+.modal-content select[multiple] {
+  height: 100px; 
+}
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.subtask-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.subtask-input button {
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: unset; 
+}
+
+.subtask-input button:hover {
+  background-color: #29abe2;
+}
+
+#subtask-list, #edit-subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.subtask-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.subtask-item input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+}
+
+.subtask-item button {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  font-size: 14px;
+  border: unset; 
+}
+
+.modal-assigned {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#modal-assigned-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.modal-assigned .user-badge {
+  position: relative;
+  padding-right: 20px;
+}
+
+.modal-assigned .user-badge .remove-person {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #ff0000;
+  font-size: 12px;
+  cursor: pointer;
+  border: unset; 
+}
+
+#modal-add-assigned {
+  width: 200px;
+}
+
+
+.board-column.drag-over {
+  border: 2px dashed #29abe2;
+}
+
+
+@media (max-width: 768px) {
+  .board-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .board-column {
+    width: 100%;
+    max-width: 320px;
+  }
+}

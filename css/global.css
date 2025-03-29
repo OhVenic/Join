@@ -1,0 +1,194 @@
+/* global.css – Gemeinsame Stile für alle Seiten */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  height: 100vh;
+  background-color: #f6f7f8;
+  color: #2a3647;
+}
+
+.sidebar {
+  width: 232px;
+  background-color: #2a3647;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 24px;
+  position: fixed;
+  height: 100vh;
+}
+
+.sidebar .logo {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 0.9;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 80px;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  padding: 8px 0 8px 16px;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color: #29abe2;
+  border-left: 4px solid #29abe2;
+  background-color: rgba(255,255,255,0.05);
+}
+
+.sidebar nav .icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+.sidebar .legal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar .legal a {
+  color: white;
+  font-size: 12px;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.main-content {
+  margin-left: 296px; /* 232px (Sidebar-Breite) + 64px (Abstand) */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 64px; /* Angepasster Padding für mehr Abstand */
+  border-bottom: 1px solid #ddd;
+  background-color: white;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-label {
+  font-size: 14px;
+  color: #4a4a4a;
+}
+
+.topbar h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 32px;
+  width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content button {
+  cursor: pointer;
+  border: unset; /* Checklist: Kein Standard-Border */
+}
+
+.user-badge {
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.user-badge.large {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+}
+
+/* Farben für User-Badges basierend auf Anfangsbuchstaben */
+.user-badge.a { background-color: #FF6F61; }
+.user-badge.b { background-color: #6B5B95; }
+.user-badge.c { background-color: #88B04B; }
+.user-badge.d { background-color: #F7CAC9; }
+.user-badge.e { background-color: #92A8D1; }
+.user-badge.f { background-color: #F4A261; }
+.user-badge.g { background-color: #955251; }
+.user-badge.h { background-color: #B565A7; }
+.user-badge.i { background-color: #009B77; }
+.user-badge.j { background-color: #DD4124; }
+.user-badge.k { background-color: #45B8AC; }
+.user-badge.l { background-color: #EFC050; }
+.user-badge.m { background-color: #5B5EA6; }
+.user-badge.n { background-color: #9B2335; }
+.user-badge.o { background-color: #DFCFBE; }
+.user-badge.p { background-color: #55B4B0; }
+.user-badge.q { background-color: #E15D44; }
+.user-badge.r { background-color: #7FCDCD; }
+.user-badge.s { background-color: #BC243C; }
+.user-badge.t { background-color: #C3447A; }
+.user-badge.u { background-color: #98B4D4; }
+.user-badge.v { background-color: #F7B7A3; }
+.user-badge.w { background-color: #6A5ACD; }
+.user-badge.x { background-color: #E6B800; }
+.user-badge.y { background-color: #5E2A84; }
+.user-badge.z { background-color: #D4A5A5; }
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

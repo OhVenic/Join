@@ -1,0 +1,161 @@
+
+
+.add-contact-btn {
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: unset; 
+}
+
+.add-contact-btn:hover {
+  background-color: #29abe2;
+}
+
+.contacts-wrapper {
+  display: flex;
+  gap: 24px;
+  padding: 24px 64px; 
+  flex: 1;
+}
+
+.contacts-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.letter-section {
+  margin-bottom: 24px;
+}
+
+.letter-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: #d1d1d1;
+  margin-bottom: 12px;
+  width: 100%; 
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.contact-card:hover {
+  background-color: #f0f0f0;
+}
+
+.contact-info p {
+  margin: 0;
+}
+
+.contact-info .email {
+  font-size: 12px;
+  color: #4a4a4a;
+}
+
+.contact-details {
+  flex: 2;
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.contact-details.hidden {
+  display: none;
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.contact-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.edit-contact-btn, .delete-contact-btn {
+  background: none;
+  border: none;
+  color: #29abe2;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  border: unset; 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.contact-info-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.contact-info-section p {
+  margin: 8px 0;
+}
+
+.contact-info-section a {
+  color: #29abe2;
+  text-decoration: none;
+}
+
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #2a3647;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+
+@media (max-width: 768px) {
+  .contacts-wrapper {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .contact-details {
+    width: 100%;
+  }
+}
