@@ -186,8 +186,8 @@ input:-ms-input-placeholder {
   display: flex;
   color: rgba(168, 168, 168, 1);
 }
-main{
-  flex:1;
+main {
+  flex: 1;
 }
 
 .footer-btn {
