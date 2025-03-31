@@ -6,16 +6,20 @@
     <title>Sign up</title>
     <link rel="stylesheet" href="./css/global_Dora.css" />
     <link rel="stylesheet" href="./css/sign-up.css" />
+    <link rel="stylesheet" href="./css/responsive/sign-up-resp.css">
   </head>
   <body onload="init()">
     <div class="log" id="log"></div>
     <div class="content">
-      <header class="header-signup">
-        <img src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
-      </header>
-      <main>
+      <div>
+        <img class="join-header-logo" src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
+      </div>
+      <main class="main">
         <form class="signup-window" onsubmit="addUser();return false;">
+          <div class="signup-window-header">
+          <a href="./login.html"><img class="go-back-arrow" src="./assets/icons/arrow-left-line.png" alt="Go Back Arrow"></a>
           <h1>Sign up</h1>
+        </div>
           <div class="signup-separator"></div>
           <div class="signup-inputs">
             <div class="inputfield">
