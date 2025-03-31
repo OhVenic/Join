@@ -12,13 +12,13 @@ let usersArr = [];
 
 async function getUsersFromDatabase() {
   let userResponse = await getAllUsers("users");
+  console.log(userResponse);
   let UserKeysArray = Object.keys(userResponse);
   for (let index = 0; index < UserKeysArray.length; index++) {
     usersArr.push({
       id: UserKeysArray[index],
       user: userResponse[UserKeysArray[index]],
     });
-    console.log(usersArr);
   }
 }
 

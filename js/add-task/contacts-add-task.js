@@ -3,11 +3,8 @@
 const BASE_URL =
   "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
-function init() {
-  loadData("contactList");
-}
 let contacts = [];
-async function loadData(path = "") {
+async function loadContacts(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
     let responseToJson = await response.json();
@@ -15,7 +12,6 @@ async function loadData(path = "") {
     for (let key in responseToJson) {
       contacts.push(responseToJson[key]);
     }
-    console.log(contacts);
   } catch (error) {
     console.error("Response Failed");
   }
@@ -68,6 +64,7 @@ function closeContactList() {
 //to keep track of the selected elements in the dropdown List
 //we need to create an array, to somewhere save these elements
 let selectedContacts = [];
+let selectedContactsNames = [];
 function selectContact(i) {
   document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
   document.getElementById(`${i}`).style.color = "white";
@@ -77,6 +74,7 @@ function selectContact(i) {
   if (!selectedContacts.includes(i)) {
     //if not then pushes into it
     selectedContacts.push(i);
+    selectedContactsNames.push(contacts[i].name);
   }
   showSelectedAvatar(i);
 }
