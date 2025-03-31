@@ -6,11 +6,12 @@ function changeSubtaskButtons() {
   document.getElementById("cancel-task-img").classList.add("dp-none");
   document.getElementById("small-separator").classList.add("dp-none");
 }
-
+let subtasks = [];
 function addSubtask() {
   let inputRef = document.getElementById("subtask");
   if (inputRef.value !== "") {
     let input = inputRef.value;
+    subtasks.push(input);
     document.getElementById("subtask-list").innerHTML += `<li>${input}</li>`;
     inputRef.value = "";
   }

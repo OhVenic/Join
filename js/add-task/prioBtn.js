@@ -1,5 +1,6 @@
 /* Functions with the Priority Buttons*/
 
+let selectedPrio;
 function selectPrio(prio) {
   const prios = ["urgent", "medium", "low"];
   prios.forEach((p) => unselectPrio(p));
@@ -9,6 +10,7 @@ function selectPrio(prio) {
   document.getElementById(`prio-btn-${prio}`).style.backgroundColor =
     getPrioColor(prio);
   document.getElementById(`prio-btn-${prio}`).style.color = "white";
+  selectedPrio = `${prio}`;
 }
 
 function unselectPrio(prio) {
@@ -17,6 +19,7 @@ function unselectPrio(prio) {
   ).src = `./assets/icons/priority-${prio}.svg`;
   document.getElementById(`prio-btn-${prio}`).style.backgroundColor = "white";
   document.getElementById(`prio-btn-${prio}`).style.color = "black";
+  selectedPrio = "";
 }
 
 function togglePrio(prio) {
