@@ -34,7 +34,7 @@
   padding: 48px 115px 48px 115px;
   box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
   background: white;
-  gap: 30px;
+  gap: 20px;
 }
 
 .signup-1 {
@@ -65,7 +65,7 @@
 .login-inputs {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 20px;
 }
 
 .login-inputs input {
@@ -130,7 +130,7 @@ input:-ms-input-placeholder {
   right: 15px;
 }
 .pw-img {
-  top: 68px;
+  top: 100px;
   right: 15px;
 }
 
@@ -206,4 +206,14 @@ main {
   display: flex;
   align-items: center;
   gap: 50px;
+}
+
+.error-msg {
+  font-size: 13px;
+  color: red;
+}
+
+.login-input-email,
+.login-input-pw {
+  height: 65px;
 }
