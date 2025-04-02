@@ -1,7 +1,3 @@
-function preventBubbling(event) {
-  event.stopPropagation();
-}
-
 /*Functions with Clear button - clear form */
 
 function changeToBlueIcon() {

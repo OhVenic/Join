@@ -8,18 +8,21 @@
     <link rel="stylesheet" href="./css/dashboard.css">
     <title>Summary user</title>
 </head>
-<body onload="loadData()">
-  <header class="header-general">
-    <p>Kanban Project Management Tool</p>
-    <p>
-      <span
-        class="header-icon light-blue"
-        onclick="showSubMenu();preventBubbling(event)"
-        >SM</span
-      >
-    </p>
-    <div id="subMenu" class="subMenu dp-none"></div>
-  </header>
+<body onload="loadData()" onclick="closeSubMenu()">
+    <header class="header-general">
+        <p>Kanban Project Management Tool</p>
+        <div class="header-left">
+          <a href="./help.html" class="help-icon"
+            ><img src="./assets/icons/help.svg" alt="Go to Help Site"
+          /></a>
+          <span
+            class="header-icon light-blue"
+            onclick="showSubMenu();preventBubbling(event)"
+            >SM</span
+          >
+        </div>
+        <div id="subMenu" class="subMenu dp-none"></div>
+      </header>
     <nav class="frame-3">
         <img
           class="frame-3-icon"
@@ -27,7 +30,7 @@
           alt="Join Logo"
         />
         <div class="frame-3-menu">
-          <a href="index.html"><div class="menu-btns">
+          <a href="dashboard.html"><div class="menu-btns">
             <img
               class="menu-icon"
               src="./assets/icons/icon-summary.png"
@@ -142,5 +145,6 @@
 </div>
 </div>
 <script src="./js/dashboard.js"></script>
+<script src="./js/global.js"></script>
 </body>
 </html>
