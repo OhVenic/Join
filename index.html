@@ -1,148 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/help.css" />
-    <link rel="stylesheet" href="./css/add-task.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/global_Dora.css" />
     <link rel="stylesheet" href="./css/index.css" />
-    <link rel="stylesheet" href="./css/navbar_header.css">
-    <link rel="stylesheet" href="./css/global.css">
-    <title>Summary user</title>
-</head>
-<body>
-  <header class="header-general">
-    <p>Kanban Project Management Tool</p>
-    <p>
-      <span
-        class="header-icon light-blue"
-        onclick="showSubMenu();preventBubbling(event)"
-        >SM</span
-      >
-    </p>
-    <div id="subMenu" class="subMenu dp-none"></div>
-  </header>
-    <nav class="frame-3">
-        <img
-          class="frame-3-icon"
-          src="./assets/icons/join-main-logo.png"
-          alt="Join Logo"
-        />
-        <div class="frame-3-menu">
-          <div class="menu-btns">
-            <img
-              class="menu-icon"
-              src="./assets/icons/icon-summary.png"
-              alt="icon-summary"
-            />
-            <p>Summary</p>
-          </div>
-          <div class="menu-btns">
-            <img
-              class="menu-icon"
-              src="./assets/icons/icon-add-task.png"
-              alt="icon-add-task"
-            />
-            <p>Add Task</p>
-          </div>
-          <div class="menu-btns">
-            <img
-              class="menu-icon"
-              src="./assets/icons/icon-board.png"
-              alt="icon-board"
-            />
-            <p>Board</p>
-          </div>
-          <div class="menu-btns">
-            <img
-              class="menu-icon"
-              src="./assets/icons/icon-contacts.png"
-              alt="icon-contacts"
-            />
-            <p>Contacts</p>
-          </div>
+  </head>
+  <body onload="init()">
+    <div class="content">
+      <header class="header-login">
+        <img src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
+        <div class="header-login-signup">
+          <p class="signup-1">Not a Join user?</p>
+          <a href="./sign-up.html"><span class="signup-2">Sign up</span></a>
         </div>
-        <div class="frame-22">
-          <p class="frame-22-btns">Privacy Policy</p>
-          <p class="frame-22-btns">Legal Notice</p>
-        </div>
-      </nav>
-      <div class="add-task-content">
-      <div  class="flex summary-user-header">
-        <div>
-            <h1>Join 360</h1>
-        </div>
-        <div class="span"></div>
-        <div>
-            <h2>Key Metrics at a Glance</h2>
-        </div>
-      </div>
-      <div class="dashboard-flex">
-       <div class="dashboard">
-    <div class="row">
-        <div class="card">
-            <div class="icon"><svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-              </svg>
-              </div>
-            <div>
-                <p class="number">1</p>
-                <p class="label">To-do</p>
+      </header>
+      <main>
+        <div class="login-window">
+          <h1>Log in</h1>
+          <div class="login-separator"></div>
+          <div class="login-inputs">
+            <div class="login-input-email">
+              <input
+                oninput="removeErrorMsgs('error-email', 'email');removeErrorMsgs('wrong-email', 'password');"
+                id="email"
+                class="email"
+                type="email"
+                placeholder="Email"
+              />
+              <img
+                class="login-input-imgs mail-img"
+                src="./assets/icons/mail.svg"
+                alt=""
+              />
+              <p id="error-email" class="error-msg dp-none">
+                Please enter your email
+              </p>
+              <p id="wrong-email" class="error-msg dp-none">Wrong email</p>
             </div>
-        </div>
-        <div class="card">
-            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              </div>
-            <div>
-                <p class="number">1</p>
-                <p class="label">Done</p>
+            <div class="login-input-pw">
+              <input
+                oninput="removeErrorMsgs('error-password', 'password'); removeErrorMsgs('wrong-password', 'password');"
+                id="password"
+                class="password"
+                type="password"
+                placeholder="Password"
+              />
+              <img
+                class="login-input-imgs pw-img"
+                src="./assets/icons/lock.svg"
+                alt=""
+              />
+              <p id="error-password" class="error-msg dp-none">
+                Please enter your password
+              </p>
+              <p id="wrong-password" class="error-msg dp-none">
+                Wrong password
+              </p>
             </div>
+          </div>
+          <div class="login-btns">
+            <div class="login-btn" onclick="loginUser()">Log in</div>
+            <div class="guest-login-btn">Guest Log in</div>
+          </div>
         </div>
+      </main>
+      <footer class="footer-login">
+        <div class="footer-btns">
+          <a href="./privacy-policy.html"
+            ><div class="footer-btn">Privacy Policy</div></a
+          >
+          <a href="./legal-notice.html"
+            ><div class="footer-btn">Legal notice</div></a
+          >
+        </div>
+      </footer>
     </div>
-
-    <div class="row">
-        <div class="card wide">
-            <div class="left">
-                <div class="icon-urgent"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 7.5-7.5 7.5 7.5" />
-                  </svg>
-                  </div>
-                <div>
-                    <p class="number urgent">1</p>
-                    <p class="label">Urgent</p>
-                </div>
-            </div>
-            <div class="dashboard-span"></div>
-            <div class="right">
-                <p class="date">March 21, 2025</p>
-                <p class="label">Upcoming Deadline</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="card small">
-            <p class="number">5</p>
-            <p class="label">Tasks in Board</p>
-        </div>
-        <div class="card small">
-            <p class="number">2</p>
-            <p class="label">Tasks in Progress</p>
-        </div>
-        <div class="card small">
-            <p class="number">2</p>
-            <p class="label">Awaiting Feedback</p>
-        </div>
-    </div>
-</div>
-<div class="dashboard-greeting">
-<p class="dashboard-p">Good morning,</p>
-<p class="dashboard-name">Sofia Müller</p>
-</div>
-</div>
-<script src="./js/global.js"></script>
-</body>
+    <script src="./js/index.js"></script>
+  </body>
 </html>

@@ -20,3 +20,7 @@ function closeSubMenu() {
     document.getElementById("subMenu").classList.add("dp-none");
   }
 }
+
+function preventBubbling(event) {
+  event.stopPropagation();
+}

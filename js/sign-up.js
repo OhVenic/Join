@@ -141,7 +141,7 @@ function removeErrorMsgs(errorId, inputId) {
   let inputElement = document.getElementById(inputId);
   if (errorElement) {
     errorElement.classList.add("dp-none");
-    inputElement.style.borderColor = "gray";
+    inputElement.style.borderColor = "rgba(209, 209, 209, 1)";
   }
 }
 
