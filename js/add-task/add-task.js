@@ -31,19 +31,29 @@ function clearTaskForm() {
 /*Create Task button- create task functions */
 
 function createTask() {
-  saveTaskInputs();
-  let titleInput = document.getElementById("add-task-title");
-  let dateInput = document.getElementById("add-task-due-date");
-  let categoryInput = document.getElementById("category");
-  if (
-    titleInput.value === "" ||
-    dateInput.value === "" ||
-    categoryInput.value === ""
-  ) {
+  if (areInputsEmpty()) {
     showFieldRequired();
+  } else if (!canSaveTask()) {
+    console.log("TASK EXIST");
+    errorTaskAlreadyExists();
   } else {
+    saveTaskInputs();
     showLog();
     goToBoards();
+  }
+}
+
+function errorTaskAlreadyExists() {
+  document.getElementById("task-already-exists").classList.remove("dp-none");
+  document.getElementById("add-task-title").style.border = "1px solid red";
+}
+
+function removeErrorMsgs(errorId, inputId) {
+  let errorElement = document.getElementById(errorId);
+  let inputElement = document.getElementById(inputId);
+  if (errorElement) {
+    errorElement.classList.add("dp-none");
+    inputElement.style.borderColor = "rgba(209, 209, 209, 1)";
   }
 }
 
@@ -57,12 +67,12 @@ function showFieldRequired() {
 }
 
 function removeFieldRequired() {
+  document.getElementById("").classList.add("dp-none");
   document.getElementById("required-title").classList.add("dp-none");
   document.getElementById("required-date").classList.add("dp-none");
   document.getElementById("required-category").classList.add("dp-none");
   document.getElementById("add-task-title").style.border = "1px solid #d1d1d1";
-  document.getElementById("add-task-due-date").style.border =
-    "1px solid #d1d1d1";
+  document.getElementById("add-task-due-date").style.border = "1px solid #d1d1d1";
   document.getElementById("category").style.border = "1px solid #d1d1d1";
 }
 
@@ -86,7 +96,6 @@ function init() {
   loadTasks("taskList");
 }
 
-let tasksArr = [];
 async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
@@ -95,11 +104,13 @@ async function loadTasks(path = "") {
     for (let key in responseToJson) {
       tasksArr.push(responseToJson[key]);
     }
-    console.log(tasksArr);
+
+    updateHTML();
   } catch (error) {
     console.error("Response Failed");
   }
 }
+
 //Save the taskList from Firebase
 
 function saveTaskInputs() {
@@ -115,19 +126,19 @@ function saveTaskInputs() {
 
 function canSaveTask() {
   const titleInput = document.getElementById("add-task-title").value;
-  return !taskAlreadyExists(tasksArr, titleInput) && !areInputsEmpty();
+  return !taskAlreadyExists(tasksArr, titleInput);
 }
 
 function createTaskObject() {
   const titleInput = document.getElementById("add-task-title").value;
   const dateInput = document.getElementById("add-task-due-date").value;
   const categoryInput = document.getElementById("category").value;
-  const descriptionInput = document.getElementById(
-    "add-task-description"
-  ).value;
+  const descriptionInput = document.getElementById("add-task-description").value;
   const assignedTo = mapArrayToObject(selectedContactsNames);
   const subtasksObj = mapArrayToObject(subtasks);
   return {
+    id: tasksArr.length,
+    column: "to-do",
     assigned_to: assignedTo,
     category: categoryInput,
     date: dateInput,
@@ -155,11 +166,7 @@ function areInputsEmpty() {
   let titleInput = document.getElementById("add-task-title");
   let dateInput = document.getElementById("add-task-due-date");
   let categoryInput = document.getElementById("category");
-  if (
-    titleInput.value === "" ||
-    dateInput.value === "" ||
-    categoryInput.value === ""
-  ) {
+  if (titleInput.value === "" || dateInput.value === "" || categoryInput.value === "") {
     return true;
   }
 }

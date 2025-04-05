@@ -1,6 +1,6 @@
 function logout() {
   localStorage.removeItem("user");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function showSubMenu() {
@@ -23,4 +23,37 @@ function closeSubMenu() {
 
 function preventBubbling(event) {
   event.stopPropagation();
+}
+
+const BASE_URL = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
+
+let tasksArr = [];
+async function loadTasks(path = "") {
+  try {
+    let response = await fetch(BASE_URL + path + ".json");
+    let responseToJson = await response.json();
+    console.log(responseToJson);
+    for (let key in responseToJson) {
+      tasksArr.push(responseToJson[key]);
+    }
+    console.log(tasksArr);
+    console.log(tasksArr.length);
+  } catch (error) {
+    console.error("Response Failed");
+  }
+}
+
+let contacts = [];
+async function loadContacts(path = "") {
+  try {
+    let response = await fetch(BASE_URL + path + ".json");
+    let responseToJson = await response.json();
+
+    for (let key in responseToJson) {
+      contacts.push(responseToJson[key]);
+    }
+  } catch (error) {
+    console.error("Response Failed");
+  }
+  console.log(contacts);
 }

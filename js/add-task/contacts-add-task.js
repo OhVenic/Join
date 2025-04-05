@@ -1,27 +1,13 @@
 //Getting contacts from Firebase and render them
 
-const BASE_URL =
-  "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
-
-let contacts = [];
-async function loadContacts(path = "") {
-  try {
-    let response = await fetch(BASE_URL + path + ".json");
-    let responseToJson = await response.json();
-
-    for (let key in responseToJson) {
-      contacts.push(responseToJson[key]);
-    }
-  } catch (error) {
-    console.error("Response Failed");
-  }
-}
+// const BASE_URL =
+//   "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 function renderContactList() {
+  console.log(contacts);
   document.getElementById("drop-down-contact-list").innerHTML += "";
   for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
-    document.getElementById("drop-down-contact-list").innerHTML +=
-      contactListDropDownTemplate(indexContact);
+    document.getElementById("drop-down-contact-list").innerHTML += contactListDropDownTemplate(indexContact);
     if (selectedContacts.includes(indexContact)) {
       selectContact(indexContact);
     }
@@ -40,14 +26,10 @@ function contactListDropDownTemplate(i) {
 
 function showContactList(event) {
   event.stopPropagation();
-  if (
-    document.getElementById("assigned-to-img-up").classList.contains("dp-none")
-  ) {
+  if (document.getElementById("assigned-to-img-up").classList.contains("dp-none")) {
     document.getElementById("assigned-to-img-up").classList.remove("dp-none");
     document.getElementById("assigned-to-img-down").classList.add("dp-none");
-    document
-      .getElementById("drop-down-contact-list")
-      .classList.remove("dp-none");
+    document.getElementById("drop-down-contact-list").classList.remove("dp-none");
     renderContactList();
   } else {
     closeContactList();
@@ -68,8 +50,7 @@ let selectedContactsNames = [];
 function selectContact(i) {
   document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
   document.getElementById(`${i}`).style.color = "white";
-  document.getElementById(`btn-checkbox-${i}`).src =
-    "./assets/icons/btn-checked.svg";
+  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
   //it check whether the contact (index) is already in our array
   if (!selectedContacts.includes(i)) {
     //if not then pushes into it
@@ -83,8 +64,7 @@ function unselectContact(i) {
   document.getElementById(`${i}`).style.backgroundColor = "white";
   document.getElementById(`${i}`).style.color = "black";
   document.getElementById(`${i}`).style.borderRadius = "10px";
-  document.getElementById(`btn-checkbox-${i}`).src =
-    "./assets/icons/btn-unchecked.svg";
+  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-unchecked.svg";
   //we need to save the index of our value
   // (which is also the index, but not the same!)
   const index = selectedContacts.indexOf(i);
@@ -97,9 +77,7 @@ function unselectContact(i) {
 
 function toggleContactSelection(i) {
   const contactElement = document.getElementById(i);
-  contactElement.style.backgroundColor === "rgb(42, 54, 71)"
-    ? unselectContact(i)
-    : selectContact(i);
+  contactElement.style.backgroundColor === "rgb(42, 54, 71)" ? unselectContact(i) : selectContact(i);
 }
 
 /*Showing the avatar of the selected contact*/
@@ -109,8 +87,9 @@ function showSelectedAvatar(i) {
   if (!element) {
     document.getElementById(
       "selected-avatars"
-    ).innerHTML += `<div class="selected-avatar" id="avatar-${i}">${contacts[i].avatar}</div>`;
+    ).innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
   }
+  console.log(contacts[i].avatar);
 }
 
 function removeUnSelectedAvatar(i) {

@@ -1,0 +1,87 @@
+.add-task-content {
+  padding: 60px;
+  transform: translate(100vw, -50%);
+  animation: slideInFromRight 0.25s forwards;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translate(100vw, -50%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.closing {
+  animation: slideOutToRight 0.25s forwards;
+}
+@keyframes slideOutToRight {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    transform: translate(100vw, -50%);
+  }
+}
+
+.add-task-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-task-1 {
+  width: 360px;
+}
+
+.add-task-close-btn {
+  width: 30px;
+  height: 30px;
+}
+.add-task-close-btn:hover {
+  cursor: pointer;
+  background-color: rgba(209, 209, 209, 0.434);
+  border-radius: 50%;
+}
+
+.add-task-2 {
+  width: 360px;
+}
+
+.add-task-description {
+  width: 360px;
+  height: 100px;
+  padding: 20px;
+}
+
+.assigned-to-section,
+.add-category {
+  position: relative;
+}
+
+.priority-btns {
+  width: 360px;
+  height: 48px;
+}
+.priority-btn {
+  background-color: transparent;
+  height: 48px;
+}
+
+.add-task-2 input {
+  width: 360px;
+}
+
+.drop-down-contact-list {
+  width: 360px;
+  /* height: 160px; */
+}
+
+.selected-avatar {
+  background-color: #29abe2;
+}
+
+.drop-down-category-list {
+  width: 360px;
+  /* height:160px; */
+}
