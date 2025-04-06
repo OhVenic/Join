@@ -11,7 +11,7 @@ h2 {
     display: flex;
 }
 
-.span {
+.span-vertical {
     height: 64px;
     width: 2px;
     background-color: rgb(45,172,228);
@@ -33,7 +33,7 @@ h2 {
 }
 
 .add-task-content {
- margin-left: 350px;
+ margin-left: 300px;
  margin-top: 50px;
 }
 
@@ -151,4 +151,81 @@ svg {
     background: red;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+@media (max-width: 1150px) {
+  .dashboard-greeting {
+    display: none;
+  }  
+}
+
+@media (max-width: 900px) {
+    .summary-user-header {
+        flex-direction: column;
+        align-items: baseline;
+    }
+
+    .span-vertical {
+        display: none;
+    }
+
+    .span-horizontal {
+    height: 2px;
+    width: 80px;
+    background-color: rgb(45,172,228);
+    margin: 12px 24px 0 24px;
+    }
+}
+
+@media (max-width: 800px) {
+    .add-task-content {
+        margin-left: 0;
+    }
+
+    .summary-user-header {
+        margin-left: -160px;
+        align-items: center;
+    }
+
+    .span-horizontal {
+        margin-left: -160px;
+    }
+
+    .dashboard-flex {
+        justify-content: space-around;
+    }
+} 
+
+@media (max-width: 500px) {
+    .summary-user-header h1 {
+        font-size: 48px;
+    }
+    
+    .summary-user-header h2 {
+        font-size: 18px;
+    }
+
+    .summary-user-header {
+        align-items: left;
+        margin-left: 32px;
+        align-items: baseline;
+    }
+
+    .card {
+        width: 142px;
+    }
+
+    .card.wide {
+        width: 300px;
+    }
+
+    .card.small {
+        width: 90px;
+    }
+
+    .number {
+        font-size: 32px;
+    }
+
+
 }
