@@ -28,21 +28,6 @@ function clearTaskForm() {
   removeFieldRequired();
 }
 
-/*Create Task button- create task functions */
-
-function createTask() {
-  if (areInputsEmpty()) {
-    showFieldRequired();
-  } else if (!canSaveTask()) {
-    console.log("TASK EXIST");
-    errorTaskAlreadyExists();
-  } else {
-    saveTaskInputs();
-    showLog();
-    goToBoards();
-  }
-}
-
 function errorTaskAlreadyExists() {
   document.getElementById("task-already-exists").classList.remove("dp-none");
   document.getElementById("add-task-title").style.border = "1px solid red";
@@ -67,7 +52,6 @@ function showFieldRequired() {
 }
 
 function removeFieldRequired() {
-  document.getElementById("").classList.add("dp-none");
   document.getElementById("required-title").classList.add("dp-none");
   document.getElementById("required-date").classList.add("dp-none");
   document.getElementById("required-category").classList.add("dp-none");
@@ -113,6 +97,11 @@ async function loadTasks(path = "") {
 
 //Save the taskList from Firebase
 
+function canSaveTask() {
+  const titleInput = document.getElementById("add-task-title").value;
+  return !taskAlreadyExists(tasksArr, titleInput);
+}
+
 function saveTaskInputs() {
   if (canSaveTask()) {
     const task = createTaskObject();
@@ -123,12 +112,7 @@ function saveTaskInputs() {
     console.log("Task already exists or the input fields are empty");
   }
 }
-
-function canSaveTask() {
-  const titleInput = document.getElementById("add-task-title").value;
-  return !taskAlreadyExists(tasksArr, titleInput);
-}
-
+let selectedColumn = "to-do";
 function createTaskObject() {
   const titleInput = document.getElementById("add-task-title").value;
   const dateInput = document.getElementById("add-task-due-date").value;
@@ -136,9 +120,10 @@ function createTaskObject() {
   const descriptionInput = document.getElementById("add-task-description").value;
   const assignedTo = mapArrayToObject(selectedContactsNames);
   const subtasksObj = mapArrayToObject(subtasks);
+  // console.log(selectedColumn)
   return {
     id: tasksArr.length,
-    column: "to-do",
+    column: selectedColumn,
     assigned_to: assignedTo,
     category: categoryInput,
     date: dateInput,
@@ -147,6 +132,19 @@ function createTaskObject() {
     subtasks: subtasksObj,
     title: titleInput,
   };
+}
+
+function createTask() {
+  if (areInputsEmpty()) {
+    showFieldRequired();
+  } else if (!canSaveTask()) {
+    errorTaskAlreadyExists();
+  } else {
+    saveTaskInputs();
+    showLog();
+    goToBoards();
+    console.log(selectedColumn);
+  }
 }
 
 //I have to create Objects from Arrays because Firebase is not supporting Arrays

@@ -1,24 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Board</title>
-    <link rel="stylesheet" href="./css/board.css" />
-    <link rel="stylesheet" href="./css/navbar_header.css" />
-    <link rel="stylesheet" href="./css/global_Dora.css">
-    <link rel="stylesheet" href="./css/add-task.css">
-    <link rel="stylesheet" href="./css/add-task-floating.css">
-  </head>
-  <body onload="init()" onclick="closeSubMenu();closeContactList(); closeCategoryList();">
-    <!-- onclick="closeSubMenu();closeContactList(); closeCategoryList();" -->
-        <div class="log" id="log"></div>
-    <div class="overlay dp-none" id="overlay"></div>
-    <!-- <div class="add-task-modal" id="add-task-modal"></div> -->
-    <div class="add-task-content dp-none" id="add-task-content"></div>
-
-    <!-- <div class="add-task-content dp-none" id="add-task-content">
-      <div class="add-task-title"><h1>Add Task</h1>
+function addTaskTemplate() {
+  return `<div class="add-task-title"><h1>Add Task</h1>
       <img onclick="closeAddTaskModal()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt=""></div>
       <form class="add-task-form">
         <section class="add-task-1">
@@ -116,7 +97,7 @@
         </section>
         <div class="separator"></div>
         <section class="add-task-2">
-
+  
           <div class="assigned-to-section frame-39">
             <label for="assigned-to">Assigned to</label>
             <input
@@ -252,125 +233,5 @@
             />
           </div>
         </div>
-      </div>
-    </div> -->
-    <header class="header-general">
-      <p>Kanban Project Management Tool</p>
-      <div class="header-left">
-        <a href="./help.html" class="help-icon"
-          ><img src="./assets/icons/help.svg" alt="Go to Help Site"
-        /></a>
-        <span
-          class="header-icon light-blue"
-          onclick="showSubMenu();preventBubbling(event)"
-          >SM</span
-        >
-      </div>
-      <div id="subMenu" class="subMenu dp-none"></div>
-    </header>
-    <!-- onclick="closeContactList(); closeCategoryList();" -->
-    <main class="main"  onclick="closeContactList(); closeCategoryList();">
-        <nav class="frame-3">
-            <img
-              class="frame-3-icon"
-              src="./assets/icons/join-main-logo.png"
-              alt="Join Logo"
-            />
-            <div class="frame-3-menu">
-              <a href="dashboard.html"><div class="menu-btns">
-                <img
-                  class="menu-icon"
-                  src="./assets/icons/icon-summary.png"
-                  alt="icon-summary"
-                />
-                <p>Summary</p>
-              </div></a>
-              <a href="add-task.html"><div class="menu-btns">
-                <img
-                  class="menu-icon"
-                  src="./assets/icons/icon-add-task.png"
-                  alt="icon-add-task"
-                />
-                <p>Add Task</p>
-              </div></a>
-              <a href="board.html"><div class="menu-btns">
-                <img
-                  class="menu-icon"
-                  src="./assets/icons/icon-board.png"
-                  alt="icon-board"
-                />
-                <p>Board</p>
-              </div></a>
-              <a href="contacts.html"><div class="menu-btns">
-                <img
-                  class="menu-icon"
-                  src="./assets/icons/icon-contacts.png"
-                  alt="icon-contacts"
-                />
-                <p>Contacts</p>
-              </div>
-            </div></a>
-            <div class="frame-22">
-              <a href="privacy-policy.html"><p class="frame-22-btns">Privacy Policy</p></a>
-              <a href="legal-notice.html"><p class="frame-22-btns">Legal Notice</p></a>
-            </div>
-          </nav>
-          <div class="board-content">
-          <div class="title-section">
-            <div class="title"><h1>Board</h1></div>
-            <div class="search_add_task_btn">
-              <input type="text" class="searchfield" placeholder="Find Task">
-              <div class="separator-search"></div>
-              <img class="search-icon" src="./assets/icons/board_search.svg" alt="Find Task Icon">
-              <div class="add-task-btn" id="main-add-to-do" onclick="selectColumnForTask('main-add-to-do');">Add task <img src="./assets/icons/board_add-task.svg" alt="Add Task Icon"></div>
-            </div>
-          </div>
-          <div class="board-wrapper">
-            <div class="board-column-title">
-                <div class="to-do list"><p>To do</p>
-                <img id="add-to-do" class="add-to-column" onclick="selectColumnForTask('add-to-do')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
-            </div>
-            <div class="in-progress list"><p>In Progress</p>
-                <img id="add-in-progress" class="add-to-column" onclick="selectColumnForTask('add-in-progress')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
-            </div>
-            <div class="await-feedback list"><p>Await feedback</p>
-                <img id="add-await-feedback" class="add-to-column"  onclick="selectColumnForTask('add-await-feedback')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
-            </div>
-            <div class="done list"><p>Done</p>
-            </div>
-            </div>
-            <div class="board-columns">
-                <div class="to-do column drag-area" 
-                id="to-do" 
-                ondrop="moveTo('to-do')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="in-progress column drag-area" 
-                id="in-progress" 
-                ondrop="moveTo('in-progress')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="await-feedback column drag-area" 
-                id="await-feedback" 
-                ondrop="moveTo('await-feedback')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="done column drag-area" 
-                id="done" 
-                ondrop="moveTo('done')" 
-                ondragover="allowDrop(event)"></div>
-            </div>
-          </div>
-        </div>
-    </main>
-    <script src ="./js/global.js"></script>
-    <script src="./js/board.js"></script>
-    <script src="./js/add-task/add-task.js"></script>
-    <script src="./js/add-task/add-task-floating.js"></script>
-
-    <script src="./templates/add-task-modal-template.js"></script>
-  
-    
-    <script src="./js/add-task/category-add-task.js"></script>
-    <script src="./js/add-task/contacts-add-task.js"></script>
-    <script src="./js/add-task/prioBtn.js"></script>
-    <script src="./js/add-task/subTask-add-task.js"></script>
-  </body>
-</html>
+      </div>`;
+}

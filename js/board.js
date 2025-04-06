@@ -17,14 +17,19 @@ function cardTemplate(element, contacts) {
 }
 
 function getInitials(element, contacts) {
-  let initials = element["assigned_to"]
-    .map((name) => {
-      let contact = contacts.find((c) => c.name === name);
-      let color = contact && contact.color ? contact.color : "#999";
-      let avatar = contact && contact.avatar ? contact.avatar : "G";
-      return `<div class="selected-avatar-card-s" style="background-color: ${color}">${avatar}</div>`;
-    })
-    .join("");
+  let initials = "";
+  if (element["assigned_to"]) {
+    initials = element["assigned_to"]
+      .map((name) => {
+        let contact = contacts.find((c) => c.name === name);
+        let color = contact && contact.color ? contact.color : "#999";
+        let avatar = contact && contact.avatar ? contact.avatar : "G";
+        return `<div class="selected-avatar-card-s" style="background-color: ${color}">${avatar}</div>`;
+      })
+      .join("");
+  } else {
+    initials = "";
+  }
   return initials;
 }
 
@@ -64,21 +69,30 @@ function startDragging(id) {
   currentDraggedElement = id;
 }
 
+async function editColumnChange(id, tasksArr) {
+  putData(`taskList/${id}`, tasksArr[currentDraggedElement]);
+}
+
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
 function moveTo(column) {
   tasksArr[currentDraggedElement]["column"] = column;
+  editColumnChange(currentDraggedElement, tasksArr);
   updateHTML();
 }
 
 function updateHTML() {
-  let toDo = tasksArr.filter((t) => t["column"] == "to-do");
-  document.getElementById("to-do").innerHTML = "";
-  for (let i = 0; i < toDo.length; i++) {
-    const element = toDo[i];
-    document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
+  try {
+    let toDo = tasksArr.filter((t) => t["column"] == "to-do");
+    document.getElementById("to-do").innerHTML = "";
+    for (let i = 0; i < toDo.length; i++) {
+      const element = toDo[i];
+      document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
+    }
+  } catch (error) {
+    console.error("Error in toDo block:", error);
   }
 
   let inProgress = tasksArr.filter((t) => t["column"] == "in-progress");
@@ -103,13 +117,20 @@ function updateHTML() {
   }
 }
 
-function closeAddTaskModal() {
-  document.getElementById("overlay").classList.add("dp-none");
-  document.getElementById("add-task-content").classList.add("closing");
-}
+//boardon volt
 
-function openFloatingAddTask() {
-  document.getElementById("overlay").classList.remove("dp-none");
-  document.getElementById("add-task-content").classList.remove("dp-none");
-  document.getElementById("add-task-content").classList.remove("closing");
+function selectColumnForTask(column) {
+  openFloatingAddTask();
+  if (column.includes("main")) {
+    let regex1 = /main-add-/;
+    selectedColumn = column.replace(regex1, "");
+    // console.log(selectedColumn);
+  } else if (column.includes("add")) {
+    let regex2 = /add-/;
+    selectedColumn = column.replace(regex2, "");
+    // console.log(selectedColumn);
+  } else {
+    selectedColumn = "to-do";
+  }
+  return selectedColumn;
 }

@@ -225,3 +225,7 @@
   height: 7px;
   border-radius: 20px;
 }
+
+.add-to-column {
+  cursor: pointer;
+}
