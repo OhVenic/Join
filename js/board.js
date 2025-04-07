@@ -1,7 +1,9 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s" draggable="true" ondragstart="startDragging(${element["id"]})">
-      <div class="category-card-s">${element["category"]}</div>
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})">
+      <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
+    element["category"]
+  }</div>
       <div class="title-card-s">${element["title"]}</div>
       <div class="description-card-s">${element["description"]}</div>
       <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element["subtasks"])}</div>
@@ -16,6 +18,16 @@ function cardTemplate(element, contacts) {
   `;
 }
 
+function getCategoryColor(category) {
+  let catBgColor = "";
+  if (category === "Technical Task") {
+    catBgColor = "rgba(31, 215, 193, 1)";
+  } else if (category === "User Story") {
+    catBgColor = "rgba(0, 56, 255, 1)";
+  }
+  return catBgColor;
+}
+
 function getInitials(element, contacts) {
   let initials = "";
   if (element["assigned_to"]) {
@@ -24,7 +36,7 @@ function getInitials(element, contacts) {
         let contact = contacts.find((c) => c.name === name);
         let color = contact && contact.color ? contact.color : "#999";
         let avatar = contact && contact.avatar ? contact.avatar : "G";
-        return `<div class="selected-avatar-card-s" style="background-color: ${color}">${avatar}</div>`;
+        return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
       })
       .join("");
   } else {
@@ -65,6 +77,7 @@ async function init() {
 }
 
 let currentDraggedElement;
+
 function startDragging(id) {
   currentDraggedElement = id;
 }
@@ -84,40 +97,60 @@ function moveTo(column) {
 }
 
 function updateHTML() {
-  try {
-    let toDo = tasksArr.filter((t) => t["column"] == "to-do");
-    document.getElementById("to-do").innerHTML = "";
-    for (let i = 0; i < toDo.length; i++) {
-      const element = toDo[i];
-      document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
-    }
-  } catch (error) {
-    console.error("Error in toDo block:", error);
+  renderToDo();
+  renderInProgress();
+  renderAwaitFeedback();
+  renderDone();
+}
+
+function renderToDo() {
+  let toDo = tasksArr.filter((t) => t["column"] == "to-do");
+  document.getElementById("to-do").innerHTML = "";
+  for (let i = 0; i < toDo.length; i++) {
+    const element = toDo[i];
+    document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
   }
 
+  checkForEmptyColumn(toDo, "To do", "to-do");
+}
+
+function renderInProgress() {
   let inProgress = tasksArr.filter((t) => t["column"] == "in-progress");
   document.getElementById("in-progress").innerHTML = "";
   for (let i = 0; i < inProgress.length; i++) {
     const element = inProgress[i];
     document.getElementById("in-progress").innerHTML += cardTemplate(element, contacts);
   }
+  checkForEmptyColumn(inProgress, "In Progress", "in-progress");
+}
 
+function renderAwaitFeedback() {
   let awaitFeedBack = tasksArr.filter((t) => t["column"] == "await-feedback");
   document.getElementById("await-feedback").innerHTML = "";
   for (let i = 0; i < awaitFeedBack.length; i++) {
     const element = awaitFeedBack[i];
     document.getElementById("await-feedback").innerHTML += cardTemplate(element, contacts);
   }
+  checkForEmptyColumn(awaitFeedBack, "Await Feedback", "await-feedback");
+}
 
+function renderDone() {
   let done = tasksArr.filter((t) => t["column"] == "done");
   document.getElementById("done").innerHTML = "";
   for (let i = 0; i < done.length; i++) {
     const element = done[i];
     document.getElementById("done").innerHTML += cardTemplate(element, contacts);
   }
+  checkForEmptyColumn(done, "Done", "done");
 }
 
-//boardon volt
+function checkForEmptyColumn(col, colName, id) {
+  if (col.length === 0) {
+    document.getElementById(`${id}`).innerHTML = `<div class="no-task" id="no-task">No Tasks ${colName}</div>`;
+  } else if (col.length < 0) {
+    document.getElementById("no-task").remove();
+  }
+}
 
 function selectColumnForTask(column) {
   openFloatingAddTask();
@@ -133,4 +166,12 @@ function selectColumnForTask(column) {
     selectedColumn = "to-do";
   }
   return selectedColumn;
+}
+
+function highlight(id) {
+  document.getElementById(id).classList.add("drag-area-highlight");
+}
+
+function removeHighlight(id) {
+  document.getElementById(id).classList.remove("drag-area-highlight");
 }

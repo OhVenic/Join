@@ -106,23 +106,27 @@
             </div>
             </div>
             <div class="board-columns">
-                <div class="to-do column drag-area" 
-                id="to-do" 
-                ondrop="moveTo('to-do')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="in-progress column drag-area" 
-                id="in-progress" 
-                ondrop="moveTo('in-progress')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="await-feedback column drag-area" 
-                id="await-feedback" 
-                ondrop="moveTo('await-feedback')" 
-                ondragover="allowDrop(event)"></div>
-                <div class="done column drag-area" 
-                id="done" 
-                ondrop="moveTo('done')" 
-                ondragover="allowDrop(event)"></div>
-            </div>
+              <div class="to-do column drag-area" 
+              id="to-do" 
+              ondrop="moveTo('to-do')" 
+              ondragover="allowDrop(event); highlight('to-do');"
+              ondragleave = "removeHighlight('to-do')"></div>
+              <div class="in-progress column drag-area" 
+              id="in-progress" 
+              ondrop="moveTo('in-progress')" 
+              ondragover="allowDrop(event); highlight('in-progress');"
+              ondragleave = "removeHighlight('in-progress')"></div>
+              <div class="await-feedback column drag-area" 
+              id="await-feedback" 
+              ondrop="moveTo('await-feedback')" 
+              ondragover="allowDrop(event); highlight('await-feedback');"
+              ondragleave = "removeHighlight('await-feedback')"></div>
+              <div class="done column drag-area" 
+              id="done" 
+              ondrop="moveTo('done')" 
+              ondragover="allowDrop(event); highlight('done');"
+              ondragleave = "removeHighlight('done')"></div>
+          </div>
           </div>
         </div>
     </main>
