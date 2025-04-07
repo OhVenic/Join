@@ -37,7 +37,7 @@ async function loadData() {
     }
 }
 
-// Funktion zum Formatieren des Datums zu "Month day, year" (z. B. "March 4, 2025")
+ 
 function formatDateToEnglish(dateStr) {
     let date = new Date(dateStr); // "YYYY-MM-DD"
     return date.toLocaleDateString("en-US", {
@@ -46,3 +46,16 @@ function formatDateToEnglish(dateStr) {
         day: "numeric"
     });
 }
+
+window.addEventListener('load', () => {
+    const greeting = document.querySelector('.greeting');
+    const logo = document.querySelector('.greeting-logo');
+
+    setTimeout(() => {
+      logo.classList.add('shrink'); // schrumpft das Logo
+    }, 500);
+
+    setTimeout(() => {
+      greeting.classList.add('hide'); // blendet das weiße Overlay aus
+    }, 500);
+  });

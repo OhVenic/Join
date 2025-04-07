@@ -172,7 +172,7 @@
   .frame-3 {
     height: 80px;
     width: 100%;
-    bottom: 0;
+    bottom: 0px;
     left: 0;
     position: fixed;
     justify-content: center;
