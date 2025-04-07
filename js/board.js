@@ -60,6 +60,26 @@ function subtaskProgress(subtasksArr) {
   return subtaskHTML;
 }
 
+let filteredTasks = [];
+function searchTaskTitles() {
+  let searchFieldRef = document.getElementById("searchfield");
+  if (searchFieldRef.value.length > 2) {
+    filteredTasks = tasksArr.filter((task) => task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase()));
+    console.log(filteredTasks);
+    updateHTML();
+  }
+}
+
+function findTask() {
+  let inputValueRef = document.getElementById("searchfield");
+  if (inputValueRef.value.length > 2) {
+    searchTaskTitles();
+  } else {
+    updateHTML();
+    filteredTasks = [];
+  }
+}
+
 function showPriority(priority) {
   let prioHTML = "";
   if (priority) {
@@ -104,7 +124,8 @@ function updateHTML() {
 }
 
 function renderToDo() {
-  let toDo = tasksArr.filter((t) => t["column"] == "to-do");
+  let actualToDoList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let toDo = actualToDoList.filter((t) => t["column"] == "to-do");
   document.getElementById("to-do").innerHTML = "";
   for (let i = 0; i < toDo.length; i++) {
     const element = toDo[i];
@@ -115,7 +136,8 @@ function renderToDo() {
 }
 
 function renderInProgress() {
-  let inProgress = tasksArr.filter((t) => t["column"] == "in-progress");
+  let actualInProgressList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let inProgress = actualInProgressList.filter((t) => t["column"] == "in-progress");
   document.getElementById("in-progress").innerHTML = "";
   for (let i = 0; i < inProgress.length; i++) {
     const element = inProgress[i];
@@ -125,7 +147,8 @@ function renderInProgress() {
 }
 
 function renderAwaitFeedback() {
-  let awaitFeedBack = tasksArr.filter((t) => t["column"] == "await-feedback");
+  let actualAwaitFeedbackList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let awaitFeedBack = actualAwaitFeedbackList.filter((t) => t["column"] == "await-feedback");
   document.getElementById("await-feedback").innerHTML = "";
   for (let i = 0; i < awaitFeedBack.length; i++) {
     const element = awaitFeedBack[i];
@@ -135,7 +158,8 @@ function renderAwaitFeedback() {
 }
 
 function renderDone() {
-  let done = tasksArr.filter((t) => t["column"] == "done");
+  let actualDoneList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let done = actualDoneList.filter((t) => t["column"] == "done");
   document.getElementById("done").innerHTML = "";
   for (let i = 0; i < done.length; i++) {
     const element = done[i];

@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="./css/add-task.css">
     <link rel="stylesheet" href="./css/add-task-floating.css">
   </head>
-  <body onload="init()" onclick="closeSubMenu();closeContactList(); closeCategoryList();">
+  <body onload="init()" onclick="closeSubMenu()">
         <div class="log" id="log"></div>
     <div class="overlay dp-none" id="overlay"></div>
-    <div class="add-task-content dp-none" id="add-task-content"></div>
+    <div class="add-task-content dp-none" onclick="closeContactList(); closeCategoryList();" id="add-task-content"></div>
 
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>
@@ -35,7 +35,7 @@
       <div id="subMenu" class="subMenu dp-none"></div>
     </header>
     <!-- onclick="closeContactList(); closeCategoryList();" -->
-    <main class="main"  onclick="closeContactList(); closeCategoryList();">
+    <main class="main">
         <nav class="frame-3">
             <img
               class="frame-3-icon"
@@ -85,7 +85,7 @@
           <div class="title-section">
             <div class="title"><h1>Board</h1></div>
             <div class="search_add_task_btn">
-              <input type="text" class="searchfield" placeholder="Find Task">
+              <input type="text" class="searchfield" id="searchfield" placeholder="Find Task" oninput="findTask()">
               <div class="separator-search"></div>
               <img class="search-icon" src="./assets/icons/board_search.svg" alt="Find Task Icon">
               <div class="add-task-btn" id="main-add-to-do" onclick="selectColumnForTask('main-add-to-do');">Add task <img src="./assets/icons/board_add-task.svg" alt="Add Task Icon"></div>
