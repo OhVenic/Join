@@ -1,437 +1,260 @@
-function allowDrop(event) {
-  event.preventDefault();
-  event.currentTarget.classList.add("drag-over");
-}
-
-function drag(event) {
-  event.dataTransfer.setData("text", event.target.id);
-}
-
-function drop(event) {
-  event.preventDefault();
-  const taskId = event.dataTransfer.getData("text");
-  const task = document.getElementById(taskId);
-  const targetColumn = event.currentTarget.querySelector(".task-list");
-  targetColumn.appendChild(task);
-  event.currentTarget.classList.remove("drag-over");
-  tasks[taskId].status = event.currentTarget.id;
-  firebase.database().ref('tasks').child(taskId).update({ status: event.currentTarget.id });
-}
-
-function searchTasks() {
-  const searchTerm = document
-    .getElementById("search-input")
-    .value.toLowerCase();
-  const tasksElements = document.querySelectorAll(".task-card");
-  tasksElements.forEach((task) => {
-    const title = task.querySelector("h4").textContent.toLowerCase();
-    if (title.includes(searchTerm)) {
-      task.style.display = "block";
-    } else {
-      task.style.display = "none";
-    }
-  });
-}
-
-let currentStatus = "todo";
-let subtasks = [];
-const contactsRef = firebase.database().ref('contacts');
-
-function populateAssignedDropdown() {
-  const selects = [
-    document.getElementById("add-assigned"),
-    document.getElementById("modal-add-assigned"),
-    document.getElementById("edit-assigned")
-  ];
-  contactsRef.on('value', (snapshot) => {
-    const contactsData = snapshot.val();
-    if (contactsData) {
-      selects.forEach(select => {
-        select.innerHTML = select.id === "modal-add-assigned" ? '<option value="">Add Person</option>' : '';
-        Object.entries(contactsData).forEach(([contactId, contact]) => {
-          const option = document.createElement('option');
-          option.value = contactId.split('-')[0].toUpperCase() + (contactId.split('-')[1]?.charAt(0).toUpperCase() || '');
-          option.textContent = contact.name;
-          select.appendChild(option);
-        });
-      });
-    }
-  });
-}
-
-function openAddTaskModal(status) {
-  currentStatus = status;
-  subtasks = [];
-  document.getElementById("add-title").value = "";
-  document.getElementById("add-description").value = "";
-  document.getElementById("add-due-date").value = "";
-  document.getElementById("add-priority").value = "medium";
-  const assignedSelect = document.getElementById("add-assigned");
-  Array.from(assignedSelect.options).forEach(
-    (option) => (option.selected = false)
-  );
-  document.getElementById("add-category").value = "User Story";
-  document.getElementById("subtask-list").innerHTML = "";
-  document.getElementById("subtask-input").value = "";
-  document.getElementById("add-task-modal").classList.remove("hidden");
-}
-
-function addSubtask() {
-  const subtaskInput = document.getElementById("subtask-input");
-  const subtaskText = subtaskInput.value.trim();
-  if (subtaskText) {
-    subtasks.push(subtaskText);
-    const subtaskList = document.getElementById("subtask-list");
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <span>${subtaskText}</span>
-      <button type="button" onclick="removeSubtask(${
-        subtasks.length - 1
-      })">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-    subtaskInput.value = "";
-  }
-}
-
-function removeSubtask(index) {
-  subtasks.splice(index, 1);
-  const subtaskList = document.getElementById("subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, i) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <span>${subtask}</span>
-      <button type="button" onclick="removeSubtask(${i})">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-  });
-}
-
-function getTaskDataFromForm() {
-  const title = document.getElementById("add-title").value;
-  const description = document.getElementById("add-description").value;
-  const dueDate = document.getElementById("add-due-date").value;
-  const priority = document.getElementById("add-priority").value;
-  const assignedSelect = document.getElementById("add-assigned");
-  const assigned = Array.from(assignedSelect.selectedOptions).map(
-    (option) => option.value
-  );
-  const category = document.getElementById("add-category").value;
-  return { title, description, dueDate, priority, assigned, category };
-}
-
-function createTaskCard(taskId, taskData) {
-  const taskList = document.getElementById(`${taskData.status}-list`);
-  const taskCard = document.createElement("div");
-  taskCard.className = "task-card";
-  taskCard.draggable = true;
-  taskCard.id = taskId;
-  taskCard.setAttribute("ondragstart", "drag(event)");
-  taskCard.addEventListener("click", () => openTaskModal(taskId));
-  taskCard.innerHTML = `
-    <div class="task-category">${taskData.category}</div>
-    <h4>${taskData.title}</h4>
-    <p>${taskData.description}</p>
-    <div class="task-footer">
-      <div class="subtask-progress">
-        <span>${taskData.completedSubtasks}/${taskData.subtasks.length} Subtasks</span>
-        <div class="progress-bar">
-          <div class="progress" style="width: ${(taskData.completedSubtasks / taskData.subtasks.length) * 100 || 0}%;"></div>
-        </div>
-      </div>
-      <div class="task-meta">
-        <div class="user-badges">
-          ${taskData.assigned
-            .map(
-              (person) =>
-                `<div class="user-badge ${person
-                  .charAt(0)
-                  .toLowerCase()}">${person}</div>`
-            )
-            .join("")}
-        </div>
-        <div class="priority ${taskData.priority}"></div>
-      </div>
-    </div>
-  `;
-  return taskCard;
-}
-
-function addTask(event) {
-  event.preventDefault();
-  const taskData = getTaskDataFromForm();
-  const taskId = `task-${Date.now()}`;
-  tasks[taskId] = {
-    title: taskData.title,
-    description: taskData.description,
-    dueDate: taskData.dueDate,
-    priority: taskData.priority,
-    assigned: taskData.assigned,
-    subtasks: [...subtasks],
-    completedSubtasks: 0,
-    status: currentStatus,
-    category: taskData.category,
-    id: taskId
-  };
-  firebase.database().ref('tasks').child(taskId).set(tasks[taskId])
-    .then(() => {
-      const taskCard = createTaskCard(taskId, tasks[taskId]);
-      const taskList = document.getElementById(`${currentStatus}-list`);
-      taskList.appendChild(taskCard);
-      removeNoTasksMessage(taskList);
-      closeModal();
-    });
-}
-
-function removeNoTasksMessage(taskList) {
-  const noTasks = taskList.querySelector(".no-tasks");
-  if (noTasks) {
-    noTasks.remove();
-  }
-}
-
-let currentTaskId = null;
-
-function updateTaskModalDetails(task) {
-  document.getElementById("modal-title").textContent = task.title;
-  document.getElementById("modal-description").textContent = task.description;
-  document.getElementById("modal-due-date").textContent = task.dueDate;
-  document.getElementById("modal-priority").textContent = task.priority;
-}
-
-function updateTaskModalAssigned(task) {
-  const assignedBadges = document.getElementById("modal-assigned-badges");
-  assignedBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">
-      ${person}
-      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
-    </div>
-  `
-    )
-    .join("");
-  document.getElementById("modal-add-assigned").value = "";
-}
-
-function updateTaskModalSubtasks(task) {
-  const subtasksList = document.getElementById("modal-subtasks");
-  subtasksList.innerHTML = "";
-  task.subtasks.forEach((subtask, index) => {
-    const li = document.createElement("li");
-    li.textContent = subtask;
-    if (index < task.completedSubtasks) {
-      li.style.textDecoration = "line-through";
-    }
-    subtasksList.appendChild(li);
-  });
-}
-
-function openTaskModal(taskId) {
-  currentTaskId = taskId;
-  const task = tasks[taskId];
-  updateTaskModalDetails(task);
-  updateTaskModalAssigned(task);
-  updateTaskModalSubtasks(task);
-  document.getElementById("task-modal").classList.remove("hidden");
-}
-
-function addPersonToTask(person) {
-  if (!person) return;
-  const task = tasks[currentTaskId];
-  if (!task.assigned.includes(person)) {
-    task.assigned.push(person);
-    firebase.database().ref('tasks').child(currentTaskId).update({ assigned: task.assigned });
-    updateAssignedDisplay();
-  }
-  document.getElementById("modal-add-assigned").value = "";
-}
-
-function removePersonFromTask(person) {
-  const task = tasks[currentTaskId];
-  task.assigned = task.assigned.filter((p) => p !== person);
-  firebase.database().ref('tasks').child(currentTaskId).update({ assigned: task.assigned });
-  updateAssignedDisplay();
-}
-
-function updateAssignedDisplay() {
-  const task = tasks[currentTaskId];
-  const assignedBadges = document.getElementById("modal-assigned-badges");
-  assignedBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">
-      ${person}
-      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
-    </div>
-  `
-    )
-    .join("");
-  const taskCard = document.getElementById(currentTaskId);
-  const userBadges = taskCard.querySelector(".user-badges");
-  userBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
-  `
-    )
-    .join("");
-}
-
-function populateEditSubtasks(task) {
-  subtasks = [...task.subtasks];
-  const subtaskList = document.getElementById("edit-subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, index) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtask}" oninput="updateSubtask(${index}, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${index})">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-  });
-}
-
-function openEditTaskModal() {
-  const task = tasks[currentTaskId];
-  document.getElementById("edit-title").value = task.title;
-  document.getElementById("edit-description").value = task.description;
-  document.getElementById("edit-due-date").value = task.dueDate;
-  document.getElementById("edit-priority").value = task.priority;
-  const assignedSelect = document.getElementById("edit-assigned");
-  Array.from(assignedSelect.options).forEach((option) => {
-    option.selected = task.assigned.includes(option.value);
-  });
-  populateEditSubtasks(task);
-  document.getElementById("edit-subtask-input").value = "";
-  document.getElementById("task-modal").classList.add("hidden");
-  document.getElementById("edit-task-modal").classList.remove("hidden");
-}
-
-function addSubtaskInEdit() {
-  const subtaskInput = document.getElementById("edit-subtask-input");
-  const subtaskText = subtaskInput.value.trim();
-  if (subtaskText) {
-    subtasks.push(subtaskText);
-    const subtaskList = document.getElementById("edit-subtask-list");
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtaskText}" oninput="updateSubtask(${
-      subtasks.length - 1
-    }, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${
-        subtasks.length - 1
-      })">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-    subtaskInput.value = "";
-  }
-}
-
-function updateSubtask(index, value) {
-  subtasks[index] = value;
-}
-
-function removeSubtaskInEdit(index) {
-  subtasks.splice(index, 1);
-  const subtaskList = document.getElementById("edit-subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, i) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtask}" oninput="updateSubtask(${i}, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${i})">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-  });
-}
-
-function updateTaskCard(task) {
-  const taskCard = document.getElementById(currentTaskId);
-  taskCard.querySelector("h4").textContent = task.title;
-  taskCard.querySelector("p").textContent = task.description;
-  taskCard.querySelector(".priority").className = `priority ${task.priority}`;
-  const userBadges = taskCard.querySelector(".user-badges");
-  userBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
-  `
-    )
-    .join("");
-  taskCard.querySelector(
-    ".subtask-progress span"
-  ).textContent = `${task.completedSubtasks}/${task.subtasks.length} Subtasks`;
-}
-
-function saveTaskEdit(event) {
-  event.preventDefault();
-  const task = tasks[currentTaskId];
-  task.title = document.getElementById("edit-title").value;
-  task.description = document.getElementById("edit-description").value;
-  task.dueDate = document.getElementById("edit-due-date").value;
-  task.priority = document.getElementById("edit-priority").value;
-  const assignedSelect = document.getElementById("edit-assigned");
-  task.assigned = Array.from(assignedSelect.selectedOptions).map(
-    (option) => option.value
-  );
-  task.subtasks = subtasks.filter((subtask) => subtask.trim() !== "");
-  firebase.database().ref('tasks').child(currentTaskId).update(task)
-    .then(() => {
-      updateTaskCard(task);
-      closeModal();
-    });
-}
-
-function addNoTasksMessage(taskList) {
-  if (taskList.children.length === 0) {
-    const noTasks = document.createElement("span");
-    noTasks.className = "no-tasks";
-    noTasks.textContent = `No tasks in ${taskList.id.replace("-list", "")}`;
-    taskList.appendChild(noTasks);
-  }
-}
-
-function deleteTask() {
-  firebase.database().ref('tasks').child(currentTaskId).remove()
-    .then(() => {
-      const taskCard = document.getElementById(currentTaskId);
-      const taskList = taskCard.parentElement;
-      taskCard.remove();
-      delete tasks[currentTaskId];
-      addNoTasksMessage(taskList);
-      closeModal();
-    });
-}
-
-function closeModal() {
-  document.getElementById("add-task-modal").classList.add("hidden");
-  document.getElementById("task-modal").classList.add("hidden");
-  document.getElementById("edit-task-modal").classList.add("hidden");
-}
-
-function loadTasksFromFirebase() {
-  firebase.database().ref('tasks').on('value', (snapshot) => {
-    const tasksData = snapshot.val();
-    tasks = tasksData || {};
-    document.querySelectorAll('.task-list').forEach(list => list.innerHTML = '');
-    if (tasksData) {
-      Object.entries(tasksData).forEach(([taskId, task]) => {
-        const taskCard = createTaskCard(taskId, task);
-        document.getElementById(`${task.status}-list`).appendChild(taskCard);
-      });
-    }
-    document.querySelectorAll('.task-list').forEach(addNoTasksMessage);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  populateAssignedDropdown();
-  loadTasksFromFirebase();
+// ✅ Firebase wird initialisiert (öffentlich, keine geheimen Daten nötig)
+firebase.initializeApp({
+  databaseURL:
+    "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app",
 });
+
+const database = firebase.database();
+let currentEditKey = null; // ✅ Für Bearbeiten merken wir uns den Schlüssel
+let allContacts = []; // ✅ Speichert alle geladenen Kontakte zum Filtern
+let currentEditingContact = null;
+
+const avatarColors = [
+  "#FF6F61",
+  "#6B5B95",
+  "#88B04B",
+  "#F7CAC9",
+  "#92A8D1",
+  "#955251",
+  "#B565A7",
+  "#009B77",
+  "#DD4124",
+  "#45B8AC",
+  "#EFC050",
+  "#5B5EA6",
+  "#9B2335",
+  "#DFCFBE",
+  "#55B4B0",
+  "#E15D44",
+  "#7FCDCD",
+  "#BC243C",
+  "#C3447A",
+  "#98B4D4",
+  "#D65076",
+  "#6C4F3D",
+  "#FFA07A",
+  "#AFEEEE",
+  "#40E0D0",
+  "#9370DB",
+  "#3CB371",
+  "#4682B4",
+  "#FFD700",
+  "#FF8C00",
+];
+
+function getInitials(name) {
+  const parts = name.trim().split(" ");
+  return parts
+    .map((p) => p[0].toUpperCase())
+    .join("")
+    .slice(0, 2);
+}
+
+function getRandomColor() {
+  const index = Math.floor(Math.random() * avatarColors.length);
+  return avatarColors[index];
+}
+
+// ✅ Kontakte aus Firebase laden & alphabetisch gruppiert anzeigen (inkl. Speicherung für Filter)
+function loadContacts() {
+  const container = document.getElementById("contact-list");
+  container.innerHTML = "<p class='loading'>⏳ Kontakte werden geladen...</p>";
+
+  const ref = database.ref("contactList");
+  ref.once("value").then((snapshot) => {
+    const contactList = snapshot.val();
+    if (!contactList || Object.keys(contactList).length === 0) {
+      document.getElementById("contact-list").innerHTML =
+        "<p class='no-contacts'>Noch keine Kontakte vorhanden.</p>";
+      return;
+    }
+    allContacts = Object.entries(contactList); // Speichern für Filter
+    renderContactList(allContacts);
+  });
+}
+
+// ✅ Anzeige der Kontakte (alphabetisch gruppiert)
+function renderContactList(data) {
+  const container = document.getElementById("contact-list");
+  container.innerHTML = "";
+  let currentLetter = "";
+
+  const sorted = data.sort(([, a], [, b]) => a.name.localeCompare(b.name));
+
+  sorted.forEach(([key, c]) => {
+    const firstLetter = c.name[0].toUpperCase();
+    if (firstLetter !== currentLetter) {
+      currentLetter = firstLetter;
+      container.innerHTML += `<div class="letter-group">${currentLetter}</div>`;
+    }
+    container.innerHTML += buildContactHTML(c, key);
+  });
+}
+
+// ✅ Suchfeld-Funktion (live filtern mit Hinweis bei keinen Treffern)
+function filterContacts(event) {
+  const search = event.target.value.toLowerCase();
+  const filtered = allContacts.filter(([, c]) =>
+    c.name.toLowerCase().includes(search)
+  );
+  if (filtered.length === 0) {
+    document.getElementById("contact-list").innerHTML =
+      "<p class='no-contacts'>Keine Treffer gefunden.</p>";
+    return;
+  }
+  renderContactList(filtered);
+}
+
+function buildContactHTML(c, key) {
+  return `
+        <div class="contact-item" data-key="${key}" onclick="showContactDetail('${key}', '${c.name}', '${c.email}', '${c.phoneNumber}', '${c.avatar}', '${c.color}')">
+          <div class="avatar" style="background-color:${c.color}">${c.avatar}</div>
+          <div class="info">
+            <p class="name">${c.name}</p>
+            <p class="email">${c.email}</p>
+          </div>
+        </div>
+      `;
+}
+
+function showContactDetail(key, name, email, phone, avatar, color) {
+  currentEditKey = key;
+  const html = `
+        <div class="avatar avatar-large" style="background-color:${color}">${avatar}</div>
+        <h2>${name}</h2>
+        <p data-icon="✉️"><strong>Email:</strong> ${email}</p>
+        <p data-icon="📞"><strong>Telefon:</strong> ${phone}</p>
+        <button onclick="editContact()" class="btn edit">Bearbeiten</button>
+        <button onclick="deleteContact()" class="btn delete">Löschen</button>`;
+  document.getElementById("contact-detail").innerHTML = html;
+  // Markiere aktives Element
+  const items = document.querySelectorAll(".contact-item");
+  items.forEach((i) => i.classList.remove("active"));
+  const clickedItem = document.querySelector(
+    `.contact-item[data-key="${key}"]`
+  );
+  if (clickedItem) clickedItem.classList.add("active");
+}
+
+function openAddContact() {
+  document.getElementById("add-contact-overlay").classList.remove("dp-none");
+}
+
+function closeAddContact() {
+  document.getElementById("add-contact-overlay").classList.add("dp-none");
+  document.querySelector("form").reset();
+  currentEditKey = null;
+}
+
+function saveNewContact(event) {
+  event.preventDefault();
+  const name = document.getElementById("name-input").value;
+  const email = document.getElementById("email-input").value;
+  const phone = document.getElementById("phone-input").value;
+  const avatar = getInitials(name);
+  const color = getRandomColor();
+  const contact = { name, email, phoneNumber: phone, avatar, color };
+
+  if (currentEditKey) {
+    database
+      .ref("contactList/" + currentEditKey)
+      .set(contact)
+      .then(() => {
+        closeAddContact();
+        loadContacts();
+      });
+  } else {
+    database
+      .ref("contactList")
+      .push(contact)
+      .then(() => {
+        closeAddContact();
+        loadContacts();
+      });
+  }
+}
+
+function editContact() {
+  const ref = database.ref("contactList/" + currentEditKey);
+  ref.once("value").then((snapshot) => {
+    const c = snapshot.val();
+    document.getElementById("edit-name").value = c.name;
+    document.getElementById("edit-email").value = c.email;
+    document.getElementById("edit-phone").value = c.phoneNumber;
+    document.getElementById("edit-avatar").innerText = getInitials(c.name);
+    document.getElementById("edit-contact-overlay").style.display = "flex";
+    currentEditingContact = { ...c, key: currentEditKey }; // für Speicherung
+  });
+}
+
+function deleteContact() {
+  if (confirm("Möchten Sie diesen Kontakt wirklich löschen?")) {
+    database
+      .ref("contactList/" + currentEditKey)
+      .remove()
+      .then(() => {
+        document.getElementById("contact-detail").innerHTML =
+          "<p>Kontakt wurde gelöscht.</p>";
+        loadContacts();
+      });
+  }
+}
+function openOverlay(name = "", email = "", phone = "") {
+  document.getElementById("overlay-name").value = name;
+  document.getElementById("overlay-email").value = email;
+  document.getElementById("overlay-phone").value = phone;
+  document.getElementById("contact-overlay").style.display = "flex";
+}
+
+function closeOverlay() {
+  document.getElementById("contact-overlay").style.display = "none";
+}
+
+function saveContact() {
+  const name = document.getElementById("overlay-name").value;
+  const email = document.getElementById("overlay-email").value;
+  const phone = document.getElementById("overlay-phone").value;
+
+  // Hier kannst du deine Kontakt-Logik einbauen (Firebase, Array, etc.)
+  console.log("Speichern:", name, email, phone);
+  closeOverlay();
+}
+function openEditOverlay(contact) {
+  document.getElementById("edit-contact-overlay").style.display = "flex";
+  document.getElementById("edit-name").value = contact.name;
+  document.getElementById("edit-email").value = contact.email;
+  document.getElementById("edit-phone").value = contact.phone;
+  document.getElementById("edit-avatar").innerText = getInitials(contact.name);
+  // Optional: aktuelle ID merken, um später zu speichern
+  currentEditingContact = contact;
+}
+
+function closeEditOverlay() {
+  document.getElementById("edit-contact-overlay").style.display = "none";
+}
+
+function saveEditedContact() {
+  let newName = document.getElementById("edit-name").value;
+  let newEmail = document.getElementById("edit-email").value;
+  let newPhone = document.getElementById("edit-phone").value;
+
+  if (currentEditingContact) {
+    const updatedContact = {
+      name: newName,
+      email: newEmail,
+      phoneNumber: newPhone,
+      avatar: getInitials(newName),
+      color: currentEditingContact.color || getRandomColor(),
+    };
+
+    database
+      .ref("contactList/" + currentEditingContact.key)
+      .set(updatedContact)
+      .then(() => {
+        closeEditOverlay();
+        loadContacts();
+      });
+  }
+}
+
+// ✅ OPTIONAL: HTML: <input type="text" oninput="filterContacts(event)" placeholder="Suche..." /> über die Kontaktliste einbauen
