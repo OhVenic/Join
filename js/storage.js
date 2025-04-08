@@ -113,8 +113,8 @@ let taskList = {
 function initStorage() {
   console.log("hex");
   // putData(`users`, users);
-  // putData("contactList", contactList);
-  putData("taskList", taskList);
+  putData("contactList", contactList);
+  // putData("taskList", taskList);
 }
 
 // const BASE_URL =

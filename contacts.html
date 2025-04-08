@@ -15,15 +15,15 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
   </head>
 
-  <body onload="loadContacts()">
+  <body onload="loadContacts(); initStorage();" >
     <!-- HEADER (ist sticky und durchgehend oben) -->
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>
       <img
-      class="frame-3-icon-header"
-      src="./assets/icons/join-logo-blue.svg"
-      alt="Join Logo"
-    />
+        class="frame-3-icon-header"
+        src="./assets/icons/join-logo-blue.svg"
+        alt="Join Logo"
+      />
       <div class="header-left">
         <a href="./help.html" class="help-icon">
           <img src="./assets/icons/help.svg" alt="Go to Help Site" />
@@ -37,7 +37,7 @@
       <div id="subMenu" class="subMenu dp-none"></div>
     </header>
 
-    <!-- SIDEBAR (Links mit Icons) -->
+   
     <nav class="frame-3">
       <img
         class="frame-3-icon"
@@ -96,9 +96,9 @@
       </div>
     </nav>
 
-    <!-- HAUPTINHALT: Kontaktliste links, Detail rechts -->
+    
     <main class="contacts-main">
-      <!-- LINKER BEREICH: Kontaktliste -->
+      
       <section class="contacts-left">
         <div class="contacts-header">
           <h2>Contacts</h2>
@@ -128,13 +128,13 @@
       <div class="overlay-content">
         <h2>Neuen Kontakt erstellen</h2>
         <form onsubmit="saveNewContact(event)">
-          <input type="text" id="name-input" placeholder="Name" required />
-          <input type="email" id="email-input" placeholder="E-Mail" required />
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="E-Mail" required />
+          <input type="tel" name="phone" placeholder="Telefonnummer" required />
           <input
-            type="tel"
-            id="phone-input"
-            placeholder="Telefonnummer"
-            required
+            type="password"
+            name="password"
+            placeholder="Passwort (optional)"
           />
           <div class="form-buttons">
             <button type="submit" class="btn save">Speichern</button>
@@ -176,5 +176,7 @@
 
     <!-- 🔧 SCRIPTS -->
     <script src="js/contacts.js"></script>
+  
+
   </body>
 </html>

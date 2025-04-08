@@ -1,12 +1,12 @@
-// ✅ Firebase wird initialisiert (öffentlich, keine geheimen Daten nötig)
+
 firebase.initializeApp({
   databaseURL:
     "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 const database = firebase.database();
-let currentEditKey = null; // ✅ Für Bearbeiten merken wir uns den Schlüssel
-let allContacts = []; // ✅ Speichert alle geladenen Kontakte zum Filtern
+let currentEditKey = null; 
+let allContacts = []; 
 let currentEditingContact = null;
 
 const avatarColors = [
@@ -55,7 +55,7 @@ function getRandomColor() {
   return avatarColors[index];
 }
 
-// ✅ Kontakte aus Firebase laden & alphabetisch gruppiert anzeigen (inkl. Speicherung für Filter)
+
 function loadContacts() {
   const container = document.getElementById("contact-list");
   container.innerHTML = "<p class='loading'>⏳ Kontakte werden geladen...</p>";
@@ -68,12 +68,12 @@ function loadContacts() {
         "<p class='no-contacts'>Noch keine Kontakte vorhanden.</p>";
       return;
     }
-    allContacts = Object.entries(contactList); // Speichern für Filter
+    allContacts = Object.entries(contactList); 
     renderContactList(allContacts);
   });
 }
 
-// ✅ Anzeige der Kontakte (alphabetisch gruppiert)
+
 function renderContactList(data) {
   const container = document.getElementById("contact-list");
   container.innerHTML = "";
@@ -91,7 +91,7 @@ function renderContactList(data) {
   });
 }
 
-// ✅ Suchfeld-Funktion (live filtern mit Hinweis bei keinen Treffern)
+
 function filterContacts(event) {
   const search = event.target.value.toLowerCase();
   const filtered = allContacts.filter(([, c]) =>
@@ -127,7 +127,7 @@ function showContactDetail(key, name, email, phone, avatar, color) {
         <button onclick="editContact()" class="btn edit">Bearbeiten</button>
         <button onclick="deleteContact()" class="btn delete">Löschen</button>`;
   document.getElementById("contact-detail").innerHTML = html;
-  // Markiere aktives Element
+ 
   const items = document.querySelectorAll(".contact-item");
   items.forEach((i) => i.classList.remove("active"));
   const clickedItem = document.querySelector(
@@ -146,46 +146,64 @@ function closeAddContact() {
   currentEditKey = null;
 }
 
-function saveNewContact(event) {
-  event.preventDefault();
-  const name = document.getElementById("name-input").value;
-  const email = document.getElementById("email-input").value;
-  const phone = document.getElementById("phone-input").value;
-  const avatar = getInitials(name);
-  const color = getRandomColor();
-  const contact = { name, email, phoneNumber: phone, avatar, color };
-
-  if (currentEditKey) {
-    database
-      .ref("contactList/" + currentEditKey)
-      .set(contact)
-      .then(() => {
-        closeAddContact();
-        loadContacts();
-      });
-  } else {
-    database
-      .ref("contactList")
-      .push(contact)
-      .then(() => {
-        closeAddContact();
-        loadContacts();
-      });
-  }
-}
-
-function editContact() {
-  const ref = database.ref("contactList/" + currentEditKey);
-  ref.once("value").then((snapshot) => {
-    const c = snapshot.val();
-    document.getElementById("edit-name").value = c.name;
-    document.getElementById("edit-email").value = c.email;
-    document.getElementById("edit-phone").value = c.phoneNumber;
-    document.getElementById("edit-avatar").innerText = getInitials(c.name);
-    document.getElementById("edit-contact-overlay").style.display = "flex";
-    currentEditingContact = { ...c, key: currentEditKey }; // für Speicherung
+function saveNewContact(e) {
+  e.preventDefault();
+  const f = e.target;
+  const d = Object.fromEntries(new FormData(f));
+  const c = {
+    name: d.name,
+    email: d.email,
+    phoneNumber: d.phone || "",
+    password: d.password || "",
+    avatar: getInitials(d.name),
+    color: getRandomColor(),
+  };
+  if (currentEditKey)
+    return database.ref("contactList/" + currentEditKey).set(c).then(() => {
+      closeAddContact();
+      loadContacts();
+    });
+  database.ref("contactList").once("value").then((s) => {
+    const k = Object.keys(s.val() || {}).map(Number);
+    const id = k.length ? Math.max(...k) + 1 : 0;
+    database.ref("contactList/" + id).set(c).then(() => {
+      closeAddContact();
+      loadContacts();
+    });
   });
 }
+
+
+
+function deleteContact() {
+  if (!confirm("Möchten Sie diesen Kontakt wirklich löschen?")) return;
+
+  const ref = database.ref("contactList");
+  ref.once("value").then((snapshot) => {
+    const data = snapshot.val();
+    const updated = {};
+
+    
+    let newIndex = 0;
+    Object.keys(data)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .forEach((key) => {
+        if (key != currentEditKey) {
+          updated[newIndex] = data[key];
+          newIndex++;
+        }
+      });
+
+    
+    ref.set(updated).then(() => {
+      document.getElementById("contact-detail").innerHTML =
+        "<p>Kontakt wurde gelöscht.</p>";
+      loadContacts();
+    });
+  });
+}
+
 
 function deleteContact() {
   if (confirm("Möchten Sie diesen Kontakt wirklich löschen?")) {
@@ -215,7 +233,7 @@ function saveContact() {
   const email = document.getElementById("overlay-email").value;
   const phone = document.getElementById("overlay-phone").value;
 
-  // Hier kannst du deine Kontakt-Logik einbauen (Firebase, Array, etc.)
+ 
   console.log("Speichern:", name, email, phone);
   closeOverlay();
 }
@@ -225,7 +243,7 @@ function openEditOverlay(contact) {
   document.getElementById("edit-email").value = contact.email;
   document.getElementById("edit-phone").value = contact.phone;
   document.getElementById("edit-avatar").innerText = getInitials(contact.name);
-  // Optional: aktuelle ID merken, um später zu speichern
+ 
   currentEditingContact = contact;
 }
 
@@ -257,4 +275,4 @@ function saveEditedContact() {
   }
 }
 
-// ✅ OPTIONAL: HTML: <input type="text" oninput="filterContacts(event)" placeholder="Suche..." /> über die Kontaktliste einbauen
+
