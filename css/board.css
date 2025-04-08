@@ -54,6 +54,10 @@
   background-color: #29abe2;
 }
 
+.add-task-btn-s {
+  display: none;
+}
+
 /**/
 
 .board-content {
@@ -72,6 +76,7 @@
 }
 
 .searchfield {
+  position: relative;
   width: 312px;
   border-radius: 10px;
   border: 1px solid rgba(168, 168, 168, 1);
@@ -114,22 +119,29 @@
   right: 185px;
 }
 
-.board-wrapper {
+.board-columns {
   padding-left: 300px;
   padding-top: 30px;
   display: flex;
   gap: 10px;
+}
+
+.col {
+  display: flex;
   flex-direction: column;
+  gap: 20px;
+  align-items: center;
 }
 .board-column-title {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   color: rgba(66, 82, 110, 1);
-  font-weight: 700;
 }
 .list {
+  font-weight: 700;
   display: flex;
-  width: 220px;
+  /* width: 220px; */
   align-items: center;
   justify-content: space-between;
 }
@@ -141,8 +153,6 @@
   display: flex;
   width: 220px;
   height: 1200px;
-  /* border: 1px dashed grey; */
-  /* justify-content: center; */
   align-items: center;
   border-radius: 10px;
   flex-direction: column;
@@ -237,6 +247,8 @@
 
 .add-to-column {
   cursor: pointer;
+  width: 24px;
+  height: 24px;
 }
 
 .no-task {
@@ -244,11 +256,14 @@
   border: 1px dashed rgba(168, 168, 168, 1);
   color: rgba(168, 168, 168, 1);
   border-radius: 10px;
-  width: 210px;
-  height: 48px;
+  width: 100%;
+  /* width: 210px;
+  height: 48px; */
+  padding: 10px 20px 10px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .grab {
@@ -267,4 +282,9 @@
 .drag-area-highlight {
   /* border: 3px dashed rgb(87, 86, 102); */
   background-color: rgba(231, 231, 231, 1);
+}
+
+.searchfield:focus {
+  outline: none;
+  border: 2px solid #29abe2;
 }

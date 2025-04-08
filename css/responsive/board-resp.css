@@ -1,0 +1,136 @@
+@media (max-width: 1250px) {
+  .board-columns {
+    flex-direction: column;
+    padding-left: 300px;
+    padding-bottom: 60px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+  }
+
+  .column {
+    flex-direction: row;
+    width: 100%;
+    min-width: 90%;
+    height: auto;
+    overflow-y: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-margin-top: 1rem;
+    padding: 1rem 0.4rem;
+  }
+  .card-s {
+    flex-shrink: 0;
+  }
+
+  .title-section {
+    flex-direction: column;
+    align-items: normal;
+    gap: 30px;
+  }
+  .searchfield {
+    width: 80%;
+  }
+}
+
+@media (max-width: 970px) {
+  .searchfield {
+    width: 60%;
+  }
+  .search-icon {
+    right: 255px;
+  }
+  .separator-search {
+    right: 295px;
+  }
+}
+
+@media (max-width: 800px) {
+  .board-wrapper {
+    padding: 0px;
+  }
+  .board-content {
+    margin: 0px;
+  }
+  .title-section {
+    margin: 50px 0px 50px 0px;
+    justify-content: flex-start;
+    align-items: normal;
+    gap: 30px;
+  }
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+  .title h1 {
+    font-size: 47px;
+  }
+  .main {
+    margin-left: 20px;
+    margin-right: 20px;
+    overflow-x: hidden;
+  }
+  .search_add_task_btn {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .searchfield {
+    width: 100%;
+  }
+  .search-icon {
+    right: 10px;
+  }
+  .separator-search {
+    right: 50px;
+  }
+
+  .add-task-btn {
+    display: none;
+  }
+  .add-task-btn-s {
+    display: block;
+  }
+
+  .add-task-btn-s:hover {
+    cursor: pointer;
+  }
+  .column {
+    flex-direction: row;
+    width: 1000px;
+    height: 240px;
+  }
+  .col,
+  .column {
+    align-items: normal;
+  }
+  .board-columns {
+    flex-direction: column;
+    padding: 0px;
+    padding-bottom: 160px;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+  }
+
+  .column {
+    flex-direction: row;
+    width: 100%;
+    min-width: 90%;
+    height: auto;
+    overflow-y: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-margin-top: 1rem;
+    padding: 1rem 0.4rem;
+  }
+  .card-s {
+    flex-shrink: 0;
+  }
+}

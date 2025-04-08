@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/global_Dora.css">
     <link rel="stylesheet" href="./css/add-task.css">
     <link rel="stylesheet" href="./css/add-task-floating.css">
+    <link rel="stylesheet" href="./css/responsive/board-resp.css">
   </head>
   <body onload="init()" onclick="closeSubMenu()">
         <div class="log" id="log"></div>
@@ -83,7 +84,10 @@
           </nav>
           <div class="board-content">
           <div class="title-section">
-            <div class="title"><h1>Board</h1></div>
+            <div class="title">
+              <h1>Board</h1>
+            <img class="add-task-btn-s" id="add-task-btn-s" src="./assets/icons/plus add task mobile.svg" alt="Add Task Icon Small">
+            </div>
             <div class="search_add_task_btn">
               <input type="text" class="searchfield" id="searchfield" placeholder="Find Task" oninput="findTask()">
               <div class="separator-search"></div>
@@ -91,42 +95,50 @@
               <div class="add-task-btn" id="main-add-to-do" onclick="selectColumnForTask('main-add-to-do');">Add task <img src="./assets/icons/board_add-task.svg" alt="Add Task Icon"></div>
             </div>
           </div>
-          <div class="board-wrapper">
-            <div class="board-column-title">
-                <div class="to-do list"><p>To do</p>
+            <div class="board-columns">
+              <div class="col-to-do col">
+              <div class="board-column-title">
+                <div class="to-do list"><p>To do</p></div>
                 <img id="add-to-do" class="add-to-column" onclick="selectColumnForTask('add-to-do')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
             </div>
-            <div class="in-progress list"><p>In Progress</p>
-                <img id="add-in-progress" class="add-to-column" onclick="selectColumnForTask('add-in-progress')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
-            </div>
-            <div class="await-feedback list"><p>Await feedback</p>
-                <img id="add-await-feedback" class="add-to-column"  onclick="selectColumnForTask('add-await-feedback')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
-            </div>
-            <div class="done list"><p>Done</p>
-            </div>
-            </div>
-            <div class="board-columns">
               <div class="to-do column drag-area" 
               id="to-do" 
               ondrop="moveTo('to-do')" 
               ondragover="allowDrop(event); highlight('to-do');"
               ondragleave = "removeHighlight('to-do')"></div>
+            </div>
+            <div class="col-in-progress col">
+            <div class="board-column-title">
+              <div class="in-progress list"><p>In Progress</p></div>
+                <img id="add-in-progress" class="add-to-column" onclick="selectColumnForTask('add-in-progress')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
+            </div>
               <div class="in-progress column drag-area" 
               id="in-progress" 
               ondrop="moveTo('in-progress')" 
               ondragover="allowDrop(event); highlight('in-progress');"
               ondragleave = "removeHighlight('in-progress')"></div>
+            </div>
+            <div class="await-feedback col">
+              <div class="board-column-title">
+                <div class="await-feedback list"><p>Await feedback</p></div>
+                  <img id="add-await-feedback" class="add-to-column"  onclick="selectColumnForTask('add-await-feedback')" src="./assets/icons/board-column_plus button.svg" alt="Add To Column Icon">
+              </div>
               <div class="await-feedback column drag-area" 
               id="await-feedback" 
               ondrop="moveTo('await-feedback')" 
               ondragover="allowDrop(event); highlight('await-feedback');"
               ondragleave = "removeHighlight('await-feedback')"></div>
+            </div>
+              <div class="done col">
+              <div class="board-column-title">
+                <div class="done list"><p>Done</p>
+                </div></div>
               <div class="done column drag-area" 
               id="done" 
               ondrop="moveTo('done')" 
               ondragover="allowDrop(event); highlight('done');"
               ondragleave = "removeHighlight('done')"></div>
-          </div>
+            </div>
           </div>
         </div>
     </main>
