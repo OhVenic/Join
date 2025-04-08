@@ -1,6 +1,6 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})">
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails(${element["id"]})">
       <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
     element["category"]
   }</div>
@@ -16,6 +16,37 @@ function cardTemplate(element, contacts) {
       </div>
     </div>
   `;
+}
+
+async function cardDetails(id) {
+    const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
+    const task = await response.json();
+    const overlay = document.getElementById("card-details-overlay");
+    const content = overlay.querySelector(".card-details-content");
+
+    content.innerHTML = `
+      <div class="card-overlay-header-flex">
+      <p class="category-card-s">${task.category}</p>
+      <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
+      </div>
+      <h2 class="add-task-title">${task.title}</h2>
+      <p>${task.description}</p>
+      <p>Due Date: ${task.date}</p>
+      <div class="flex">
+      <p>Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
+      </div>
+      <p>Assigned to: ${task.assigned_to?.join(", ") || "Niemand"}</p>
+      <p>Subtasks:</p>
+      <ul>
+        ${task.subtasks?.map(st => `<li>${st.title} - ${st.status}</li>`).join("") || "<li>Keine Subtasks</li>"}
+      </ul>
+    `;
+
+    overlay.classList.remove("dp-none");
+  } 
+
+function closeCardDetails() {
+  document.getElementById("card-details-overlay").classList.add("dp-none");
 }
 
 function getCategoryColor(category) {
@@ -199,3 +230,4 @@ function highlight(id) {
 function removeHighlight(id) {
   document.getElementById(id).classList.remove("drag-area-highlight");
 }
+

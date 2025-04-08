@@ -61,6 +61,7 @@ h2 {
     height: 300px;
     gap: 20px;
     margin-top: 32px;
+    margin-bottom: 200px;
 }
 
 .add-task-content {
@@ -148,7 +149,6 @@ h2 {
 .dashboard-flex {
     display: flex;
     align-items: center;
-
 }
 
 .dashboard-p {
