@@ -6,14 +6,18 @@
     <title>Login</title>
     <link rel="stylesheet" href="./css/global_Dora.css" />
     <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/responsive/index-resp.css" />
   </head>
   <body onload="init()">
     <div class="greeting">
-      <img src="./assets/icons/join-logo-big.svg" class="greeting-logo">
+      <img src="./assets/icons/join-logo-big.svg" class="greeting-logo" />
     </div>
     <div class="content">
+      <div>
+        <img class="join-header-logo" src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
+      </div>
       <header class="header-login">
-        <img src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" />
+        <!-- <img src="./assets/icons/join-logo-blue.svg" alt="Join Logo Blue" /> -->
         <div class="header-login-signup">
           <p class="signup-1">Not a Join user?</p>
           <a href="./sign-up.html"><span class="signup-2">Sign up</span></a>
@@ -32,14 +36,8 @@
                 type="email"
                 placeholder="Email"
               />
-              <img
-                class="login-input-imgs mail-img"
-                src="./assets/icons/mail.svg"
-                alt=""
-              />
-              <p id="error-email" class="error-msg dp-none">
-                Please enter your email
-              </p>
+              <img class="login-input-imgs mail-img" src="./assets/icons/mail.svg" alt="" />
+              <p id="error-email" class="error-msg dp-none">Please enter your email</p>
               <p id="wrong-email" class="error-msg dp-none">Wrong email</p>
             </div>
             <div class="login-input-pw">
@@ -50,17 +48,9 @@
                 type="password"
                 placeholder="Password"
               />
-              <img
-                class="login-input-imgs pw-img"
-                src="./assets/icons/lock.svg"
-                alt=""
-              />
-              <p id="error-password" class="error-msg dp-none">
-                Please enter your password
-              </p>
-              <p id="wrong-password" class="error-msg dp-none">
-                Wrong password
-              </p>
+              <img class="login-input-imgs pw-img" src="./assets/icons/lock.svg" alt="" />
+              <p id="error-password" class="error-msg dp-none">Please enter your password</p>
+              <p id="wrong-password" class="error-msg dp-none">Wrong password</p>
             </div>
           </div>
           <div class="login-btns">
@@ -70,13 +60,13 @@
         </div>
       </main>
       <footer class="footer-login">
+        <div class="footer-login-signup">
+          <p class="signup-1">Not a Join user?</p>
+          <a href="./sign-up.html"><span class="signup-2">Sign up</span></a>
+        </div>
         <div class="footer-btns">
-          <a href="./privacy-policy.html"
-            ><div class="footer-btn">Privacy Policy</div></a
-          >
-          <a href="./legal-notice.html"
-            ><div class="footer-btn">Legal notice</div></a
-          >
+          <a href="./privacy-policy.html"><div class="footer-btn">Privacy Policy</div></a>
+          <a href="./legal-notice.html"><div class="footer-btn">Legal notice</div></a>
         </div>
       </footer>
     </div>

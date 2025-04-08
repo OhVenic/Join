@@ -11,11 +11,19 @@
 .header-login {
   width: 90%;
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
+  justify-content: flex-end;
+  padding: 30px;
   background-color: #f6f7f8;
 }
 
+.join-header-logo {
+  position: absolute;
+  left: 60px;
+  top: 40px;
+}
+.footer-login-signup {
+  display: none;
+}
 .header-login-signup {
   height: 130px;
   display: flex;
@@ -196,7 +204,11 @@ main {
   height: 35px;
   color: #cdcdcd;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .footer-btn:hover {
   cursor: pointer;
   color: #29abe2;

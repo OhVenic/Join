@@ -1,12 +1,10 @@
-
 firebase.initializeApp({
-  databaseURL:
-    "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL: "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 const database = firebase.database();
-let currentEditKey = null; 
-let allContacts = []; 
+let currentEditKey = null;
+let allContacts = [];
 let currentEditingContact = null;
 
 const avatarColors = [
@@ -55,7 +53,6 @@ function getRandomColor() {
   return avatarColors[index];
 }
 
-
 function loadContacts() {
   const container = document.getElementById("contact-list");
   container.innerHTML = "<p class='loading'>⏳ Kontakte werden geladen...</p>";
@@ -64,15 +61,13 @@ function loadContacts() {
   ref.once("value").then((snapshot) => {
     const contactList = snapshot.val();
     if (!contactList || Object.keys(contactList).length === 0) {
-      document.getElementById("contact-list").innerHTML =
-        "<p class='no-contacts'>Noch keine Kontakte vorhanden.</p>";
+      document.getElementById("contact-list").innerHTML = "<p class='no-contacts'>Noch keine Kontakte vorhanden.</p>";
       return;
     }
-    allContacts = Object.entries(contactList); 
+    allContacts = Object.entries(contactList);
     renderContactList(allContacts);
   });
 }
-
 
 function renderContactList(data) {
   const container = document.getElementById("contact-list");
@@ -91,15 +86,11 @@ function renderContactList(data) {
   });
 }
 
-
 function filterContacts(event) {
   const search = event.target.value.toLowerCase();
-  const filtered = allContacts.filter(([, c]) =>
-    c.name.toLowerCase().includes(search)
-  );
+  const filtered = allContacts.filter(([, c]) => c.name.toLowerCase().includes(search));
   if (filtered.length === 0) {
-    document.getElementById("contact-list").innerHTML =
-      "<p class='no-contacts'>Keine Treffer gefunden.</p>";
+    document.getElementById("contact-list").innerHTML = "<p class='no-contacts'>Keine Treffer gefunden.</p>";
     return;
   }
   renderContactList(filtered);
@@ -127,12 +118,10 @@ function showContactDetail(key, name, email, phone, avatar, color) {
         <button onclick="editContact()" class="btn edit">Bearbeiten</button>
         <button onclick="deleteContact()" class="btn delete">Löschen</button>`;
   document.getElementById("contact-detail").innerHTML = html;
- 
+
   const items = document.querySelectorAll(".contact-item");
   items.forEach((i) => i.classList.remove("active"));
-  const clickedItem = document.querySelector(
-    `.contact-item[data-key="${key}"]`
-  );
+  const clickedItem = document.querySelector(`.contact-item[data-key="${key}"]`);
   if (clickedItem) clickedItem.classList.add("active");
 }
 
@@ -159,21 +148,28 @@ function saveNewContact(e) {
     color: getRandomColor(),
   };
   if (currentEditKey)
-    return database.ref("contactList/" + currentEditKey).set(c).then(() => {
-      closeAddContact();
-      loadContacts();
+    return database
+      .ref("contactList/" + currentEditKey)
+      .set(c)
+      .then(() => {
+        closeAddContact();
+        loadContacts();
+      });
+  database
+    .ref("contactList")
+    .once("value")
+    .then((s) => {
+      const k = Object.keys(s.val() || {}).map(Number);
+      const id = k.length ? Math.max(...k) + 1 : 0;
+      database
+        .ref("contactList/" + id)
+        .set(c)
+        .then(() => {
+          closeAddContact();
+          loadContacts();
+        });
     });
-  database.ref("contactList").once("value").then((s) => {
-    const k = Object.keys(s.val() || {}).map(Number);
-    const id = k.length ? Math.max(...k) + 1 : 0;
-    database.ref("contactList/" + id).set(c).then(() => {
-      closeAddContact();
-      loadContacts();
-    });
-  });
 }
-
-
 
 function deleteContact() {
   if (!confirm("Möchten Sie diesen Kontakt wirklich löschen?")) return;
@@ -183,7 +179,6 @@ function deleteContact() {
     const data = snapshot.val();
     const updated = {};
 
-    
     let newIndex = 0;
     Object.keys(data)
       .map(Number)
@@ -195,15 +190,12 @@ function deleteContact() {
         }
       });
 
-    
     ref.set(updated).then(() => {
-      document.getElementById("contact-detail").innerHTML =
-        "<p>Kontakt wurde gelöscht.</p>";
+      document.getElementById("contact-detail").innerHTML = "<p>Kontakt wurde gelöscht.</p>";
       loadContacts();
     });
   });
 }
-
 
 function deleteContact() {
   if (confirm("Möchten Sie diesen Kontakt wirklich löschen?")) {
@@ -211,8 +203,7 @@ function deleteContact() {
       .ref("contactList/" + currentEditKey)
       .remove()
       .then(() => {
-        document.getElementById("contact-detail").innerHTML =
-          "<p>Kontakt wurde gelöscht.</p>";
+        document.getElementById("contact-detail").innerHTML = "<p>Kontakt wurde gelöscht.</p>";
         loadContacts();
       });
   }
@@ -233,7 +224,6 @@ function saveContact() {
   const email = document.getElementById("overlay-email").value;
   const phone = document.getElementById("overlay-phone").value;
 
- 
   console.log("Speichern:", name, email, phone);
   closeOverlay();
 }
@@ -243,7 +233,7 @@ function openEditOverlay(contact) {
   document.getElementById("edit-email").value = contact.email;
   document.getElementById("edit-phone").value = contact.phone;
   document.getElementById("edit-avatar").innerText = getInitials(contact.name);
- 
+
   currentEditingContact = contact;
 }
 
@@ -274,5 +264,3 @@ function saveEditedContact() {
       });
   }
 }
-
-
