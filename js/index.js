@@ -96,3 +96,16 @@ function removeErrorMsgs(errorId, inputId) {
 function goToSummary() {
   window.location.href = "./dashboard.html";
 }
+
+window.addEventListener('load', () => {
+  const greeting = document.querySelector('.greeting');
+  const logo = document.querySelector('.greeting-logo');
+
+  setTimeout(() => {
+    logo.classList.add('shrink'); // schrumpft das Logo
+  }, 500);
+
+  setTimeout(() => {
+    greeting.classList.add('hide'); // blendet das weiße Overlay aus
+  }, 500);
+});
