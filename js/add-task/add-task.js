@@ -28,22 +28,17 @@ function clearTaskForm() {
   removeFieldRequired();
 }
 
-/*Create Task button- create task functions */
+function errorTaskAlreadyExists() {
+  document.getElementById("task-already-exists").classList.remove("dp-none");
+  document.getElementById("add-task-title").style.border = "1px solid red";
+}
 
-function createTask() {
-  saveTaskInputs();
-  let titleInput = document.getElementById("add-task-title");
-  let dateInput = document.getElementById("add-task-due-date");
-  let categoryInput = document.getElementById("category");
-  if (
-    titleInput.value === "" ||
-    dateInput.value === "" ||
-    categoryInput.value === ""
-  ) {
-    showFieldRequired();
-  } else {
-    showLog();
-    goToBoards();
+function removeErrorMsgs(errorId, inputId) {
+  let errorElement = document.getElementById(errorId);
+  let inputElement = document.getElementById(inputId);
+  if (errorElement) {
+    errorElement.classList.add("dp-none");
+    inputElement.style.borderColor = "rgba(209, 209, 209, 1)";
   }
 }
 
@@ -61,8 +56,7 @@ function removeFieldRequired() {
   document.getElementById("required-date").classList.add("dp-none");
   document.getElementById("required-category").classList.add("dp-none");
   document.getElementById("add-task-title").style.border = "1px solid #d1d1d1";
-  document.getElementById("add-task-due-date").style.border =
-    "1px solid #d1d1d1";
+  document.getElementById("add-task-due-date").style.border = "1px solid #d1d1d1";
   document.getElementById("category").style.border = "1px solid #d1d1d1";
 }
 
@@ -86,7 +80,6 @@ function init() {
   loadTasks("taskList");
 }
 
-let tasksArr = [];
 async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
@@ -95,12 +88,19 @@ async function loadTasks(path = "") {
     for (let key in responseToJson) {
       tasksArr.push(responseToJson[key]);
     }
-    console.log(tasksArr);
+
+    updateHTML();
   } catch (error) {
     console.error("Response Failed");
   }
 }
+
 //Save the taskList from Firebase
+
+function canSaveTask() {
+  const titleInput = document.getElementById("add-task-title").value;
+  return !taskAlreadyExists(tasksArr, titleInput);
+}
 
 function saveTaskInputs() {
   if (canSaveTask()) {
@@ -112,22 +112,18 @@ function saveTaskInputs() {
     console.log("Task already exists or the input fields are empty");
   }
 }
-
-function canSaveTask() {
-  const titleInput = document.getElementById("add-task-title").value;
-  return !taskAlreadyExists(tasksArr, titleInput) && !areInputsEmpty();
-}
-
+let selectedColumn = "to-do";
 function createTaskObject() {
   const titleInput = document.getElementById("add-task-title").value;
   const dateInput = document.getElementById("add-task-due-date").value;
   const categoryInput = document.getElementById("category").value;
-  const descriptionInput = document.getElementById(
-    "add-task-description"
-  ).value;
+  const descriptionInput = document.getElementById("add-task-description").value;
   const assignedTo = mapArrayToObject(selectedContactsNames);
   const subtasksObj = mapArrayToObject(subtasks);
+  // console.log(selectedColumn)
   return {
+    id: tasksArr.length,
+    column: selectedColumn,
     assigned_to: assignedTo,
     category: categoryInput,
     date: dateInput,
@@ -136,6 +132,19 @@ function createTaskObject() {
     subtasks: subtasksObj,
     title: titleInput,
   };
+}
+
+function createTask() {
+  if (areInputsEmpty()) {
+    showFieldRequired();
+  } else if (!canSaveTask()) {
+    errorTaskAlreadyExists();
+  } else {
+    saveTaskInputs();
+    showLog();
+    goToBoards();
+    console.log(selectedColumn);
+  }
 }
 
 //I have to create Objects from Arrays because Firebase is not supporting Arrays
@@ -155,11 +164,7 @@ function areInputsEmpty() {
   let titleInput = document.getElementById("add-task-title");
   let dateInput = document.getElementById("add-task-due-date");
   let categoryInput = document.getElementById("category");
-  if (
-    titleInput.value === "" ||
-    dateInput.value === "" ||
-    categoryInput.value === ""
-  ) {
+  if (titleInput.value === "" || dateInput.value === "" || categoryInput.value === "") {
     return true;
   }
 }

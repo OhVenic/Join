@@ -1,9 +1,9 @@
-const BASE_URL =
-  "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 function init() {
   getUsersFromDatabase();
   disableSignupBtn();
+  createRandomColor();
 
   // removeSingleUser(2)
 }
@@ -11,8 +11,7 @@ let policyAccepted = false;
 let usersArr = [];
 
 async function getUsersFromDatabase() {
-  let userResponse = await getAllUsers("users");
-  console.log(userResponse);
+  let userResponse = await getAllUsers("contactList");
   let UserKeysArray = Object.keys(userResponse);
   for (let index = 0; index < UserKeysArray.length; index++) {
     usersArr.push({
@@ -20,6 +19,7 @@ async function getUsersFromDatabase() {
       user: userResponse[UserKeysArray[index]],
     });
   }
+  console.log(usersArr);
 }
 
 async function getAllUsers(path) {
@@ -38,13 +38,11 @@ function areInputsEmpty() {
 
 function acceptPolicy() {
   if (policyAccepted === false) {
-    document.getElementById("checkbox").src =
-      "./assets/icons/btn-checked-blue.svg";
+    document.getElementById("checkbox").src = "./assets/icons/btn-checked-blue.svg";
     policyAccepted = true;
     enableSignupBtn();
   } else if (policyAccepted === true) {
-    document.getElementById("checkbox").src =
-      "./assets/icons/btn-unchecked.svg";
+    document.getElementById("checkbox").src = "./assets/icons/btn-unchecked.svg";
     policyAccepted = false;
     disableSignupBtn();
   }
@@ -61,9 +59,26 @@ function disableSignupBtn() {
 }
 
 function userAlreadyExists(usersArr, email, password) {
-  return usersArr.some(
-    (user) => user.user.email === email && user.user.password === password
-  );
+  return usersArr.some((user) => user.user.email === email && user.user.password === password);
+}
+
+function createAvatar(str) {
+  let newStr = "";
+  for (let i = 0; i < str.length; i++) {
+    if (str[i].match(/[A-Z]/)) {
+      newStr += str[i];
+    }
+  }
+  return newStr;
+}
+
+function createRandomColor() {
+  let rgb = "";
+  let r = Math.floor(Math.random() * 255) + 1;
+  let g = Math.floor(Math.random() * 255) + 1;
+  let b = Math.floor(Math.random() * 255) + 1;
+  rgb += `rgb(${r}, ${g},${b})`;
+  return rgb;
 }
 
 //to refactor!
@@ -71,37 +86,38 @@ function addUser() {
   let email = document.getElementById("email");
   let password = document.getElementById("password");
   let name = document.getElementById("name");
-  if (
-    areInputsEmpty() ||
-    userAlreadyExists(usersArr, email.value, password.value)
-  ) {
+  if (areInputsEmpty() || userAlreadyExists(usersArr, email.value, password.value)) {
     console.log("input empty or user already exists");
     showRequiredFields();
     showErrorMsgs();
-  } else if (
-    document.getElementById("password").value !==
-    document.getElementById("confirm-password").value
-  ) {
+  } else if (document.getElementById("password").value !== document.getElementById("confirm-password").value) {
     document.getElementById("error-confirm-pw").classList.remove("dp-none");
   } else {
     console.log("input is not empty and user does not exist");
     usersArr.push({
       id: String(usersArr.length),
-      user: { email: email.value, name: name.value, password: password.value },
+      user: {
+        color: createRandomColor(),
+        email: email.value,
+        name: name.value,
+        password: password.value,
+        avatar: createAvatar(name.value),
+        phoneNumber: "",
+      },
     });
     addEditSingleUser(usersArr[usersArr.length - 1].id, {
+      color: usersArr[usersArr.length - 1].user.color,
+      avatar: usersArr[usersArr.length - 1].user.avatar,
       email: usersArr[usersArr.length - 1].user.email,
       name: usersArr[usersArr.length - 1].user.name,
       password: usersArr[usersArr.length - 1].user.password,
+      phoneNumber: "",
     });
   }
 }
 
 function passwordsMatch() {
-  return (
-    document.getElementById("password").value ===
-    document.getElementById("confirm-password").value
-  );
+  return document.getElementById("password").value === document.getElementById("confirm-password").value;
 }
 
 //to refactor!
@@ -151,11 +167,11 @@ function validateEmail(email) {
 }
 
 async function addEditSingleUser(id, user) {
-  putData(`users/${id}`, user);
+  putData(`contactList/${id}`, user);
 }
 
 async function removeSingleUser(id) {
-  deleteData(`users/${id}`);
+  deleteData(`contactList/${id}`);
 }
 
 async function putData(path = "", data = {}) {
@@ -177,16 +193,14 @@ async function deleteData(path = "") {
 }
 
 function showLog() {
-  document.getElementById(
-    "log"
-  ).innerHTML = `<div class="signup-successful-msg">
+  document.getElementById("log").innerHTML = `<div class="signup-successful-msg">
           <p>You Signed Up Successfully</p> 
         </div>`;
 }
 
 function goToLogin() {
   setTimeout(() => {
-    window.location.href = "./login.html";
+    window.location.href = "./index.html";
   }, 1000);
 }
 

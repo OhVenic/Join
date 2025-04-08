@@ -1,5 +1,4 @@
-const BASE_URL =
-  "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 function init() {
   getUsersFromDatabase();
@@ -8,7 +7,7 @@ function init() {
 let usersArr = [];
 
 async function getUsersFromDatabase() {
-  let userResponse = await getAllUsers("users");
+  let userResponse = await getAllUsers("contactList");
   console.log(userResponse);
   let UserKeysArray = Object.keys(userResponse);
   for (let index = 0; index < UserKeysArray.length; index++) {

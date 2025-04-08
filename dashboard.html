@@ -6,11 +6,22 @@
     <link rel="stylesheet" href="./css/navbar_header.css">
     <link rel="stylesheet" href="./css/global_Dora.css">
     <link rel="stylesheet" href="./css/dashboard.css">
+    <script src="./js/dashboard.js" defer></script>
+    <script src="./js/global.js" defer></script>
     <title>Summary user</title>
+    
 </head>
 <body onload="loadData()" onclick="closeSubMenu()">
+  <div class="greeting">
+    <img src="./assets/icons/join-logo-big.svg" class="greeting-logo">
+  </div>
     <header class="header-general">
-        <p>Kanban Project Management Tool</p>
+        <p class="header-p">Kanban Project Management Tool</p>
+        <img
+        class="frame-3-icon-header"
+        src="./assets/icons/join-logo-blue.svg"
+        alt="Join Logo"
+      />
         <div class="header-left">
           <a href="./help.html" class="help-icon"
             ><img src="./assets/icons/help.svg" alt="Go to Help Site"
@@ -73,37 +84,38 @@
         <div>
             <h1>Join 360</h1>
         </div>
-        <div class="span"></div>
+        <div class="span-vertical"></div>
         <div>
             <h2>Key Metrics at a Glance</h2>
         </div>
+        <div class="span-horizontal"></div>
       </div>
       <div class="dashboard-flex">
        <div class="dashboard">
     <div class="row">
-        <div class="card">
+        <a href="./board.html"><div class="card">
             <div class="icon"><svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
               </svg>
               </div>
             <div>
-                <p class="number">1</p>
+                <p class="number" id="task-to-do"></p>
                 <p class="label">To-do</p>
             </div>
-        </div>
-        <div class="card">
+        </div></a>
+        <a href="./board.html"><div class="card">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
               </div>
             <div>
-                <p class="number">1</p>
+                <p class="number" id="task-done"></p>
                 <p class="label">Done</p>
             </div>
         </div>
-    </div>
+    </div></a>
 
-    <div class="row">
+    <a href="./board.html"> <div class="row">
         <div class="card wide">
             <div class="left">
                 <div class="icon-urgent"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -112,31 +124,30 @@
                   </svg>
                   </div>
                 <div>
-                    <p class="number urgent">1</p>
+                    <p class="number urgent" id="task-urgent"></p>
                     <p class="label">Urgent</p>
                 </div>
             </div>
             <div class="dashboard-span"></div>
             <div class="right">
-                <p class="date">March 21, 2025</p>
+                <p class="date" id="task-deadline"></p>
                 <p class="label">Upcoming Deadline</p>
             </div>
         </div>
-    </div>
-
+    </div></a>
     <div class="row">
-        <div class="card small">
-            <p class="number">5</p>
+      <a href="./board.html"><div class="card small">
+            <p class="number" id="task-all"></p>
             <p class="label">Tasks in Board</p>
-        </div>
-        <div class="card small">
-            <p class="number">2</p>
+        </div></a>
+        <a href="./board.html"> <div class="card small">
+            <p class="number" id="task-in-progress"></p>
             <p class="label">Tasks in Progress</p>
-        </div>
-        <div class="card small">
-            <p class="number">2</p>
+        </div></a>
+        <a href="./board.html"><div class="card small">
+            <p class="number" id="task-awaiting-feedback"></p>
             <p class="label">Awaiting Feedback</p>
-        </div>
+        </div></a>
     </div>
 </div>
 <div class="dashboard-greeting">
@@ -144,7 +155,5 @@
 <p class="dashboard-name">Sofia Müller</p>
 </div>
 </div>
-<script src="./js/dashboard.js"></script>
-<script src="./js/global.js"></script>
 </body>
 </html>

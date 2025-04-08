@@ -1,385 +1,233 @@
-function allowDrop(event) {
-  event.preventDefault();
-  event.currentTarget.classList.add("drag-over");
-}
-
-function drag(event) {
-  event.dataTransfer.setData("text", event.target.id);
-}
-
-function drop(event) {
-  event.preventDefault();
-  const taskId = event.dataTransfer.getData("text");
-  const task = document.getElementById(taskId);
-  const targetColumn = event.currentTarget.querySelector(".task-list");
-  targetColumn.appendChild(task);
-  event.currentTarget.classList.remove("drag-over");
-  tasks[taskId].status = event.currentTarget.id;
-}
-
-function searchTasks() {
-  const searchTerm = document
-    .getElementById("search-input")
-    .value.toLowerCase();
-  const tasksElements = document.querySelectorAll(".task-card");
-  tasksElements.forEach((task) => {
-    const title = task.querySelector("h4").textContent.toLowerCase();
-    if (title.includes(searchTerm)) {
-      task.style.display = "block";
-    } else {
-      task.style.display = "none";
-    }
-  });
-}
-
-let currentStatus = "todo";
-let subtasks = [];
-
-function openAddTaskModal(status) {
-  currentStatus = status;
-  subtasks = [];
-  document.getElementById("add-title").value = "";
-  document.getElementById("add-description").value = "";
-  document.getElementById("add-due-date").value = "";
-  document.getElementById("add-priority").value = "medium";
-  const assignedSelect = document.getElementById("add-assigned");
-  Array.from(assignedSelect.options).forEach(
-    (option) => (option.selected = false)
-  );
-  document.getElementById("add-category").value = "User Story";
-  document.getElementById("subtask-list").innerHTML = "";
-  document.getElementById("subtask-input").value = "";
-  document.getElementById("add-task-modal").classList.remove("hidden");
-}
-
-function addSubtask() {
-  const subtaskInput = document.getElementById("subtask-input");
-  const subtaskText = subtaskInput.value.trim();
-  if (subtaskText) {
-    subtasks.push(subtaskText);
-    const subtaskList = document.getElementById("subtask-list");
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <span>${subtaskText}</span>
-      <button type="button" onclick="removeSubtask(${
-        subtasks.length - 1
-      })">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-    subtaskInput.value = "";
-  }
-}
-
-function removeSubtask(index) {
-  subtasks.splice(index, 1);
-  const subtaskList = document.getElementById("subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, i) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <span>${subtask}</span>
-      <button type="button" onclick="removeSubtask(${i})">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-  });
-}
-
-function getTaskDataFromForm() {
-  const title = document.getElementById("add-title").value;
-  const description = document.getElementById("add-description").value;
-  const dueDate = document.getElementById("add-due-date").value;
-  const priority = document.getElementById("add-priority").value;
-  const assignedSelect = document.getElementById("add-assigned");
-  const assigned = Array.from(assignedSelect.selectedOptions).map(
-    (option) => option.value
-  );
-  const category = document.getElementById("add-category").value;
-  return { title, description, dueDate, priority, assigned, category };
-}
-
-function createTaskCard(taskId, taskData) {
-  const taskList = document.getElementById(`${currentStatus}-list`);
-  const taskCard = document.createElement("div");
-  taskCard.className = "task-card";
-  taskCard.draggable = true;
-  taskCard.id = taskId;
-  taskCard.setAttribute("ondragstart", "drag(event)");
-  taskCard.addEventListener("click", () => openTaskModal(taskId));
-  taskCard.innerHTML = `
-    <div class="task-category">${taskData.category}</div>
-    <h4>${taskData.title}</h4>
-    <p>${taskData.description}</p>
-    <div class="task-footer">
-      <div class="subtask-progress">
-        <span>0/${subtasks.length} Subtasks</span>
-        <div class="progress-bar">
-          <div class="progress" style="width: 0%;"></div>
+function cardTemplate(element, contacts) {
+  return `
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails(${element["id"]})">
+      <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
+    element["category"]
+  }</div>
+      <div class="title-card-s">${element["title"]}</div>
+      <div class="description-card-s">${element["description"]}</div>
+      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element["subtasks"])}</div>
+      <div class="footer-card-s">
+        <div class="assigned-to-card-s">
+          <div class="selected-avatars">${getInitials(element, contacts)}</div>
         </div>
-      </div>
-      <div class="task-meta">
-        <div class="user-badges">
-          ${taskData.assigned
-            .map(
-              (person) =>
-                `<div class="user-badge ${person
-                  .charAt(0)
-                  .toLowerCase()}">${person}</div>`
-            )
-            .join("")}
+        <div class="prio-card-s">${showPriority(element["priority"])}
         </div>
-        <div class="priority ${taskData.priority}"></div>
       </div>
     </div>
   `;
-  return taskCard;
 }
 
-function addTask(event) {
-  event.preventDefault();
-  const taskData = getTaskDataFromForm();
-  const taskId = `task-${Object.keys(tasks).length + 1}`;
-  tasks[taskId] = {
-    title: taskData.title,
-    description: taskData.description,
-    dueDate: taskData.dueDate,
-    priority: taskData.priority,
-    assigned: taskData.assigned,
-    subtasks: [...subtasks],
-    completedSubtasks: 0,
-    status: currentStatus,
-    category: taskData.category,
-  };
-  const taskCard = createTaskCard(taskId, taskData);
-  const taskList = document.getElementById(`${currentStatus}-list`);
-  taskList.appendChild(taskCard);
-  removeNoTasksMessage(taskList);
-  closeModal();
-}
+async function cardDetails(id) {
+    const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
+    const task = await response.json();
+    const overlay = document.getElementById("card-details-overlay");
+    const content = overlay.querySelector(".card-details-content");
 
-function removeNoTasksMessage(taskList) {
-  const noTasks = taskList.querySelector(".no-tasks");
-  if (noTasks) {
-    noTasks.remove();
-  }
-}
-
-let currentTaskId = null;
-
-function updateTaskModalDetails(task) {
-  document.getElementById("modal-title").textContent = task.title;
-  document.getElementById("modal-description").textContent = task.description;
-  document.getElementById("modal-due-date").textContent = task.dueDate;
-  document.getElementById("modal-priority").textContent = task.priority;
-}
-
-function updateTaskModalAssigned(task) {
-  const assignedBadges = document.getElementById("modal-assigned-badges");
-  assignedBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">
-      ${person}
-      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
-    </div>
-  `
-    )
-    .join("");
-  document.getElementById("modal-add-assigned").value = "";
-}
-
-function updateTaskModalSubtasks(task) {
-  const subtasksList = document.getElementById("modal-subtasks");
-  subtasksList.innerHTML = "";
-  task.subtasks.forEach((subtask, index) => {
-    const li = document.createElement("li");
-    li.textContent = subtask;
-    if (index < task.completedSubtasks) {
-      li.style.textDecoration = "line-through";
-    }
-    subtasksList.appendChild(li);
-  });
-}
-
-function openTaskModal(taskId) {
-  currentTaskId = taskId;
-  const task = tasks[taskId];
-  updateTaskModalDetails(task);
-  updateTaskModalAssigned(task);
-  updateTaskModalSubtasks(task);
-  document.getElementById("task-modal").classList.remove("hidden");
-}
-
-function addPersonToTask(person) {
-  if (!person) return;
-  const task = tasks[currentTaskId];
-  if (!task.assigned.includes(person)) {
-    task.assigned.push(person);
-    updateAssignedDisplay();
-  }
-  document.getElementById("modal-add-assigned").value = "";
-}
-
-function removePersonFromTask(person) {
-  const task = tasks[currentTaskId];
-  task.assigned = task.assigned.filter((p) => p !== person);
-  updateAssignedDisplay();
-}
-
-function updateAssignedDisplay() {
-  const task = tasks[currentTaskId];
-  const assignedBadges = document.getElementById("modal-assigned-badges");
-  assignedBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">
-      ${person}
-      <button class="remove-person" onclick="removePersonFromTask('${person}')">x</button>
-    </div>
-  `
-    )
-    .join("");
-  const taskCard = document.getElementById(currentTaskId);
-  const userBadges = taskCard.querySelector(".user-badges");
-  userBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
-  `
-    )
-    .join("");
-}
-
-function populateEditSubtasks(task) {
-  subtasks = [...task.subtasks];
-  const subtaskList = document.getElementById("edit-subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, index) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtask}" oninput="updateSubtask(${index}, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${index})">Remove</button>
+    content.innerHTML = `
+      <div class="card-overlay-header-flex">
+      <p class="category-card-s">${task.category}</p>
+      <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
+      </div>
+      <h2 class="add-task-title">${task.title}</h2>
+      <p>${task.description}</p>
+      <p>Due Date: ${task.date}</p>
+      <div class="flex">
+      <p>Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
+      </div>
+      <p>Assigned to: ${task.assigned_to?.join(", ") || "Niemand"}</p>
+      <p>Subtasks:</p>
+      <ul>
+        ${task.subtasks?.map(st => `<li>${st.title} - ${st.status}</li>`).join("") || "<li>Keine Subtasks</li>"}
+      </ul>
     `;
-    subtaskList.appendChild(subtaskItem);
-  });
+
+    overlay.classList.remove("dp-none");
+  } 
+
+function closeCardDetails() {
+  document.getElementById("card-details-overlay").classList.add("dp-none");
 }
 
-function openEditTaskModal() {
-  const task = tasks[currentTaskId];
-  document.getElementById("edit-title").value = task.title;
-  document.getElementById("edit-description").value = task.description;
-  document.getElementById("edit-due-date").value = task.dueDate;
-  document.getElementById("edit-priority").value = task.priority;
-  const assignedSelect = document.getElementById("edit-assigned");
-  Array.from(assignedSelect.options).forEach((option) => {
-    option.selected = task.assigned.includes(option.value);
-  });
-  populateEditSubtasks(task);
-  document.getElementById("edit-subtask-input").value = "";
-  document.getElementById("task-modal").classList.add("hidden");
-  document.getElementById("edit-task-modal").classList.remove("hidden");
+function getCategoryColor(category) {
+  let catBgColor = "";
+  if (category === "Technical Task") {
+    catBgColor = "rgba(31, 215, 193, 1)";
+  } else if (category === "User Story") {
+    catBgColor = "rgba(0, 56, 255, 1)";
+  }
+  return catBgColor;
 }
 
-function addSubtaskInEdit() {
-  const subtaskInput = document.getElementById("edit-subtask-input");
-  const subtaskText = subtaskInput.value.trim();
-  if (subtaskText) {
-    subtasks.push(subtaskText);
-    const subtaskList = document.getElementById("edit-subtask-list");
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtaskText}" oninput="updateSubtask(${
-      subtasks.length - 1
-    }, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${
-        subtasks.length - 1
-      })">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-    subtaskInput.value = "";
+function getInitials(element, contacts) {
+  let initials = "";
+  if (element["assigned_to"]) {
+    initials = element["assigned_to"]
+      .map((name) => {
+        let contact = contacts.find((c) => c.name === name);
+        let color = contact && contact.color ? contact.color : "#999";
+        let avatar = contact && contact.avatar ? contact.avatar : "G";
+        return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
+      })
+      .join("");
+  } else {
+    initials = "";
+  }
+  return initials;
+}
+
+function subtaskProgress(subtasksArr) {
+  let subtaskHTML = "";
+  if (subtasksArr) {
+    let maxAmount = subtasksArr.length;
+    let doneSubtasks = subtasksArr.filter((st) => st.status === "done");
+    let percent = doneSubtasks.length / maxAmount;
+    percent = Math.round(percent * 100);
+    subtaskHTML += `<div class="subtask-progbar-s"><div class="progress-bar-filling" style="width:${percent}%"></div></div>
+        <div class="subtask-nr-s">${doneSubtasks.length}/${maxAmount}</div>`;
+  } else {
+    subtaskHTML = "";
+  }
+  return subtaskHTML;
+}
+
+let filteredTasks = [];
+function searchTaskTitles() {
+  let searchFieldRef = document.getElementById("searchfield");
+  if (searchFieldRef.value.length > 2) {
+    filteredTasks = tasksArr.filter((task) => task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase()));
+    console.log(filteredTasks);
+    updateHTML();
   }
 }
 
-function updateSubtask(index, value) {
-  subtasks[index] = value;
-}
-
-function removeSubtaskInEdit(index) {
-  subtasks.splice(index, 1);
-  const subtaskList = document.getElementById("edit-subtask-list");
-  subtaskList.innerHTML = "";
-  subtasks.forEach((subtask, i) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.className = "subtask-item";
-    subtaskItem.innerHTML = `
-      <input type="text" value="${subtask}" oninput="updateSubtask(${i}, this.value)">
-      <button type="button" onclick="removeSubtaskInEdit(${i})">Remove</button>
-    `;
-    subtaskList.appendChild(subtaskItem);
-  });
-}
-
-function updateTaskCard(task) {
-  const taskCard = document.getElementById(currentTaskId);
-  taskCard.querySelector("h4").textContent = task.title;
-  taskCard.querySelector("p").textContent = task.description;
-  taskCard.querySelector(".priority").className = `priority ${task.priority}`;
-  const userBadges = taskCard.querySelector(".user-badges");
-  userBadges.innerHTML = task.assigned
-    .map(
-      (person) => `
-    <div class="user-badge ${person.charAt(0).toLowerCase()}">${person}</div>
-  `
-    )
-    .join("");
-  taskCard.querySelector(
-    ".subtask-progress span"
-  ).textContent = `${task.completedSubtasks}/${task.subtasks.length} Subtasks`;
-}
-
-function saveTaskEdit(event) {
-  event.preventDefault();
-  const task = tasks[currentTaskId];
-  task.title = document.getElementById("edit-title").value;
-  task.description = document.getElementById("edit-description").value;
-  task.dueDate = document.getElementById("edit-due-date").value;
-  task.priority = document.getElementById("edit-priority").value;
-  const assignedSelect = document.getElementById("edit-assigned");
-  task.assigned = Array.from(assignedSelect.selectedOptions).map(
-    (option) => option.value
-  );
-  task.subtasks = subtasks.filter((subtask) => subtask.trim() !== "");
-  updateTaskCard(task);
-  closeModal();
-}
-
-function addNoTasksMessage(taskList) {
-  if (taskList.children.length === 0) {
-    const noTasks = document.createElement("span");
-    noTasks.className = "no-tasks";
-    noTasks.textContent = `No tasks in ${taskList.id.replace("-list", "")}`;
-    taskList.appendChild(noTasks);
+function findTask() {
+  let inputValueRef = document.getElementById("searchfield");
+  if (inputValueRef.value.length > 2) {
+    searchTaskTitles();
+  } else {
+    updateHTML();
+    filteredTasks = [];
   }
 }
 
-function deleteTask() {
-  const taskCard = document.getElementById(currentTaskId);
-  const taskList = taskCard.parentElement;
-  taskCard.remove();
-  delete tasks[currentTaskId];
-  addNoTasksMessage(taskList);
-  closeModal();
+function showPriority(priority) {
+  let prioHTML = "";
+  if (priority) {
+    prioHTML += `<img class="prio-img-card-s" src="./assets/icons/priority-${priority}.svg" alt="Prio Btn">`;
+  } else {
+    prioHTML = "";
+  }
+  return prioHTML;
 }
 
-function closeModal() {
-  document.getElementById("add-task-modal").classList.add("hidden");
-  document.getElementById("task-modal").classList.add("hidden");
-  document.getElementById("edit-task-modal").classList.add("hidden");
+async function init() {
+  await loadContacts("contactList");
+  await loadTasks("taskList");
+  updateHTML();
 }
 
-document.querySelectorAll(".task-card").forEach((task) => {
-  task.addEventListener("click", () => openTaskModal(task.id));
-});
+let currentDraggedElement;
+
+function startDragging(id) {
+  currentDraggedElement = id;
+}
+
+async function editColumnChange(id, tasksArr) {
+  putData(`taskList/${id}`, tasksArr[currentDraggedElement]);
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function moveTo(column) {
+  tasksArr[currentDraggedElement]["column"] = column;
+  editColumnChange(currentDraggedElement, tasksArr);
+  updateHTML();
+}
+
+function updateHTML() {
+  renderToDo();
+  renderInProgress();
+  renderAwaitFeedback();
+  renderDone();
+}
+
+function renderToDo() {
+  let actualToDoList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let toDo = actualToDoList.filter((t) => t["column"] == "to-do");
+  document.getElementById("to-do").innerHTML = "";
+  for (let i = 0; i < toDo.length; i++) {
+    const element = toDo[i];
+    document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
+  }
+
+  checkForEmptyColumn(toDo, "To do", "to-do");
+}
+
+function renderInProgress() {
+  let actualInProgressList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let inProgress = actualInProgressList.filter((t) => t["column"] == "in-progress");
+  document.getElementById("in-progress").innerHTML = "";
+  for (let i = 0; i < inProgress.length; i++) {
+    const element = inProgress[i];
+    document.getElementById("in-progress").innerHTML += cardTemplate(element, contacts);
+  }
+  checkForEmptyColumn(inProgress, "In Progress", "in-progress");
+}
+
+function renderAwaitFeedback() {
+  let actualAwaitFeedbackList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let awaitFeedBack = actualAwaitFeedbackList.filter((t) => t["column"] == "await-feedback");
+  document.getElementById("await-feedback").innerHTML = "";
+  for (let i = 0; i < awaitFeedBack.length; i++) {
+    const element = awaitFeedBack[i];
+    document.getElementById("await-feedback").innerHTML += cardTemplate(element, contacts);
+  }
+  checkForEmptyColumn(awaitFeedBack, "Await Feedback", "await-feedback");
+}
+
+function renderDone() {
+  let actualDoneList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let done = actualDoneList.filter((t) => t["column"] == "done");
+  document.getElementById("done").innerHTML = "";
+  for (let i = 0; i < done.length; i++) {
+    const element = done[i];
+    document.getElementById("done").innerHTML += cardTemplate(element, contacts);
+  }
+  checkForEmptyColumn(done, "Done", "done");
+}
+
+function checkForEmptyColumn(col, colName, id) {
+  if (col.length === 0) {
+    document.getElementById(`${id}`).innerHTML = `<div class="no-task" id="no-task">No Tasks ${colName}</div>`;
+  } else if (col.length < 0) {
+    document.getElementById("no-task").remove();
+  }
+}
+
+function selectColumnForTask(column) {
+  openFloatingAddTask();
+  if (column.includes("main")) {
+    let regex1 = /main-add-/;
+    selectedColumn = column.replace(regex1, "");
+    // console.log(selectedColumn);
+  } else if (column.includes("add")) {
+    let regex2 = /add-/;
+    selectedColumn = column.replace(regex2, "");
+    // console.log(selectedColumn);
+  } else {
+    selectedColumn = "to-do";
+  }
+  return selectedColumn;
+}
+
+function highlight(id) {
+  document.getElementById(id).classList.add("drag-area-highlight");
+}
+
+function removeHighlight(id) {
+  document.getElementById(id).classList.remove("drag-area-highlight");
+}
+

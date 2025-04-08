@@ -154,3 +154,56 @@
   cursor: pointer;
   transform: scale(1.1);
 }
+
+.frame-3-icon-header {
+  display: none;
+}
+
+@media (max-width: 800px) {
+
+  header {
+    padding-left: 40px !important;
+  }
+
+  .header-p {
+    display: none;
+  }
+
+  .frame-3 {
+    height: 80px;
+    width: 100%;
+    bottom: 0px;
+    left: 0;
+    position: fixed;
+    justify-content: center;
+    top: auto;
+  }
+
+  .frame-3-menu {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .menu-btns {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  .frame-3-icon {
+    display: none;
+  }
+
+  .frame-3-icon-header {
+    display: block;
+    height: 64px;
+  }
+
+  .frame-22-btns {
+    display: none;
+  }
+
+}
