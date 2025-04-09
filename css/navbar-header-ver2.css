@@ -186,6 +186,12 @@
     bottom: 0px;
   }
 
+  .menu-btns-resp:hover {
+    cursor: pointer;
+    background-color: #131820;
+    border-radius: 20px;
+  }
+
   .menu-btns-resp {
     display: flex;
     flex-direction: column;
