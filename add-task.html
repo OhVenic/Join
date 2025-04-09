@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
     <link rel="stylesheet" href="./css/add-task.css" />
+    <link rel="stylesheet" href="./css/responsive/add-task-resp.css">
     <link rel="stylesheet" href="./css/global_Dora.css" />
-    <link rel="stylesheet" href="./css/navbar_header.css" />
+    <link rel="stylesheet" href="./css/navbar-header-ver2.css" />
   </head>
   <body onload="init()" onclick="closeSubMenu()">
+    <div class="content">
     <div class="log" id="log"></div>
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>
@@ -311,8 +313,26 @@
             </div>
           </div>
         </div>
+
       </div>
     </main>
+    <footer class="footer-resp">
+      <div class="menu-btns-resp">
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-summary.png" alt="Summary button icon">
+        <p>Summary</p>
+      </div>
+      <div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp" src="./assets/icons/icon-board.png" alt="Board button icon">
+        <p>Board</p></div>
+      <div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-add-task.png" alt="Add task button icon">
+        <p>Add Tasks</p></div>
+      <div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-contacts.png" alt="Contacts button icon">
+        <p>Contacts</p>
+      </div>
+    </footer>
+</div>
     <script src="./js/add-task/add-task.js"></script>
     <script src="./js/global.js"></script>
     <script src="./js/add-task/category-add-task.js"></script>

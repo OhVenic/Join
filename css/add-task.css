@@ -1,4 +1,14 @@
+main {
+  max-width: 1440px;
+  flex: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
 .add-task-content {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -14,9 +24,13 @@
 
 .add-task-form {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: flex-start;
   gap: 40px;
+}
+
+h1 {
+  font-size: 61px;
 }
 
 .add-task-1 {
@@ -228,7 +242,7 @@ textarea::-ms-input-placeholder {
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  background: url(../assets/icons/calendar.svg);
+  /* background: url(../assets/icons/calendar.svg); */
   cursor: pointer;
 }
 
@@ -258,9 +272,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .form-footer {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  padding-bottom: 20px;
 }
 .form-btns {
   display: flex;
