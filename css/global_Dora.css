@@ -18,7 +18,6 @@ body {
 }
 
 body {
-  font-family: "Inter", sans-serif;
   height: 100vh;
   overflow-x: hidden;
   background-color: rgb(246, 245, 245);
@@ -66,10 +65,10 @@ header {
 
 .subMenu {
   animation-duration: 0.25s;
-  animation-name: menu;
+  animation-name: slidesFromLeft;
 }
 
-@keyframes menu {
+@keyframes slidesFromLeft {
   from {
     top: 110px;
     right: -280px;

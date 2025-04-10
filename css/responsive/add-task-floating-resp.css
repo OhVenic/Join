@@ -1,108 +1,163 @@
-@media (max-width: 1250px) {
+@media (max-width: 1200px) {
+  .add-task-content {
+    width: 800px;
+    height: 750px;
+  }
   input,
   .add-task-description,
+  .add-task-2 input {
+    width: 280px;
+  }
+
+  .add-task-1,
+  .add-task-2,
   .priority-btns {
-    width: 360px;
+    width: 280px;
   }
   .priority-btn {
-    width: 110px;
-    height: 50px;
-    /* font-size:13px; */
-  }
-  .add-task-2 input {
-    width: 360px;
+    font-size: 14px;
+    padding: 12px 6px 12px 6px;
   }
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1050px) {
   .add-task-form {
     flex-direction: column;
-    padding-bottom: 180px;
+    padding-bottom: 50px;
   }
   .separator {
     display: none;
   }
-  input,
-  .add-task-description,
-  .priority-btns {
-    width: 550px;
+  .extra-div {
+    height: 600px;
   }
-  .priority-btn {
-    width: 410px;
-    height: 50px;
-    /* font-size:13px; */
+  .add-task-content {
+    width: 500px;
+    height: 750px;
+    padding-bottom: 170px;
+    overflow: hidden;
   }
-  .add-task-2 input {
-    width: 550px;
+  .scroller {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
-  .form-footer {
-    width: 580px;
-    background-color: rgb(246, 245, 245);
-    height: 120px;
-    position: fixed;
-    bottom: 0;
-    right: 0px;
-    left: 0px;
-    margin-left: 300px;
-    padding-bottom: 30px;
-    justify-content: flex-start;
-    gap: 70px;
-  }
-
-  .dropdown-img,
-  .add-subtask-img,
-  .cancel-or-accept {
-    right: -110px;
-  }
-  h1 {
-    font-size: 55px;
-  }
-}
-
-@media (max-width: 900px) {
-  .add-task-2 input {
-    width: 450px;
-  }
-  input,
-  .add-task-description,
-  .priority-btns {
-    width: 450px;
-  }
-
-  .form-footer {
-    width: 450px;
-    background-color: rgb(246, 245, 245);
-    height: 120px;
-    position: fixed;
-    bottom: 0;
-    right: 0px;
-    left: 0px;
-    margin-left: 300px;
-    padding-bottom: 30px;
-    padding-top: 10px;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .form-btn {
-    font-size: 16px;
-    height: 50px;
-    width: 150px;
+  .add-task-title {
+    align-items: center;
   }
   h1 {
     font-size: 50px;
   }
-  .dropdown-img,
-  .add-subtask-img,
-  .cancel-or-accept {
-    right: -10px;
+
+  input,
+  .add-task-description,
+  .add-task-2 input {
+    width: 360px;
+  }
+
+  .add-task-1,
+  .add-task-2,
+  .priority-btns {
+    width: 360px;
+  }
+  .priority-btn {
+    font-size: 14px;
+    padding: 12px 6px 12px 6px;
+  }
+
+  .form-footer {
+    position: fixed;
+    bottom: 40px;
+    background-color: white;
+    flex-direction: column;
+    align-items: normal;
+    padding: 20px;
+    height: 80px;
+    z-index: 999;
   }
 }
 
 @media (max-width: 800px) {
+  body {
+    overflow-x: visible;
+  }
+  .overlay {
+    display: none;
+  }
+  .add-task-content {
+    width: 100%;
+    margin: 0 auto;
+    height: calc(100% - 175px);
+    margin-top: 15px;
+  }
+  .main-board {
+    padding: 20px;
+  }
+  .add-task-content {
+    padding: 20px;
+    transform: translate(100vw, -50%);
+    animation: slideInFromRightResp 0.25s forwards;
+    border-radius: 0px;
+    position: absolute;
+    padding-right: 0px;
+    /* top: 482px; */
+    background-color: rgb(246, 245, 245);
+    align-items: center;
+    /* bottom:80px; */
+  }
+  .main-board {
+    position: relative;
+  }
+
+  .form-footer {
+    width: 80%;
+    padding: 0;
+    bottom: 5px;
+    background-color: rgb(246, 245, 245);
+  }
+
+  @keyframes slideInFromRightResp {
+    0% {
+      transform: translate(100vw, -50%);
+    }
+    100% {
+      transform: translate(-40%, -50%);
+    }
+  }
+
+  .closing {
+    animation: slideOutToRight 0.25s forwards;
+  }
+  @keyframes slideOutToRight {
+    0% {
+      transform: translate(-40%, -50%);
+    }
+    100% {
+      transform: translate(100vw, -50%);
+    }
+  }
+  input,
+  .add-task-description,
+  .add-task-2 input {
+    width: 560px;
+  }
+
+  .add-task-1,
+  .add-task-2,
+  .priority-btns {
+    width: 560px;
+  }
+  .priority-btns {
+    width: 560px;
+  }
+  .scroller {
+    width: 100%;
+  }
+
   .add-task-content {
     margin: 0px;
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
   .form-footer {
     justify-content: center;
@@ -110,9 +165,14 @@
     flex-direction: row;
     margin-left: 0;
     height: 80px;
-    bottom: 80px;
+    bottom: 0px;
     right: 0px;
     left: 0px;
+    gap: 20px;
+  }
+  .add-task-main-title {
+    width: 80%;
+    margin: 0 auto;
   }
 
   .frame-3 {
@@ -170,11 +230,7 @@
   .cancel-or-accept {
     top: 44px;
   }
-  /* .assigned-to-img {
-      top: 50px;
-    } */
 }
-
 @media (max-width: 600px) {
   .add-task-2 input {
     width: 450px;

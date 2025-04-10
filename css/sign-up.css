@@ -14,6 +14,9 @@
   align-items: center;
   /* flex: 1; */
 }
+h1 {
+  font-size: 61px;
+}
 .go-back-arrow {
   position: absolute;
   top: 20px;
@@ -216,10 +219,7 @@
 
 @keyframes myanimation {
   0% {
-    transform: translate(
-      -50%,
-      100vh
-    ); /* Start from the bottom of the viewport */
+    transform: translate(-50%, 100vh); /* Start from the bottom of the viewport */
   }
   100% {
     transform: translate(-50%, -50%); /* Move to the middle of the viewport */

@@ -1,4 +1,4 @@
-main {
+.main-add-task {
   max-width: 1440px;
   flex: 1;
 }
@@ -8,7 +8,6 @@ main {
   flex-direction: column;
 }
 .add-task-content {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 20px;

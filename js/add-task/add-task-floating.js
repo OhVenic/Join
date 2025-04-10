@@ -14,4 +14,5 @@ function openFloatingAddTask() {
   document.getElementById("add-task-content").innerHTML = addTaskTemplate();
   document.getElementById("add-task-content").classList.remove("dp-none");
   document.getElementById("add-task-content").classList.remove("closing");
+  document.documentElement.style.overflow = "hidden";
 }

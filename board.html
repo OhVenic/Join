@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Board</title>
     <link rel="stylesheet" href="./css/board.css" />
-    <link rel="stylesheet" href="./css/navbar_header.css" />
+    <link rel="stylesheet" href="./css/navbar-header-ver2.css" />
     <link rel="stylesheet" href="./css/global_Dora.css">
     <link rel="stylesheet" href="./css/add-task.css">
     <link rel="stylesheet" href="./css/add-task-floating.css">
+    <link rel="stylesheet" href="./css/responsive/add-task-floating-resp.css">
     <link rel="stylesheet" href="./css/responsive/board-resp.css">
   </head>
+  <div class="content">
   <body onload="init()" onclick="closeSubMenu()">
         <div class="log" id="log"></div>
     <div class="overlay dp-none" id="overlay"></div>
     <div class="add-task-content dp-none" onclick="closeContactList(); closeCategoryList();" id="add-task-content"></div>
-    <div id="card-details-overlay" class="card-details-overlay dp-none" onclick="closeCardDetails(event)">
-      <div class="card-details-content" onclick="event.stopPropagation()"></div>
-    </div>
+
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>
       <img
@@ -38,7 +38,7 @@
       <div id="subMenu" class="subMenu dp-none"></div>
     </header>
     <!-- onclick="closeContactList(); closeCategoryList();" -->
-    <main class="main">
+    <main class="main-board">
         <nav class="frame-3">
             <img
               class="frame-3-icon"
@@ -88,7 +88,7 @@
           <div class="title-section">
             <div class="title">
               <h1>Board</h1>
-            <img class="add-task-btn-s" id="add-task-btn-s" src="./assets/icons/plus add task mobile.svg" alt="Add Task Icon Small">
+            <img class="add-task-btn-s" id="add-task-btn-s" onclick="selectColumnForTask('main-add-to-do');" src="./assets/icons/plus add task mobile.svg" alt="Add Task Icon Small">
             </div>
             <div class="search_add_task_btn">
               <input type="text" class="searchfield" id="searchfield" placeholder="Find Task" oninput="findTask()">
@@ -144,6 +144,23 @@
           </div>
         </div>
     </main>
+    <footer class="footer-resp">
+      <a href="dashboard.html"><div class="menu-btns-resp">
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-summary.png" alt="Summary button icon">
+        <p>Summary</p>
+      </div></a>
+      <a href="board.html"><div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp" src="./assets/icons/icon-board.png" alt="Board button icon">
+        <p>Board</p></div></a>
+      <a href="add-task.html"><div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-add-task.png" alt="Add task button icon">
+        <p>Add Tasks</p></div></a>
+      <a href="contacts.html"><div class="menu-btns-resp">            
+        <img class="menu-btn-icon-resp"  src="./assets/icons/icon-contacts.png" alt="Contacts button icon">
+        <p>Contacts</p>
+      </div></a>
+    </footer>
+  </div>
     <script src ="./js/global.js"></script>
     <script src="./js/board.js"></script>
     <script src="./js/add-task/add-task.js"></script>

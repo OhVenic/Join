@@ -3,7 +3,11 @@
   transform: translate(100vw, -50%);
   animation: slideInFromRight 0.25s forwards;
 }
-
+.add-task-main-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 @keyframes slideInFromRight {
   0% {
     transform: translate(100vw, -50%);
