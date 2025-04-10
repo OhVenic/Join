@@ -2,7 +2,7 @@
 .contacts-main {
     display: flex;
     padding: 40px 48px;
-    margin-left: 232px;
+    margin-left: 232px; /* Für die Sidebar im Desktop-Modus */
     margin-top: 96px;
     background-color: #f6f7f8;
     height: calc(100vh - 96px);
@@ -88,22 +88,35 @@
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
 }
 
 .contact-item:hover .avatar {
     transform: scale(1.1);
 }
 
+.contact-item .info {
+    flex: 1;
+    min-width: 0;
+}
+
 .contact-item .info .name {
     font-weight: 600;
     margin: 0;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .contact-item .info .email {
     font-size: 14px;
     color: #555;
     margin: 2px 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .contact-item.active {
@@ -134,7 +147,6 @@
         opacity: 0;
         transform: translateY(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -256,11 +268,9 @@
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
-
     70% {
         box-shadow: 0 0 0 12px rgba(59, 130, 246, 0);
     }
-
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -285,7 +295,7 @@ button:hover {
     opacity: 0.9;
 }
 
-/* === OVERLAY-STYLING FÜR KONTAKT-HINZUFÜGEN / BEARBEITEN (Join-Stil angepasst) === */
+/* === OVERLAY-STYLING FÜR KONTAKT-HINZUFÜGEN / BEARBEITEN === */
 .overlay {
     position: fixed;
     top: 0;
@@ -379,19 +389,8 @@ button[type="button"]:hover {
         transform: scale(0.9);
         opacity: 0;
     }
-
     to {
         transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
         opacity: 1;
     }
 }
@@ -459,29 +458,361 @@ button[type="button"]:hover {
     display: none !important;
 }
 
+/* === RESPONSIVE DESIGN === */
+@media (min-width: 1350px) {
+    .contacts-main {
+        padding: 48px;
+        gap: 40px;
+    }
 
-/* === Mobile Ansicht === */
-@media (max-width: 1300px) {
+    .contacts-left {
+        width: 40%;
+    }
+
+    .contacts-right {
+        width: 60%;
+    }
+
+    .contact-item {
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .contact-item .avatar {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
+    }
+
+    .contact-item .info {
+        max-width: 70%;
+    }
+
+    .contact-item .info .name {
+        font-size: 18px;
+    }
+
+    .contact-item .info .email {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* === GLOBAL KONTAKT-BEREICH === */
     .contacts-main {
         flex-direction: column;
-        margin-left: 0;
-        margin-top: 96px;
         padding: 16px;
-        height: auto;
+        margin-left: 0; /* Entfernt den Margin, da die Sidebar verschwindet */
+        margin-top: 64px;
+        height: calc(100vh - 64px - 60px); /* Platz für die untere Navigation */
+        gap: 16px;
+    }
+
+    /* === LINKER BEREICH: Kontaktliste === */
+    .contacts-left {
+        width: 100%;
+        padding: 16px;
+        border-radius: 10px;
+        box-shadow: none;
+    }
+
+    .contacts-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .contacts-header h2 {
+        font-size: 20px;
+    }
+
+    .search-input {
+        max-width: 100%;
+        margin-bottom: 16px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .add-contact-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: #2a3647;
+        border-radius: 10px;
+    }
+
+    .add-contact-btn::before {
+        content: "+";
+        font-size: 20px;
+    }
+
+    /* === Kontaktliste-Stil === */
+    .contact-list {
+        gap: 12px;
+    }
+
+    .contact-item {
+        padding: 12px;
+        gap: 12px;
+        border-radius: 8px;
+    }
+
+    .contact-item .avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .contact-item .info .name {
+        font-size: 14px;
+    }
+
+    .contact-item .info .email {
+        font-size: 12px;
+    }
+
+    /* === RECHTER BEREICH: Detailansicht === */
+    .contacts-right {
+        width: 100%;
+        padding: 16px;
+        border-radius: 10px;
+        box-shadow: none;
+        font-size: 16px;
+    }
+
+    .avatar-large {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .contacts-right h2 {
+        font-size: 20px;
+    }
+
+    .contacts-right p {
+        font-size: 14px;
+    }
+
+    .detail-buttons {
+        position: fixed;
+        top: 80px;
+        left: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn.edit,
+    .btn.delete {
+        background-color: transparent;
+        color: #2a3647;
+        padding: 8px;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn.edit::before {
+        content: "✏️";
+        font-size: 20px;
+    }
+
+    .btn.delete::before {
+        content: "🗑️";
+        font-size: 20px;
+    }
+
+    /* === Alphabet-Gruppierung === */
+    .letter-group {
+        font-size: 16px;
+        margin-top: 16px;
+        margin-bottom: 4px;
+    }
+
+    /* === OVERLAY-STYLING FÜR KONTAKT-HINZUFÜGEN / BEARBEITEN === */
+    .overlay {
+        align-items: flex-end;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .overlay-content {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        padding: 24px;
+        gap: 16px;
+        position: relative;
+    }
+
+    .overlay-content h3 {
+        font-size: 24px;
+        text-align: left;
+    }
+
+    .overlay-content input {
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+
+    .form-buttons {
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .form-buttons button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        background-color: #2a3647;
+    }
+
+    button[type="button"] {
+        background-color: transparent;
+        color: #2a3647;
+        border: 1px solid #2a3647;
+    }
+
+    .edit-overlay-content {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .edit-left {
+        width: 100%;
+        padding: 24px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .edit-left h3 {
+        font-size: 24px;
+        margin-top: 16px;
+    }
+
+    .edit-right {
+        width: 100%;
+        padding: 24px;
+    }
+
+    .edit-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 18px;
+    }
+
+    /* === Navigation am unteren Rand === */
+    .frame-3 {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #2a3647;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        z-index: 1000;
+    }
+
+    .frame-3-icon {
+        display: none;
+    }
+
+    .frame-3-menu {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .menu-btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: white;
+        font-size: 12px;
+    }
+
+    .menu-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .frame-22 {
+        display: none;
+    }
+
+    /* === Header Anpassungen === */
+    .header-general {
+        height: 64px;
+        padding: 12px 16px;
+    }
+
+    .header-p {
+        display: none;
+    }
+
+    .frame-3-icon-header {
+        height: 24px;
+    }
+
+    .header-left {
+        gap: 12px;
+    }
+
+    .header-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* === Für sehr kleine Bildschirme (z. B. < 480px) === */
+@media (max-width: 480px) {
+    .contacts-main {
+        padding: 8px;
     }
 
     .contacts-left,
     .contacts-right {
-        width: 100%;
-        margin-bottom: 24px;
+        padding: 8px;
     }
 
-    .contacts-left {
-        max-height: 300px;
-        overflow-y: auto;
+    .overlay-content {
+        padding: 16px;
     }
 
-    .contacts-right {
-        padding: 24px;
+    .form-buttons button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .contact-item {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .contact-item .avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .contact-item .info .name {
+        font-size: 13px;
+    }
+
+    .contact-item .info .email {
+        font-size: 11px;
     }
 }
