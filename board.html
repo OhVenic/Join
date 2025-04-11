@@ -17,6 +17,9 @@
         <div class="log" id="log"></div>
     <div class="overlay dp-none" id="overlay"></div>
     <div class="add-task-content dp-none" onclick="closeContactList(); closeCategoryList();" id="add-task-content"></div>
+    <div id="card-details-overlay" class="card-details-overlay dp-none" onclick="closeCardDetails(event)">
+      <div class="card-details-content" onclick="event.stopPropagation()"></div>
+    </div>
 
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>

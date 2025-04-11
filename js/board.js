@@ -18,32 +18,55 @@ function cardTemplate(element, contacts) {
   `;
 }
 
-async function cardDetails(id) {
-    const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
-    const task = await response.json();
-    const overlay = document.getElementById("card-details-overlay");
-    const content = overlay.querySelector(".card-details-content");
+async function cardDetails(id, contacts) {
+  const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
+  const task = await response.json();
+  const overlay = document.getElementById("card-details-overlay");
+  const content = overlay.querySelector(".card-details-content");
 
-    content.innerHTML = `
+  content.innerHTML = ` 
       <div class="card-overlay-header-flex">
       <p class="category-card-s">${task.category}</p>
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
       </div>
-      <h2 class="add-task-title">${task.title}</h2>
-      <p>${task.description}</p>
-      <p>Due Date: ${task.date}</p>
-      <div class="flex">
-      <p>Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
-      </div>
-      <p>Assigned to: ${task.assigned_to?.join(", ") || "Niemand"}</p>
-      <p>Subtasks:</p>
-      <ul>
-        ${task.subtasks?.map(st => `<li>${st.title} - ${st.status}</li>`).join("") || "<li>Keine Subtasks</li>"}
-      </ul>
-    `;
+      <h2 class="task-title">${task.title}</h2>
+      <p class="task-description">${task.description}</p>
+      <p class="task-date">Due Date: ${task.date}</p>
+      <div class="flex-priority">
+      <p class="task-priority">Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
+      </div></div>
+      <p>Assigned to:</p><div class="selected-avatars">${getInitials(id, contacts)}</div> ${task.assigned_to?.join(", ") || "Niemand"}</p>
+   <p>Subtasks:</p>
+  <ul>
+    ${task.subtasks?.map(st => `
+      <li>
+        <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
+          onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
+        ${st.title} - ${st.status}
+      </li>
+    `).join("") || "<li>Keine Subtasks</li>"}
+  </ul>
+`;
 
-    overlay.classList.remove("dp-none");
-  } 
+  overlay.classList.remove("dp-none");
+}
+
+async function updateSubtaskStatus(taskId, subtaskTitle) {
+  const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`);
+  const task = await response.json();
+
+  const subtask = task.subtasks.find(st => st.title === subtaskTitle);
+  if (subtask) {
+    subtask.status = subtask.status === "done" ? "undone" : "done";
+
+    await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
+      method: "PUT",
+      body: JSON.stringify(task),
+    });
+
+    updateHTML();
+  }
+}
 
 function closeCardDetails() {
   document.getElementById("card-details-overlay").classList.add("dp-none");
@@ -58,6 +81,8 @@ function getCategoryColor(category) {
   }
   return catBgColor;
 }
+
+
 
 function getInitials(element, contacts) {
   let initials = "";
