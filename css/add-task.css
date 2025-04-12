@@ -435,3 +435,32 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .requiredText {
   font-size: 13px;
 }
+
+/*subtask*/
+
+.subtask-list-item-btns {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.subtask-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subtask-edit-icons {
+  width: 24px;
+  height: 24px;
+}
+.subtask-list-item-separator {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(168, 168, 168, 1);
+}
+
+.edit:hover,
+.delete:hover {
+  cursor: pointer;
+}
