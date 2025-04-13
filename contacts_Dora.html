@@ -22,7 +22,8 @@
         <div id="subMenu" class="subMenu dp-none"></div>
       </header>
       <main class="main-contact">
-        <!-- <div class="add-contact-modal dp-none">
+        <div class="modal-cont dp-none" id="modal-cont">
+          <div class="add-contact-modal">
           <div class="add-contact-modal-header">
             <div class="header-wrapper">
             <img src="./assets/icons/join-main-logo.png" alt="Join Main Logo">
@@ -31,22 +32,60 @@
             <div class="separator-modal"></div>
           </div>
           </div>
+          
           <div class="add-contact-modal-content">
-            <img src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
+            <!-- <div class="modal-cont-header"> -->
+            <img class="exit-modal-btn" id="exit-modal-btn" onclick="closeAddContactModal()" src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
+          <!-- </div> -->
             <div class="main-modal-cont">
             <img class="avatar-empty" src="./assets/icons/avatar-empty.svg" alt="Empty Avatar">
             <div class="add-contact-modal-form">
-              <input type="text" placeholder="Name">
-              <input type="text" placeholder="Email">
-              <input type="text" placeholder="Phone">
+              <input id="add-cont-name" type="text" placeholder="Name">
+              <input id="add-cont-email" type="text" placeholder="Email">
+              <input id="add-cont-phone" type="text" placeholder="Phone">
             </div>
           </div>
             <div class="add-contact-modal-btns">
               <div class="cancel btn">Cancel</div>
-              <div class="create-contact btn">Create contact</div>
+              <div class="create-contact btn" onclick="createContact()">Create contact</div>
             </div>
           </div>
-        </div> -->
+        </div>
+        
+      </div>
+
+
+      <div class="modal-edit-cont dp-none" id="modal-cont-edit">
+        <div class="edit-contact-modal">
+        <div class="edit-contact-modal-header">
+          <div class="edit-cont-header-wrapper">
+          <img src="./assets/icons/join-main-logo.png" alt="Join Main Logo">
+          <h1 class="edit-modal-title">Edit contact</h1>
+          <div class="separator-modal"></div>
+        </div>
+        </div>
+        
+        <div class="edit-contact-modal-content">
+          <img class="exit-modal-btn" id="exit-modal-btn" onclick="closeEditContactModal()" src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
+          <div class="edit-main-modal-cont">
+            
+            <div class="avatar-user" id="avatar-user" alt="Avatar User"></div>
+          
+            <div class="edit-contact-modal-form">
+              <input id="edit-cont-name" type="text" placeholder="Name">
+              <input id="edit-cont-email" type="text" placeholder="Email">
+              <input id="edit-cont-phone" type="text" placeholder="Phone">
+            </div>
+        </div>
+          <div class="edit-contact-modal-btns" id="edit-contact-modal-btns">
+
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+
         <nav class="frame-3">
           <img
             class="frame-3-icon"
@@ -78,7 +117,7 @@
               />
               <p>Board</p>
             </div></a>
-            <a href="contacts.html"><div class="menu-btns">
+            <a href="contacts_Dora.html"><div class="menu-btns">
               <img
                 class="menu-icon"
                 src="./assets/icons/icon-contacts.png"

@@ -68,3 +68,10 @@ async function putData(path = "", data = {}) {
   });
   return (responseToJson = await response.json());
 }
+
+async function deleteData(path = "") {
+  let response = await fetch(BASE_URL + path + ".json", {
+    method: "DELETE",
+  });
+  return (responseToJson = await response.json());
+}
