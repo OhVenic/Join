@@ -49,7 +49,7 @@ async function cardDetails(id, contacts) {
 `;
 
   overlay.classList.remove("dp-none");
-}
+} 
 
 async function updateSubtaskStatus(taskId, subtaskTitle) {
   const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`);

@@ -43,6 +43,10 @@
     text-decoration: underline;
 }
 
+.margin-0 {
+    margin: 0;
+}
+
 @media (max-width: 1200px) {
     .main-content {
         padding: 60px 50px;
