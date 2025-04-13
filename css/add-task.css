@@ -1,12 +1,15 @@
 .main-add-task {
-  max-width: 1440px;
   flex: 1;
 }
-
+main {
+  width: 100%;
+}
 .content {
   display: flex;
   flex-direction: column;
+  max-width: 1440px;
 }
+
 .add-task-content {
   display: flex;
   flex-direction: column;
@@ -31,7 +34,9 @@
 h1 {
   font-size: 61px;
 }
-
+.header-general {
+  width: 100%;
+}
 .add-task-1 {
   width: 420px;
   display: flex;
@@ -448,6 +453,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  /* width: 550px;
+  height: 21px; */
+  padding: 5px;
+  padding-left: 10px;
+  border-radius: 10px;
+}
+.subtask-list-item:hover {
+  cursor: pointer;
+  background-color: rgba(168, 168, 168, 0.2);
 }
 
 .subtask-edit-icons {
@@ -455,12 +470,40 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 24px;
 }
 .subtask-list-item-separator {
-  width: 1px;
+  width: 2px;
   height: 24px;
-  background-color: rgba(168, 168, 168, 1);
+  background-color: rgba(168, 168, 168, 0.4);
 }
 
-.edit:hover,
-.delete:hover {
-  cursor: pointer;
+.change-input {
+  display: flex;
+}
+.subtask-list-item-separator-2 {
+  width: 2px;
+  height: 24px;
+  background-color: rgba(168, 168, 168, 0.4);
+}
+.subtask-list-item-btns-2 {
+  display: flex;
+  position: relative;
+}
+
+.accept,
+.delete-2,
+.subtask-list-item-separator-2 {
+  position: absolute;
+}
+
+.accept {
+  top: 10px;
+  right: 10px;
+}
+
+.delete-2 {
+  top: 10px;
+  right: 40px;
+}
+.subtask-list-item-separator-2 {
+  top: 10px;
+  right: 36px;
 }

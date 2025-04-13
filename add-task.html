@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="./css/navbar-header-ver2.css" />
   </head>
   <body onload="init()" onclick="closeSubMenu()">
-    <div class="content">
-    <div class="log" id="log"></div>
     <header class="header-general">
       <p class="header-p">Kanban Project Management Tool</p>
       <img
@@ -32,6 +30,9 @@
       </div>
       <div id="subMenu" class="subMenu dp-none"></div>
     </header>
+    <div class="content">
+    <div class="log" id="log"></div>
+
     <main onclick="closeContactList(); closeCategoryList();">
       <nav class="frame-3">
         <img
@@ -275,7 +276,7 @@
                   onclick="addSubtask()"
                 />
               </div>
-              <ul class="subtask-list" id="subtask-list"></ul>
+              <div class="subtask-list" id="subtask-list"></div>
             </div>
           </section>
         </form>
