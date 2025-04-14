@@ -1,6 +1,8 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails(${element["id"]})">
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails(${
+    element["id"]
+  })">
       <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
     element["category"]
   }</div>
@@ -35,27 +37,37 @@ async function cardDetails(id, contacts) {
       <div class="flex-priority">
       <p class="task-priority">Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
       </div></div>
-      <p>Assigned to:</p><div class="selected-avatars">${getInitials(id, contacts)}</div> ${task.assigned_to?.join(", ") || "Niemand"}</p>
+      <p>Assigned to:</p><div class="selected-avatars">${getInitials(id, contacts)}</div> ${
+    task.assigned_to?.join(", ") || "Niemand"
+  }</p>
    <p>Subtasks:</p>
   <ul>
-    ${task.subtasks?.map(st => `
+    ${
+      task.subtasks
+        ?.map(
+          (st) => `
       <li>
         <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
           onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
         ${st.title} - ${st.status}
       </li>
-    `).join("") || "<li>Keine Subtasks</li>"}
+    `
+        )
+        .join("") || "<li>Keine Subtasks</li>"
+    }
   </ul>
 `;
 
   overlay.classList.remove("dp-none");
-} 
+}
 
 async function updateSubtaskStatus(taskId, subtaskTitle) {
-  const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`);
+  const response = await fetch(
+    `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`
+  );
   const task = await response.json();
 
-  const subtask = task.subtasks.find(st => st.title === subtaskTitle);
+  const subtask = task.subtasks.find((st) => st.title === subtaskTitle);
   if (subtask) {
     subtask.status = subtask.status === "done" ? "undone" : "done";
 
@@ -81,8 +93,6 @@ function getCategoryColor(category) {
   }
   return catBgColor;
 }
-
-
 
 function getInitials(element, contacts) {
   let initials = "";
@@ -149,7 +159,18 @@ function showPriority(priority) {
 async function init() {
   await loadContacts("contactList");
   await loadTasks("taskList");
+  await showLoggedInInfo();
   updateHTML();
+  loadLoginInfo("whoIsLoggedIn");
+}
+
+async function showLoggedInInfo() {
+  await loadLoginInfo("whoIsLoggedIn");
+  if (loginInfo[0].isGuestLoggedIn === true) {
+    document.getElementById("initialLetter").innerHTML = "G";
+  } else {
+    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
+  }
 }
 
 let currentDraggedElement;
@@ -255,4 +276,3 @@ function highlight(id) {
 function removeHighlight(id) {
   document.getElementById(id).classList.remove("drag-area-highlight");
 }
-

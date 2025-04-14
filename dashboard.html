@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="./css/navbar-header-ver2.css">
     <link rel="stylesheet" href="./css/global_Dora.css">
     <link rel="stylesheet" href="./css/dashboard.css">
-    <script src="./js/dashboard.js" defer></script>
-    <script src="./js/global.js" defer></script>
+   
+
     <title>Summary user</title>
     
 </head>
-<body onload="loadData()" onclick="closeSubMenu()">
+<body onload="init()" onclick="closeSubMenu()">
   <div class="greeting">
     <img src="./assets/icons/join-logo-big.svg" class="greeting-logo">
   </div>
@@ -27,9 +27,10 @@
             ><img src="./assets/icons/help.svg" alt="Go to Help Site"
           /></a>
           <span
+            id="initialLetter"
             class="header-icon light-blue"
-            onclick="showSubMenu();preventBubbling(event)"
-            >SM</span
+            onclick="showSubMenuLoggedIn();preventBubbling(event)"
+            ></span
           >
         </div>
         <div id="subMenu" class="subMenu dp-none"></div>
@@ -151,8 +152,8 @@
     </div>
 </div>
 <div class="dashboard-greeting">
-<p class="dashboard-p">Good morning,</p>
-<p class="dashboard-name">Sofia Müller</p>
+<p class="dashboard-p">Good morning</p>
+<p class="dashboard-name" id="dashboard-name">Sofia Müller</p>
 </div>
 </div>
 <footer class="footer-resp">
@@ -171,5 +172,7 @@
     <p>Contacts</p>
   </div></a>
 </footer>
+<script src="./js/global.js" defer></script>
+<script src="./js/dashboard.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./css/responsive/add-task-floating-resp.css">
     <link rel="stylesheet" href="./css/responsive/board-resp.css">
   </head>
-  <div class="content">
+  
   <body onload="init()" onclick="closeSubMenu()">
         <div class="log" id="log"></div>
     <div class="overlay dp-none" id="overlay"></div>
@@ -33,13 +33,15 @@
           ><img src="./assets/icons/help.svg" alt="Go to Help Site"
         /></a>
         <span
+        id="initialLetter"
           class="header-icon light-blue"
-          onclick="showSubMenu();preventBubbling(event)"
-          >SM</span
+          onclick="showSubMenuLoggedIn();preventBubbling(event)"
+          ></span
         >
       </div>
       <div id="subMenu" class="subMenu dp-none"></div>
     </header>
+    <div class="content">
     <!-- onclick="closeContactList(); closeCategoryList();" -->
     <main class="main-board">
         <nav class="frame-3">

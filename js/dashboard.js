@@ -1,3 +1,19 @@
+async function init() {
+  await loadData();
+  await showLoggedInInfo();
+}
+
+async function showLoggedInInfo() {
+  await loadLoginInfo("whoIsLoggedIn");
+  if (loginInfo[0].isGuestLoggedIn === true) {
+    document.getElementById("initialLetter").innerHTML = "G";
+    document.getElementById("dashboard-name").innerHTML = "";
+  } else {
+    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
+    document.getElementById("dashboard-name").innerHTML = loginInfo[0].userLoggedIn.name;
+  }
+}
+
 async function loadData() {
   let response = await fetch(BASE_URL + ".json");
   let responseToJson = await response.json();

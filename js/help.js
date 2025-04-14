@@ -1,3 +1,7 @@
+async function init() {
+  await showLoggedInInfo();
+}
+
 function showSubMenu() {
   if (document.getElementById("subMenu").classList.contains("dp-none")) {
     document.getElementById("subMenu").classList.remove("dp-none");
@@ -18,4 +22,13 @@ function closeSubMenu() {
 
 function preventBubbling(event) {
   event.stopPropagation();
+}
+
+async function showLoggedInInfo() {
+  await loadLoginInfo("whoIsLoggedIn");
+  if (loginInfo[0].isGuestLoggedIn === true) {
+    document.getElementById("initialLetter").innerHTML = "G";
+  } else {
+    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
+  }
 }

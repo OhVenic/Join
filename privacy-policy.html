@@ -11,7 +11,7 @@
     <script src="./js/global.js"></script>
 </head>
 
-<body onclick="closeSubMenu()">
+<body onload="init()"onclick="closeSubMenu()">
     
     <header class="header-general">
         <p class="header-p">Kanban Project Management Tool</p>
@@ -25,9 +25,10 @@
             ><img src="./assets/icons/help.svg" alt="Go to Help Site"
           /></a>
           <span
+          id="initialLetter"
             class="header-icon light-blue"
-            onclick="showSubMenu();preventBubbling(event)"
-            >SM</span
+            onclick="showSubMenuLoggedIn();preventBubbling(event)"
+            ></span
           >
         </div>
         <div id="subMenu" class="subMenu dp-none"></div>
@@ -139,5 +140,6 @@
         <p>Contacts</p>
       </div></a>
     </footer>
+    <script src="./js/privacy-policy.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
-const BASE_URL = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
-
 function init() {
   getUsersFromDatabase();
+  loadLoginInfo("whoIsLoggedIn");
+  putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: false, userLoggedIn: { name: "", avatar: "" } });
 }
 
 let usersArr = [];
@@ -24,7 +24,8 @@ async function getAllUsers(path) {
   return (responseToJson = await response.json());
 }
 
-function loginUser() {
+let userData = {};
+async function loginUser() {
   if (areInputsEmpty()) {
     console.log("INPUTS EMPTY");
     showRequiredFields();
@@ -35,10 +36,21 @@ function loginUser() {
     console.log("password is not correct");
     wrongPassword();
   } else if (isEmailCorrect() && isPasswordCorrect()) {
+    let loginUserEmail = document.getElementById("email").value;
+    let filteredUser = usersArr.filter((item) => item.user.email === loginUserEmail);
+    console.log(filteredUser[0].user.name, filteredUser[0].user.avatar);
+    await putLoginInfo("whoIsLoggedIn", {
+      isGuestLoggedIn: false,
+      userLoggedIn: { name: filteredUser[0].user.name, avatar: filteredUser[0].user.avatar },
+    });
     goToSummary();
   }
 }
-
+function loginGuest() {
+  console.log("guest logged in");
+  putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: true, userLoggedIn: { name: "", avatar: "" } });
+  window.location.href = "./dashboard.html";
+}
 function isEmailCorrect() {
   let email = document.getElementById("email");
   return usersArr.some((user) => user.user.email === email.value);
@@ -97,15 +109,15 @@ function goToSummary() {
   window.location.href = "./dashboard.html";
 }
 
-window.addEventListener('load', () => {
-  const greeting = document.querySelector('.greeting');
-  const logo = document.querySelector('.greeting-logo');
+window.addEventListener("load", () => {
+  const greeting = document.querySelector(".greeting");
+  const logo = document.querySelector(".greeting-logo");
 
   setTimeout(() => {
-    logo.classList.add('shrink'); // schrumpft das Logo
+    logo.classList.add("shrink"); // schrumpft das Logo
   }, 500);
 
   setTimeout(() => {
-    greeting.classList.add('hide'); // blendet das weiße Overlay aus
+    greeting.classList.add("hide"); // blendet das weiße Overlay aus
   }, 500);
 });
