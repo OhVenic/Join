@@ -1,8 +1,6 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails(${
-    element["id"]
-  })">
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails('${element["id"]}', '${JSON.stringify(contacts)}')">
       <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
     element["category"]
   }</div>
@@ -20,13 +18,27 @@ function cardTemplate(element, contacts) {
   `;
 }
 
-async function cardDetails(id, contacts) {
+async function cardDetails(id, contactsJson) {
+  const contacts = JSON.parse(contactsJson); // Konvertiere den JSON-String zurück in ein Array
   const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
   const task = await response.json();
   const overlay = document.getElementById("card-details-overlay");
   const content = overlay.querySelector(".card-details-content");
 
-  content.innerHTML = ` 
+  // Berechnung der Initialen direkt in der Funktion
+  let initialsHTML = "";
+  if (task["assigned_to"]) {
+    initialsHTML = task["assigned_to"]
+      .map((name) => {
+        let contact = contacts.find((c) => c.name === name);
+        let color = contact && contact.color ? contact.color : "#999";
+        let avatar = contact && contact.avatar ? contact.avatar : "G";
+        return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
+      })
+      .join("");
+  }
+
+  content.innerHTML = `
       <div class="card-overlay-header-flex">
       <p class="category-card-s">${task.category}</p>
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
@@ -35,21 +47,20 @@ async function cardDetails(id, contacts) {
       <p class="task-description">${task.description}</p>
       <p class="task-date">Due Date: ${task.date}</p>
       <div class="flex-priority">
-      <p class="task-priority">Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}
-      </div></div>
-      <p>Assigned to:</p><div class="selected-avatars">${getInitials(id, contacts)}</div> ${
-    task.assigned_to?.join(", ") || "Niemand"
-  }</p>
-   <p>Subtasks:</p>
+      <p class="task-priority">Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}</div>
+      </div>
+      <p>Assigned to:</p>
+      <div class="selected-avatars">${initialsHTML}</div>
+   <p class="task-subtask">Subtasks:</p>
   <ul>
     ${
       task.subtasks
         ?.map(
           (st) => `
-      <li>
+      <li class="task-list">
         <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
           onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
-        ${st.title} - ${st.status}
+        ${st.title}
       </li>
     `
         )
@@ -60,7 +71,6 @@ async function cardDetails(id, contacts) {
 
   overlay.classList.remove("dp-none");
 }
-
 async function updateSubtaskStatus(taskId, subtaskTitle) {
   const response = await fetch(
     `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`
@@ -80,8 +90,11 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   }
 }
 
-function closeCardDetails() {
+async function closeCardDetails() {
+  tasksArr = []
+  await loadTasks("taskList");
   document.getElementById("card-details-overlay").classList.add("dp-none");
+ 
 }
 
 function getCategoryColor(category) {

@@ -8,9 +8,14 @@ async function showLoggedInInfo() {
   if (loginInfo[0].isGuestLoggedIn === true) {
     document.getElementById("initialLetter").innerHTML = "G";
     document.getElementById("dashboard-name").innerHTML = "";
+    document.getElementById("dashboard-name-greeting").innerHTML = `
+    <p class="dashboard-greeting-p">Good Morning</p>`;
   } else {
     document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
     document.getElementById("dashboard-name").innerHTML = loginInfo[0].userLoggedIn.name;
+    document.getElementById("dashboard-name-greeting").innerHTML = `
+    <p class="dashboard-greeting-p">Good Morning</p>
+    <p class="dashboard-name" id="dashboard-name">${loginInfo[0].userLoggedIn.name}</p>`;
   }
 }
 
@@ -32,7 +37,7 @@ async function loadData() {
   let inProgressTasks = taskArray.filter((task) => task.column === "in-progress");
   document.getElementById("task-in-progress").innerHTML = inProgressTasks.length;
 
-  let awaitingFeedbackTasks = taskArray.filter((task) => task.column === "awaiting-feedback");
+  let awaitingFeedbackTasks = taskArray.filter((task) => task.column === "await-feedback");
   document.getElementById("task-awaiting-feedback").innerHTML = awaitingFeedbackTasks.length;
 
   let urgentTasks = taskArray.filter((task) => task.priority === "urgent");
@@ -63,13 +68,8 @@ function formatDateToEnglish(dateStr) {
 
 window.addEventListener("load", () => {
   const greeting = document.querySelector(".greeting");
-  const logo = document.querySelector(".greeting-logo");
-
-  setTimeout(() => {
-    logo.classList.add("shrink"); // schrumpft das Logo
-  }, 500);
 
   setTimeout(() => {
     greeting.classList.add("hide"); // blendet das weiße Overlay aus
-  }, 500);
+  }, 1000);
 });

@@ -235,6 +235,11 @@
   margin: 4px 12px 4px 24px;
 }
 
+
+li {
+  list-style-type: none;
+}
+
 .selected-avatars {
   display: flex;
   align-items: center;
@@ -367,6 +372,14 @@
 .assigned-person {
   display: flex;
   align-items: center;
+}
+
+.task-subtask {
+  margin-bottom: 12px;
+}
+
+.task-list {
+  margin-bottom: 6px;
 }
 
 

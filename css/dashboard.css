@@ -1,34 +1,7 @@
+
 .greeting {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 1s ease, transform 1s ease;
-  }
-
-  .greeting-logo {
-    width: 150px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: 0.5s ease-in-out;
-  }
-
-  .greeting.hide {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .greeting-logo.shrink {
-    width: 1px;
-  }
+    display: none;
+}
 
 h1 {
     font-size: 64px;
@@ -40,6 +13,10 @@ h2 {
 
 .flex {
     display: flex;
+}
+
+li {
+    list-style-type: none;
 }
 
 .span-vertical {
@@ -156,6 +133,11 @@ h2 {
     font-weight: bold;
 }
 
+.dashboard-greeting-p {
+    font-size: 42px;
+    font-weight: bold;
+}
+
 .dashboard-name {
     color: rgb(37, 150, 190);
     font-size: 48px;
@@ -193,7 +175,27 @@ svg {
 @media (max-width: 1150px) {
   .dashboard-greeting {
     display: none;
-  }  
+  } 
+  
+  .greeting {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .greeting.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 900px) {
