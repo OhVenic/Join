@@ -1,106 +1,105 @@
-
 .main-content {
-    margin-left: 232px; 
-    padding: 80px 100px 50px 100px;
-    font-family: 'Inter', sans-serif;
-    color: #000;
-    background-color: #f6f7f8;
-    min-height: 100vh;
+  margin-left: 232px;
+  padding: 80px 100px 50px 100px;
+  font-family: "Inter", sans-serif;
+  color: #000;
+  background-color: #f6f7f8;
+  min-height: 100vh;
 }
 
 .main-content h1 {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 32px;
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 32px;
 }
 
 .main-content h2 {
-    font-size: 24px;
-    font-weight: 700;
-    margin-top: 40px;
-    margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 16px;
 }
 
 .main-content p,
 .main-content li {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 150%;
-    margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  margin-bottom: 16px;
 }
 
 .main-content ul {
-    list-style-type: disc;
-    padding-left: 20px;
+  list-style-type: disc;
+  padding-left: 20px;
 }
 
 .main-content a {
-    color: #29abe2;
-    text-decoration: none;
+  color: #29abe2;
+  text-decoration: none;
 }
 
 .main-content a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .margin-0 {
-    margin: 0;
+  margin: 0;
 }
 
 @media (max-width: 1200px) {
-    .main-content {
-        padding: 60px 50px;
-    }
+  .main-content {
+    padding: 60px 50px;
+  }
 
-    .main-content h1 {
-        font-size: 40px;
-    }
+  .main-content h1 {
+    font-size: 40px;
+  }
 
-    .main-content h2 {
-        font-size: 20px;
-    }
+  .main-content h2 {
+    font-size: 20px;
+  }
 
-    .main-content p,
-    .main-content li {
-        font-size: 15px;
-    }
+  .main-content p,
+  .main-content li {
+    font-size: 15px;
+  }
 }
 
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0; /* Sidebar ist meist ausgeblendet oder als Menü */
-        padding: 40px 30px;
-    }
+@media (max-width: 800px) {
+  .main-content {
+    margin-left: 0; /* Sidebar ist meist ausgeblendet oder als Menü */
+    padding: 40px 30px;
+  }
 
-    .main-content h1 {
-        font-size: 32px;
-    }
+  .main-content h1 {
+    font-size: 32px;
+  }
 
-    .main-content h2 {
-        font-size: 18px;
-    }
+  .main-content h2 {
+    font-size: 18px;
+  }
 
-    .main-content p,
-    .main-content li {
-        font-size: 14px;
-    }
+  .main-content p,
+  .main-content li {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
-    .main-content {
-        padding: 30px 20px;
-    }
+  .main-content {
+    padding: 30px 20px;
+  }
 
-    .main-content h1 {
-        font-size: 28px;
-    }
+  .main-content h1 {
+    font-size: 28px;
+  }
 
-    .main-content h2 {
-        font-size: 16px;
-    }
+  .main-content h2 {
+    font-size: 16px;
+  }
 
-    .main-content p,
-    .main-content li {
-        font-size: 13px;
-    }
+  .main-content p,
+  .main-content li {
+    font-size: 13px;
+  }
 }
