@@ -4,7 +4,6 @@ async function init() {
   loadLoginInfo("whoIsLoggedIn");
   await showLoggedInInfo();
 }
-
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
   if (loginInfo[0].isGuestLoggedIn === true) {
@@ -13,13 +12,12 @@ async function showLoggedInInfo() {
     document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
   }
 }
-
 let usersArr = [];
 
 function contactListItemTemplate(contact) {
   return `<div class="contact-list-item">
             <div id="contact-separation"></div>
-            <div class="contact-data" id="${contact.id}" onclick='showContactDetails("${contact.id}")'>
+            <div class="contact-data" id="contact-${contact.id}" onclick='showContactDetails("${contact.id}")'>
               <div class="contact-avatar" style="background-color:${contact.user.color};" id="avatar-${contact.id}">${contact.user.avatar}</div>
               <div class="contact-right">
                 <p class="list-contact-name">${contact.user.name}</p>
@@ -56,24 +54,19 @@ function renderContacts() {
   let sortedContactArr = [...usersArr].sort((a, b) => a.user.name.localeCompare(b.user.name));
   const contactsContainer = document.getElementById("contacts");
   contactsContainer.innerHTML = ""; // Clear the container
-
   let lastLetter = ""; // Keep track of the last rendered letter
   for (let i = 0; i < sortedContactArr.length; i++) {
     const contact = sortedContactArr[i];
-
     // Skip rendering if the contact name is "Guest"
     if (contact.user.name === "Guest") {
       continue;
     }
-
     let currentLetter = getFirstLetter(contact.user.name);
-
     // Render the letter and separator only if it's different from the last one
     if (currentLetter !== lastLetter) {
       contactsContainer.innerHTML += contactAlphabetTemplate(contact);
       lastLetter = currentLetter; // Update the last rendered letter
     }
-
     // Render the contact item
     contactsContainer.innerHTML += contactListItemTemplate(contact);
   }
@@ -94,6 +87,30 @@ function showContactDetails(id) {
     return;
   }
   document.getElementById("contact-display-contact-data").innerHTML = contactDetailTemplate(contact);
+  highlightSelected(id);
+}
+
+function highlightSelected(id) {
+  // Step 1: Find the previously selected contact
+  const previouslySelected = document.querySelector(".contact-data.highlighted");
+  if (previouslySelected) {
+    // Step 2: Remove the 'highlighted' class and reset styles
+    previouslySelected.classList.remove("highlighted");
+    previouslySelected.style.backgroundColor = "transparent"; // Reset background color
+    previouslySelected.style.borderRadius = "10px"; // Reset border radius
+    previouslySelected.style.color = "black"; // Reset text color
+  }
+
+  // Step 3: Find the newly selected contact by its ID
+  const selectedContact = document.getElementById(`contact-${id}`);
+
+  // Step 4: Add the 'highlighted' class and apply highlight styles
+  if (selectedContact) {
+    selectedContact.classList.add("highlighted");
+    selectedContact.style.backgroundColor = "rgba(42, 54, 71, 1)"; // Highlight background color
+    selectedContact.style.borderRadius = "10px"; // Rounded corners
+    selectedContact.style.color = "white"; // Highlight text color
+  }
 }
 
 function hideContactDetails() {
@@ -102,7 +119,7 @@ function hideContactDetails() {
 
 function contactDetailTemplate(contact) {
   return `<div class="contact-data-1">
-              <div class="avatar-m" id="avatar-${contact.id}" style="background-color:${contact.user.color}">${contact.user.avatar}</div>
+              <div class="avatar-m" id="avatar-detail-${contact.id}" style="background-color:${contact.user.color}">${contact.user.avatar}</div>
               <div class="contact-disp-main">
                 <div class="contact-name-m">${contact.user.name}</div>
                 <div class="contact-edit-delete">
@@ -156,13 +173,15 @@ function openAddContactModal() {
   document.getElementById("add-cont-name").value = "";
   document.getElementById("add-cont-email").value = "";
   document.getElementById("add-cont-phone").value = "";
-
   // Show the modal
   document.getElementById("modal-cont").classList.remove("dp-none");
+  document.getElementById("overlay").classList.remove("dp-none");
 }
 
 function closeAddContactModal() {
   document.getElementById("modal-cont").classList.add("dp-none");
+  document.getElementById("overlay").classList.add("dp-none");
+  hideLog();
 }
 
 async function getAllUsers(path) {
@@ -173,15 +192,35 @@ async function getAllUsers(path) {
 //refactored
 function createContact() {
   const { name, email, phone } = getContactInputs();
-
   if (areInputsEmpty(name, email, phone)) return console.log("inputs are empty");
   if (userAlreadyExists(usersArr, name, email)) return console.log("already exists");
-
   const newUser = createNewUser(name, email, phone);
   usersArr.push(newUser);
   saveUserToDatabase(newUser);
   renderContacts();
+  showContactDetails(newUser.id);
+  // Highlight the newly created contact
+  highlightSelected(newUser.id);
+  // Scroll to the newly created contact
+  const newContactElement = document.getElementById(`contact-${newUser.id}`);
+  if (newContactElement) {
+    newContactElement.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
   closeAddContactModal();
+  showLog();
+}
+
+function hideLog() {
+  setTimeout(() => {
+    document.getElementById("created-contact-msg").classList.add("closing");
+  }, 1700);
+}
+
+function showLog() {
+  document.getElementById("log").innerHTML = `<div id="created-contact-msg" class="created-contact-msg">
+    <p>Contact created successfully</p>
+  </div>`;
+  document.getElementById("log").classList.remove("closing");
 }
 
 function getContactInputs() {
@@ -267,10 +306,13 @@ function openEditContactModal(id) {
   document.getElementById("edit-cont-email").value = `${contact.user.email}`;
   document.getElementById("edit-cont-phone").value = `${contact.user.phoneNumber}`;
   document.getElementById("edit-contact-modal-btns").innerHTML = btnsTemplateEditContact(id);
+  document.getElementById("overlay").classList.remove("dp-none");
 }
 
 function closeEditContactModal() {
   document.getElementById("modal-cont-edit").classList.add("dp-none");
+  document.getElementById("modal-cont-edit").classList.add("closing-edit");
+  document.getElementById("overlay").classList.add("dp-none");
 }
 
 function saveContact(id) {
@@ -294,6 +336,7 @@ function saveContact(id) {
   saveUserToDatabase(editedUser);
   renderContacts();
   showContactDetails(id);
+  closeEditContactModal();
 }
 
 function editUser(index) {
@@ -320,7 +363,9 @@ async function addEditSingleUser(id, user) {
 
 function btnsTemplateEditContact(index) {
   return `<div class="delete btn" onclick="deleteContact(${index})">Delete</div>
-          <div class="save-contact btn" onclick="saveContact(${index})">Save</div>`;
+          <div class="save-contact btn" onclick="saveContact(${index})"><p>Save</p>
+          <img src="./assets/icons/check-white.svg" alt="Check White Icon">
+          </div>`;
 }
 
 function deleteContact(id) {
@@ -338,4 +383,14 @@ function deleteContact(id) {
 
 async function removeSingleUser(id) {
   deleteData(`contactList/${id}`);
+}
+
+function changeToBlueIcon() {
+  document.getElementById("clear").classList.add("dp-none");
+  document.getElementById("clear-hover").classList.remove("dp-none");
+}
+
+function changeToBlackIcon() {
+  document.getElementById("clear").classList.remove("dp-none");
+  document.getElementById("clear-hover").classList.add("dp-none");
 }

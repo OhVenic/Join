@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/contacts_Dora.css">
   </head>
   <body onload="init()" onclick="closeSubMenu()">
+    
     <div class="overlay dp-none" id="overlay"></div>
 
     <div class="content">
@@ -32,29 +33,32 @@
             <div class="separator-modal"></div>
           </div>
           </div>
-          
           <div class="add-contact-modal-content">
-            <!-- <div class="modal-cont-header"> -->
             <img class="exit-modal-btn" id="exit-modal-btn" onclick="closeAddContactModal()" src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
-          <!-- </div> -->
             <div class="main-modal-cont">
             <img class="avatar-empty" src="./assets/icons/avatar-empty.svg" alt="Empty Avatar">
             <div class="add-contact-modal-form">
               <input id="add-cont-name" type="text" placeholder="Name">
+              <img class="input-imgs name" src="./assets/icons/person.svg" alt="Name Icon">
               <input id="add-cont-email" type="text" placeholder="Email">
+              <img class="input-imgs email" src="./assets/icons/mail.svg" alt="Email Icon">
               <input id="add-cont-phone" type="text" placeholder="Phone">
+              <img class="input-imgs phone" src="./assets/icons/call.svg" alt="Phone Icon">
             </div>
           </div>
             <div class="add-contact-modal-btns">
-              <div class="cancel btn">Cancel</div>
-              <div class="create-contact btn" onclick="createContact()">Create contact</div>
+              <div class="cancel btn" onclick="closeAddContactModal()" onmouseover="changeToBlueIcon()" onmouseout="changeToBlackIcon()">
+                <p>Cancel</p>
+              <img class="clear" id="clear" src="./assets/icons/cancel.svg" alt="Cancel White Icon">
+            <img class="clear-hover dp-none" id="clear-hover" src="./assets/icons/clear-hover.svg" alt=""></div>
+              <div class="create-contact btn" onclick="createContact()">
+                <p>Create contact</p>
+                <img src="./assets/icons/check-white.svg" alt="Check White Icon">
+              </div>
             </div>
           </div>
         </div>
-        
       </div>
-
-
       <div class="modal-edit-cont dp-none" id="modal-cont-edit">
         <div class="edit-contact-modal">
         <div class="edit-contact-modal-header">
@@ -68,22 +72,20 @@
         <div class="edit-contact-modal-content">
           <img class="exit-modal-btn" id="exit-modal-btn" onclick="closeEditContactModal()" src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
           <div class="edit-main-modal-cont">
-            
             <div class="avatar-user" id="avatar-user" alt="Avatar User"></div>
-          
             <div class="edit-contact-modal-form">
               <input id="edit-cont-name" type="text" placeholder="Name">
+              <img class="input-imgs name" src="./assets/icons/person.svg" alt="Name Icon">
               <input id="edit-cont-email" type="text" placeholder="Email">
+              <img class="input-imgs email" src="./assets/icons/mail.svg" alt="Email Icon">
               <input id="edit-cont-phone" type="text" placeholder="Phone">
+              <img class="input-imgs phone" src="./assets/icons/call.svg" alt="Phone Icon">
             </div>
         </div>
           <div class="edit-contact-modal-btns" id="edit-contact-modal-btns">
-
           </div>
-
         </div>
       </div>
-      
     </div>
 
         <nav class="frame-3">
@@ -142,6 +144,7 @@
         </div>
 
         <div class="contact-display-container">
+          <div class="log" id="log"></div>
           <div class="contact-display-header">
             <h1 class="contact-disp-title">Contacts</h1>
             <div class="contact-disp-separator"></div>

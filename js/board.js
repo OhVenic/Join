@@ -1,27 +1,33 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element["id"]})" onclick="cardDetails('${element["id"]}', '${JSON.stringify(contacts)}')">
-      <div class="category-card-s"  style="background-color: ${getCategoryColor(element["category"])}">${
-    element["category"]
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${
+    element.id
+  })">
+      <div class="category-card-s" style="background-color: ${getCategoryColor(element.category)}">${
+    element.category
   }</div>
-      <div class="title-card-s">${element["title"]}</div>
-      <div class="description-card-s">${element["description"]}</div>
-      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element["subtasks"])}</div>
+      <div class="title-card-s">${element.title}</div>
+      <div class="description-card-s">${element.description}</div>
+      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element.subtasks)}</div>
       <div class="footer-card-s">
         <div class="assigned-to-card-s">
           <div class="selected-avatars">${getInitials(element, contacts)}</div>
         </div>
-        <div class="prio-card-s">${showPriority(element["priority"])}
-        </div>
+        <div class="prio-card-s">${showPriority(element.priority)}</div>
       </div>
     </div>
   `;
 }
 
-async function cardDetails(id, contactsJson) {
-  const contacts = JSON.parse(contactsJson); // Konvertiere den JSON-String zurück in ein Array
-  const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
-  const task = await response.json();
+function cardDetails(id) {
+  const task = tasksArr.find((task) => String(task.id) === String(id));
+  if (!task) {
+    console.error(`Task with id ${id} not found in tasksArr`);
+    return;
+  }
+  // const contacts = JSON.parse(contactsJson); // Konvertiere den JSON-String zurück in ein Array
+  // const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
+  // const task = await response.json();
   const overlay = document.getElementById("card-details-overlay");
   const content = overlay.querySelector(".card-details-content");
 
@@ -39,35 +45,36 @@ async function cardDetails(id, contactsJson) {
   }
 
   content.innerHTML = `
-      <div class="card-overlay-header-flex">
+    <div class="card-overlay-header-flex">
       <p class="category-card-s">${task.category}</p>
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
-      </div>
-      <h2 class="task-title">${task.title}</h2>
-      <p class="task-description">${task.description}</p>
-      <p class="task-date">Due Date: ${task.date}</p>
-      <div class="flex-priority">
-      <p class="task-priority">Priority: ${task.priority} </p><div class="prio-card-s">${showPriority(task["priority"])}</div>
-      </div>
-      <p>Assigned to:</p>
-      <div class="selected-avatars">${initialsHTML}</div>
-   <p class="task-subtask">Subtasks:</p>
-  <ul>
-    ${
-      task.subtasks
-        ?.map(
-          (st) => `
-      <li class="task-list">
-        <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
-          onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
-        ${st.title}
-      </li>
-    `
-        )
-        .join("") || "<li>Keine Subtasks</li>"
-    }
-  </ul>
-`;
+    </div>
+    <h2 class="task-title">${task.title}</h2>
+    <p class="task-description">${task.description}</p>
+    <p class="task-date">Due Date: ${task.date}</p>
+    <div class="flex-priority">
+      <p class="task-priority">Priority: ${task.priority}</p>
+      <div class="prio-card-s">${showPriority(task.priority)}</div>
+    </div>
+    <p>Assigned to:</p>
+    <div class="selected-avatars">${initialsHTML}</div>
+    <p class="task-subtask">Subtasks:</p>
+    <ul>
+      ${
+        task.subtasks
+          ?.map(
+            (st) => `
+        <li class="task-list">
+          <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
+            onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
+          ${st.title}
+        </li>
+      `
+          )
+          .join("") || "<li>No Subtasks</li>"
+      }
+    </ul>
+  `;
 
   overlay.classList.remove("dp-none");
 }
@@ -90,11 +97,27 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   }
 }
 
+let tasksArr2 = [];
+
+async function getTasksFromDatabase() {
+  let userResponse = await getAllUsers("taskList");
+  let UserKeysArray = Object.keys(userResponse);
+  tasksArr = UserKeysArray.map((key) => ({
+    id: key,
+    ...userResponse[key],
+  }));
+  console.log("tasksArr:", tasksArr);
+}
+
+async function getAllTasks(path) {
+  let response = await fetch(BASE_URL + path + ".json");
+  return (responseToJson = await response.json());
+}
+
 async function closeCardDetails() {
-  tasksArr = []
+  tasksArr = [];
   await loadTasks("taskList");
   document.getElementById("card-details-overlay").classList.add("dp-none");
- 
 }
 
 function getCategoryColor(category) {
@@ -113,7 +136,7 @@ function getInitials(element, contacts) {
     initials = element["assigned_to"]
       .map((name) => {
         let contact = contacts.find((c) => c.name === name);
-        let color = contact && contact.color ? contact.color : "#999";
+        let color = contact.color;
         let avatar = contact && contact.avatar ? contact.avatar : "G";
         return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
       })
@@ -139,6 +162,16 @@ function subtaskProgress(subtasksArr) {
   return subtaskHTML;
 }
 
+function findTask() {
+  let inputValueRef = document.getElementById("searchfield");
+  let inputValue = inputValueRef.value.trim();
+  if (inputValue.length > 2) {
+    searchTaskTitles();
+  } else {
+    filteredTasks = [];
+    updateHTML();
+  }
+}
 let filteredTasks = [];
 function searchTaskTitles() {
   let searchFieldRef = document.getElementById("searchfield");
@@ -146,16 +179,6 @@ function searchTaskTitles() {
     filteredTasks = tasksArr.filter((task) => task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase()));
     console.log(filteredTasks);
     updateHTML();
-  }
-}
-
-function findTask() {
-  let inputValueRef = document.getElementById("searchfield");
-  if (inputValueRef.value.length > 2) {
-    searchTaskTitles();
-  } else {
-    updateHTML();
-    filteredTasks = [];
   }
 }
 
@@ -171,6 +194,7 @@ function showPriority(priority) {
 
 async function init() {
   await loadContacts("contactList");
+  await getTasksFromDatabase();
   await loadTasks("taskList");
   await showLoggedInInfo();
   updateHTML();
@@ -189,11 +213,14 @@ async function showLoggedInInfo() {
 let currentDraggedElement;
 
 function startDragging(id) {
-  currentDraggedElement = id;
+  currentDraggedElement = String(id);
 }
 
 async function editColumnChange(id, tasksArr) {
-  putData(`taskList/${id}`, tasksArr[currentDraggedElement]);
+  await putData(
+    `taskList/${id}`,
+    tasksArr.find((task) => String(task.id) === id)
+  );
 }
 
 function allowDrop(ev) {
@@ -201,9 +228,12 @@ function allowDrop(ev) {
 }
 
 function moveTo(column) {
-  tasksArr[currentDraggedElement]["column"] = column;
-  editColumnChange(currentDraggedElement, tasksArr);
-  updateHTML();
+  const task = tasksArr.find((task) => String(task.id) === currentDraggedElement);
+  if (task) {
+    task["column"] = column;
+    editColumnChange(currentDraggedElement, tasksArr);
+    updateHTML();
+  }
 }
 
 function updateHTML() {
@@ -221,6 +251,7 @@ function renderToDo() {
     const element = toDo[i];
     document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
   }
+  console.log(tasksArr);
 
   checkForEmptyColumn(toDo, "To do", "to-do");
 }
