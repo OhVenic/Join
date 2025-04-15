@@ -75,10 +75,10 @@ function goToBoards() {
 
 //Getting tasks from Firebase
 
-function init() {
-  loadContacts("contactList");
-  loadTasks("taskList");
-  showLoggedInInfo();
+async function init() {
+  await loadContacts("contactList");
+  await loadTasks("taskList");
+  await showLoggedInInfo();
 }
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
@@ -93,11 +93,9 @@ async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
     let responseToJson = await response.json();
-    console.log(responseToJson);
     for (let key in responseToJson) {
       tasksArr.push(responseToJson[key]);
     }
-
     updateHTML();
   } catch (error) {
     console.error("Response Failed");
@@ -113,16 +111,17 @@ function canSaveTask() {
 
 function saveTaskInputs() {
   if (canSaveTask()) {
-    const task = createTaskObject();
+    let id = generateUniqueId();
+    const task = createTaskObject(id);
     tasksArr.push(task);
     console.log(tasksArr);
-    addTaskToDatabase(tasksArr.length - 1, task);
+    addTaskToDatabase(id, task);
   } else {
     console.log("Task already exists or the input fields are empty");
   }
 }
 let selectedColumn = "to-do";
-function createTaskObject() {
+function createTaskObject(id) {
   const titleInput = document.getElementById("add-task-title").value;
   const dateInput = document.getElementById("add-task-due-date").value;
   const categoryInput = document.getElementById("category").value;
@@ -131,7 +130,7 @@ function createTaskObject() {
   const subtasksObj = mapArrayToObject(subtasks);
   // console.log(selectedColumn)
   return {
-    id: tasksArr.length,
+    id: id,
     column: selectedColumn,
     assigned_to: assignedTo,
     category: categoryInput,
@@ -141,6 +140,9 @@ function createTaskObject() {
     subtasks: subtasksObj,
     title: titleInput,
   };
+}
+function generateUniqueId() {
+  return String(Date.now()); // Use the current timestamp as a unique ID
 }
 
 function createTask() {
