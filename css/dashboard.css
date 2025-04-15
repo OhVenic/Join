@@ -15,9 +15,6 @@ h2 {
     display: flex;
 }
 
-li {
-    list-style-type: none;
-}
 
 .span-vertical {
     height: 64px;
