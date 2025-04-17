@@ -25,13 +25,9 @@ function cardDetails(id) {
     console.error(`Task with id ${id} not found in tasksArr`);
     return;
   }
-  // const contacts = JSON.parse(contactsJson); // Konvertiere den JSON-String zurück in ein Array
-  // const response = await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${id}.json`);
-  // const task = await response.json();
   const overlay = document.getElementById("card-details-overlay");
   const content = overlay.querySelector(".card-details-content");
 
-  // Berechnung der Initialen direkt in der Funktion
   let initialsHTML = "";
   if (task["assigned_to"]) {
     initialsHTML = task["assigned_to"]
@@ -39,9 +35,10 @@ function cardDetails(id) {
         let contact = contacts.find((c) => c.name === name);
         let color = contact && contact.color ? contact.color : "#999";
         let avatar = contact && contact.avatar ? contact.avatar : "G";
-        return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
+        return `<div class="task-overlay-contact"><div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>
+        <p class="margin-left">${name}</p></div>`;
       })
-      .join("");
+      .join(" ");
   }
 
   content.innerHTML = `
@@ -57,9 +54,9 @@ function cardDetails(id) {
       <div class="prio-card-s">${showPriority(task.priority)}</div>
     </div>
     <p>Assigned to:</p>
-    <div class="selected-avatars">${initialsHTML}</div>
+    <div class="selected-avatars-overlay">${initialsHTML}</div>
     <p class="task-subtask">Subtasks:</p>
-    <ul>
+    <ul class="margin-bottom">
       ${
         task.subtasks
           ?.map(
@@ -74,6 +71,18 @@ function cardDetails(id) {
           .join("") || "<li>No Subtasks</li>"
       }
     </ul>
+    <div class="overlay-footer">
+    <div class="task-overlay-footer">
+     <div class="contact-change edit" onclick="editTask(${task.id})"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
+                    <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
+                    <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
+                    <p>Edit</p>
+                  </div>
+                  <div class="contact-change delete-display" onclick="deleteTask(${task.id})" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
+                    <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
+                    <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
+                    <p>Delete</p>
+                  </div></div></div>
   `;
 
   overlay.classList.remove("dp-none");
@@ -97,6 +106,168 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   }
 }
 
+let taskToDelete = null;
+
+function deleteTask(id) {
+  taskToDelete = id;
+  document.getElementById("delete-confirmation-overlay").classList.remove("dp-none");
+}
+
+async function confirmDeleteTask() {
+  if (taskToDelete) {
+    await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskToDelete}.json`, {
+      method: "DELETE"
+    });
+    taskToDelete = null;
+    document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
+    closeCardDetails();
+  }
+}
+
+function cancelDeleteTask() {
+  taskToDelete = null;
+  document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
+}
+
+let editSelectedContacts = [];
+let editSelectedContactsNames = [];
+
+function editTask(id) {
+  const task = tasksArr.find((task) => String(task.id) === String(id));
+  if (!task) return;
+
+  const overlay = document.getElementById("card-details-overlay");
+  const content = overlay.querySelector(".card-details-content");
+
+  content.innerHTML = `
+    <div class="card-overlay-header-flex-right">
+      <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
+    </div>
+    <form onsubmit="saveEditedTask(event, '${task.id}')">
+      <label>Title:</label>
+      <input required name="title" value="${task.title}" class="edit-input" />
+      
+      <label>Description:</label>
+      <textarea name="description" class="edit-textarea">${task.description}</textarea>
+      
+      <label>Due Date:</label>
+      <input required name="date" type="date" value="${task.date}" class="edit-input" />
+
+      <label>Priority:</label>
+      <div class="priority-btn-group">
+        <button type="button" class="prio-btn" id="prio-low" onclick="selectPriorityEdit('low')">
+          Low <img src="./assets/icons/priority-low.svg" class="prio-icon" alt="Low">
+        </button>
+        <button type="button" class="prio-btn" id="prio-medium" onclick="selectPriorityEdit('medium')">
+          Medium <img src="./assets/icons/priority-medium.svg" class="prio-icon" alt="Medium">
+        </button>
+        <button type="button" class="prio-btn" id="prio-urgent" onclick="selectPriorityEdit('urgent')">
+          Urgent <img src="./assets/icons/priority-urgent.svg" class="prio-icon" alt="Urgent">
+        </button>
+      </div>
+      <input type="hidden" name="priority" id="edit-priority-hidden" />
+      
+      <div class="assigned-to-section frame-39">
+        <label for="assigned-to">Assigned to</label>
+        <input
+          type="text"
+          id="assigned-to"
+          class="selection"
+          placeholder="Select contacts to assign"
+          onclick="editShowContactList(event)"
+        />
+        <img
+          id="assigned-to-img-down"
+          class="assigned-to-img dropdown-img"
+          src="./assets/icons/arrow_drop_down.svg"
+          alt="Select contact dropdown arrow"
+          onclick="editShowContactList(event)"
+        />
+        <img
+          id="assigned-to-img-up"
+          class="assigned-to-img dropdown-img dp-none"
+          src="./assets/icons/arrow_drop_down_up.svg"
+          alt="Select contact dropdown arrow"
+          onclick="editShowContactList(event)"
+        />
+        <div
+          class="drop-down-contact-list dp-none"
+          id="drop-down-contact-list"
+          onclick="preventBubbling(event)"
+        ></div>
+        <div id="selected-avatars"></div>
+      </div>
+
+      <div class="edit-btn-row">
+        <button type="submit" class="task-btn">
+          Ok <svg class="white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg>
+        </button>
+        <button type="button" class="btn btn-cancel" onclick="cardDetails('${task.id}')">Abbrechen</button>
+      </div>
+    </form>
+  `;
+
+  // Set priority
+  document.getElementById('edit-priority-hidden').value = task.priority;
+  selectPriorityEdit(task.priority);
+
+  // Reset & prepare contact selections
+  editSelectedContacts = [];
+  editSelectedContactsNames = [];
+
+  // assigned_to sind Kontakt-Indizes (z. B. [0, 1])
+  if (Array.isArray(task.assigned_to)) {
+    editSelectedContacts = [...task.assigned_to];
+    editSelectedContactsNames = task.assigned_to.map(i => contacts[i]?.name);
+  }
+
+  // Render Kontaktliste
+  editRenderContactList();
+
+  // Visuell selektieren
+  for (let i of editSelectedContacts) {
+    editSelectContact(i);
+  }
+
+  overlay.classList.remove("dp-none");
+}
+
+async function saveEditedTask(event, taskId) {
+  event.preventDefault();
+  const form = event.target;
+
+  const updatedTask = {
+    ...tasksArr.find((task) => String(task.id) === String(taskId)),
+    title: form.title.value.trim(),
+    description: form.description.value.trim(),
+    date: form.date.value,
+    priority: form.priority.value,
+    assigned_to: [...editSelectedContacts], // <- das hier!
+  };
+
+  await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
+    method: "PUT",
+    body: JSON.stringify(updatedTask),
+  });
+
+  closeCardDetails();
+}
+
+function selectPriorityEdit(prio) {
+  document.getElementById("edit-priority-hidden").value = prio;
+
+  const prioButtons = ["low", "medium", "urgent"];
+  prioButtons.forEach(p => {
+    const btn = document.getElementById(`prio-${p}`);
+    btn.classList.remove("prio-selected-low", "prio-selected-medium", "prio-selected-urgent");
+
+    if (p === prio) {
+      btn.classList.add(`prio-selected-${p}`);
+    }
+  });
+}
 let tasksArr2 = [];
 
 async function getTasksFromDatabase() {
@@ -319,4 +490,23 @@ function highlight(id) {
 
 function removeHighlight(id) {
   document.getElementById(id).classList.remove("drag-area-highlight");
+}
+
+function changeToBlueIconEdit() {
+  document.getElementById("edit-icon-b").classList.remove("dp-none");
+  document.getElementById("edit-icon-n").classList.add("dp-none");
+}
+function changeToBlackIconEdit() {
+  document.getElementById("edit-icon-b").classList.add("dp-none");
+  document.getElementById("edit-icon-n").classList.remove("dp-none");
+}
+
+function changeToBlueIconDelete() {
+  document.getElementById("delete-icon-b").classList.remove("dp-none");
+  document.getElementById("delete-icon-n").classList.add("dp-none");
+}
+
+function changeToBlackIconDelete() {
+  document.getElementById("delete-icon-b").classList.add("dp-none");
+  document.getElementById("delete-icon-n").classList.remove("dp-none");
 }

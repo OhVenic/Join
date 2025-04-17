@@ -19,6 +19,7 @@
     <div class="add-task-content dp-none" onclick="closeContactList(); closeCategoryList();" id="add-task-content"></div>
     <div id="card-details-overlay" class="card-details-overlay dp-none" onclick="closeCardDetails(event)">
       <div class="card-details-content" onclick="event.stopPropagation()"></div>
+      <div id="dropdown-content-edit" class="dp-none"></div>
     </div>
 
     <header class="header-general">
@@ -166,17 +167,24 @@
       </div></a>
     </footer>
   </div>
+  <div id="delete-confirmation-overlay" class="dp-none confirmation-overlay">
+    <div class="confirmation-box">
+      <p>Möchtest du diese Aufgabe wirklich löschen?</p>
+      <div class="confirmation-buttons">
+        <button onclick="confirmDeleteTask()" class="task-btn">Ja</button>
+        <button onclick="cancelDeleteTask()" class="btn btn-cancel">Nein</button>
+      </div>
+    </div>
+  </div>
     <script src ="./js/global.js"></script>
     <script src="./js/board.js"></script>
     <script src="./js/add-task/add-task.js"></script>
     <script src="./js/add-task/add-task-floating.js"></script>
-
     <script src="./templates/add-task-modal-template.js"></script>
-  
-    
     <script src="./js/add-task/category-add-task.js"></script>
     <script src="./js/add-task/contacts-add-task.js"></script>
     <script src="./js/add-task/prioBtn.js"></script>
     <script src="./js/add-task/subTask-add-task.js"></script>
+    <script src="./js/contacts-edit-task.js"></script>
   </body>
 </html>
