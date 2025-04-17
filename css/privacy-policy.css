@@ -7,6 +7,7 @@
   color: #000;
   background-color: #f6f7f8;
   min-height: 100vh;
+  margin-top: 8px;
 }
 
 .main-content h1 {
@@ -73,6 +74,7 @@
   .main-content {
     margin-left: 0;
     padding: 40px 30px;
+    padding-bottom: 120px;
   }
 
   .main-content h1 {
@@ -92,6 +94,7 @@
 @media (max-width: 480px) {
   .main-content {
     padding: 30px 20px;
+    padding-bottom: 150px;
   }
 
   .main-content h1 {

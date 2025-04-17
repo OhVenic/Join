@@ -1,31 +1,39 @@
-/*Functions with Clear button - clear form */
-
-function changeToBlueIcon() {
-  document.getElementById("clear").classList.add("dp-none");
-  document.getElementById("clear-hover").classList.remove("dp-none");
+async function init() {
+  await loadContacts("contactList");
+  await loadTasks("taskList");
+  await showLoggedInInfo();
+  selectPrio("medium");
 }
 
-function changeToBlackIcon() {
-  document.getElementById("clear").classList.remove("dp-none");
-  document.getElementById("clear-hover").classList.add("dp-none");
+async function showLoggedInInfo() {
+  await loadLoginInfo("whoIsLoggedIn");
+  if (loginInfo[0].isGuestLoggedIn === true) {
+    document.getElementById("initialLetter").innerHTML = "G";
+  } else {
+    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
+  }
 }
 
 function clearTaskForm() {
   subtasks = [];
+  clearInputs();
+  changeSubtaskButtons();
+  unselectPrio("urgent");
+  unselectPrio("medium");
+  unselectPrio("low");
+  selectedContacts = [];
+  removeFieldRequired();
+}
+
+function clearInputs() {
   document.getElementById("subtask-list").innerHTML = "";
   document.getElementById("subtask").value = "";
   document.getElementById("add-task-title").value = "";
   document.getElementById("add-task-due-date").value = "";
   document.getElementById("add-task-description").value = "";
-  changeSubtaskButtons();
+  document.getElementById("selected-avatars").innerHTML = "";
   document.getElementById("category").value = "";
   document.getElementById("assigned-to").value = "";
-  unselectPrio("urgent");
-  unselectPrio("medium");
-  unselectPrio("low");
-  selectedContacts = [];
-  document.getElementById("selected-avatars").innerHTML = "";
-  removeFieldRequired();
 }
 
 function errorTaskAlreadyExists() {
@@ -73,22 +81,6 @@ function goToBoards() {
   }, 1000);
 }
 
-//Getting tasks from Firebase
-
-async function init() {
-  await loadContacts("contactList");
-  await loadTasks("taskList");
-  await showLoggedInInfo();
-}
-async function showLoggedInInfo() {
-  await loadLoginInfo("whoIsLoggedIn");
-  if (loginInfo[0].isGuestLoggedIn === true) {
-    document.getElementById("initialLetter").innerHTML = "G";
-  } else {
-    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
-  }
-}
-
 async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
@@ -101,8 +93,6 @@ async function loadTasks(path = "") {
     console.error("Response Failed");
   }
 }
-
-//Save the taskList from Firebase
 
 function canSaveTask() {
   const titleInput = document.getElementById("add-task-title").value;
@@ -120,29 +110,45 @@ function saveTaskInputs() {
     console.log("Task already exists or the input fields are empty");
   }
 }
+
 let selectedColumn = "to-do";
+
 function createTaskObject(id) {
-  const titleInput = document.getElementById("add-task-title").value;
-  const dateInput = document.getElementById("add-task-due-date").value;
-  const categoryInput = document.getElementById("category").value;
-  const descriptionInput = document.getElementById("add-task-description").value;
-  const assignedTo = mapArrayToObject(selectedContactsNames);
-  const subtasksObj = mapArrayToObject(subtasks);
-  // console.log(selectedColumn)
   return {
     id: id,
     column: selectedColumn,
-    assigned_to: assignedTo,
-    category: categoryInput,
-    date: dateInput,
-    description: descriptionInput,
+    assigned_to: getAssignedTo(),
+    category: getCategoryInput(),
+    date: getDateInput(),
+    description: getDescriptionInput(),
     priority: selectedPrio,
-    subtasks: subtasksObj,
-    title: titleInput,
+    subtasks: getSubtasks(),
+    title: getTitleInput(),
   };
 }
-function generateUniqueId() {
-  return String(Date.now()); // Use the current timestamp as a unique ID
+
+function getTitleInput() {
+  return document.getElementById("add-task-title").value;
+}
+
+function getDateInput() {
+  return document.getElementById("add-task-due-date").value;
+}
+
+function getCategoryInput() {
+  return document.getElementById("category").value;
+}
+
+function getDescriptionInput() {
+  return document.getElementById("add-task-description").value;
+}
+
+function getAssignedTo() {
+  return mapArrayToObject(selectedContactsNames);
+}
+
+function getSubtasks() {
+  return mapArrayToObject(subtasks);
 }
 
 function createTask() {
@@ -154,17 +160,7 @@ function createTask() {
     saveTaskInputs();
     showLog();
     goToBoards();
-    console.log(selectedColumn);
   }
-}
-
-//I have to create Objects from Arrays because Firebase is not supporting Arrays
-
-function mapArrayToObject(array) {
-  return array.reduce((obj, item, index) => {
-    obj[index] = item;
-    return obj;
-  }, {});
 }
 
 async function addTaskToDatabase(id, task) {
@@ -193,4 +189,29 @@ async function putData(path = "", data = {}) {
     body: JSON.stringify(data),
   });
   return (responseToJson = await response.json());
+}
+
+/*Functions with Clear button - "Clear form" */
+
+function changeToBlueIcon() {
+  document.getElementById("clear").classList.add("dp-none");
+  document.getElementById("clear-hover").classList.remove("dp-none");
+}
+
+function changeToBlackIcon() {
+  document.getElementById("clear").classList.remove("dp-none");
+  document.getElementById("clear-hover").classList.add("dp-none");
+}
+
+// Helper functions
+
+function mapArrayToObject(array) {
+  return array.reduce((obj, item, index) => {
+    obj[index] = item;
+    return obj;
+  }, {});
+}
+
+function generateUniqueId() {
+  return String(Date.now());
 }

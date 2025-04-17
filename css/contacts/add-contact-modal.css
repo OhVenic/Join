@@ -1,0 +1,248 @@
+.overlay {
+  position: absolute;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.322);
+}
+
+.created-contact-msg {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #2a3647;
+  color: #ffffff;
+  border-radius: 20px;
+  width: 326px;
+  height: 74px;
+  box-shadow: 0px 4px 0px 0px rgb(0, 0, 0, 0.1);
+  position: fixed;
+  left: 60%;
+  top: 70%; /* Set the vertical position */
+  transform: translateX(100vw); /* Start off-screen to the right */
+  animation: slideInFromRight cubic-bezier(0.7, 0, 0.84, 0) 0.75s 1 normal forwards;
+  z-index: 9999;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100vw); /* Start off-screen */
+  }
+  100% {
+    transform: translateX(-60%); /* Center horizontally */
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(-60%); /* Start from the center */
+  }
+  100% {
+    transform: translateX(100vw); /* Slide back off-screen */
+  }
+}
+
+.closing {
+  animation: slideOutToRight cubic-bezier(0.16, 1, 0.3, 1) 0.45s 1 normal forwards;
+}
+
+.modal-cont {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translateX(100vw);
+  animation: slideInFromRightModal 0.45s forwards;
+}
+
+@keyframes slideInFromRightModal {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.closing-add {
+  animation: slideOutToRightModal 0.45s forward;
+}
+
+@keyframes slideOutToRightModal {
+  0% {
+    transform: translateX(-50%); /* Start from the center */
+  }
+  100% {
+    transform: translateX(100vw); /* Slide back off-screen */
+  }
+}
+
+.add-contact-modal {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 1000;
+  width: 1100px;
+  height: 600px;
+  border-radius: 20px;
+  display: flex;
+}
+.add-contact-modal-header {
+  background-color: rgba(42, 54, 71, 1);
+  color: white;
+  width: 500px;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.main-logo-modal {
+  width: 55px;
+  height: 66px;
+}
+.separator-modal {
+  width: 90px;
+  height: 2px;
+  background-color: rgba(0, 124, 238, 1);
+}
+.add-contact-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+.modal-title {
+  font-size: 50px;
+}
+.modal-subtitle {
+  font-size: 20px;
+  font-weight: 500;
+}
+.avatar-empty {
+  width: 120px;
+  height: 120px;
+}
+.main-modal-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding: 30px;
+}
+.add-contact-modal-form {
+  left: 400px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 21px;
+}
+.add-contact-modal-form input,
+.edit-contact-modal-form input {
+  width: 422px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid rgba(209, 209, 209, 1);
+  padding-left: 10px;
+  font-size: 18px;
+  position: relative;
+}
+.add-contact-modal-form input::placeholder {
+  color: rgba(209, 209, 209, 1);
+  /* padding-left:10px; */
+  font-size: 18px;
+}
+.add-contact-modal-form input:focus,
+.edit-contact-modal-form input:focus {
+  border-color: #29abe2 !important; /* Change the border color to blue */
+  outline: none;
+  box-shadow: 0 0 0 1px #29abe2;
+}
+
+.input-imgs {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  z-index: 999;
+}
+
+.name {
+  right: 120px;
+  top: 170px;
+}
+.email {
+  right: 120px;
+  top: 240px;
+}
+.phone {
+  right: 120px;
+  top: 310px;
+}
+.add-contact-modal-btns {
+  display: flex;
+  gap: 30px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 0px 0px #0000001a;
+}
+.cancel {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 126px;
+  height: 56px;
+  border: 1px solid #2a3647;
+  gap: 10px;
+  font-size: 18px;
+}
+.cancel:hover {
+  color: #29abe2;
+  border: 1px solid #29abe2;
+}
+.create-contact {
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 214px;
+  height: 57px;
+  color: #ffffff;
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+  background-color: #2a3647;
+  transition: background-color 100ms ease-in-out;
+}
+.create-contact:hover {
+  background-color: #29abe2;
+}
+
+.exit-modal-btn {
+  position: absolute;
+  right: 80px;
+  top: 50px;
+  width: 32px;
+  height: 32px;
+}
+.exit-modal-btn:hover {
+  border-radius: 50%;
+  background-color: rgb(167, 162, 162, 0.2);
+  cursor: pointer;
+}
+.close-resp {
+  display: none;
+}

@@ -8,6 +8,11 @@
   .add-task-2 input {
     width: 280px;
   }
+  .drop-down-contact-list,
+  .drop-down-category-list {
+    width: 280px;
+    font-size: 14px;
+  }
 
   .add-task-1,
   .add-task-2,
@@ -52,6 +57,10 @@
   input,
   .add-task-description,
   .add-task-2 input {
+    width: 360px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list {
     width: 360px;
   }
 
@@ -139,7 +148,11 @@
   input,
   .add-task-description,
   .add-task-2 input {
-    width: 560px;
+    width: 360px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list {
+    width: 550px;
   }
 
   .add-task-1,
@@ -230,6 +243,11 @@
   .cancel-or-accept {
     top: 44px;
   }
+  .cancel-task-img,
+  .accept-task-img,
+  .small-separator {
+    top: 40px;
+  }
 }
 @media (max-width: 600px) {
   .add-task-2 input {
@@ -238,6 +256,10 @@
   input,
   .add-task-description,
   .priority-btns {
+    width: 450px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list {
     width: 450px;
   }
   .add-task-1,
@@ -255,6 +277,11 @@
   input[type="date"] {
     font-size: 15px;
   }
+  .cancel-task-img,
+  .accept-task-img,
+  .small-separator {
+    top: 42px;
+  }
 }
 
 @media (max-width: 500px) {
@@ -265,6 +292,10 @@
   .priority-btns {
     width: 360px;
     height: 40px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list {
+    width: 360px;
   }
 
   .add-task-description {
@@ -283,6 +314,11 @@
   }
   .add-subtask-img,
   .cancel-or-accept {
+    top: 40px;
+  }
+  .cancel-task-img,
+  .accept-task-img,
+  .small-separator {
     top: 40px;
   }
 }
@@ -321,5 +357,9 @@
 
   .clear-btn {
     width: 120px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list {
+    width: 280px;
   }
 }

@@ -34,6 +34,22 @@
   .searchfield {
     width: 80%;
   }
+  .search_add_task_btn {
+    justify-content: flex-start;
+  }
+  .search-field-and-icons {
+    position: relative;
+    width: 300px;
+  }
+  .search-field-and-icons input {
+    width: 300px;
+  }
+  .search-icon {
+    right: 10px;
+  }
+  .separator-search {
+    right: 45px;
+  }
 }
 
 @media (max-width: 970px) {
@@ -41,10 +57,25 @@
     width: 60%;
   }
   .search-icon {
-    right: 255px;
+    right: 10px;
   }
   .separator-search {
-    right: 295px;
+    right: 45px;
+  }
+}
+
+@media (max-width: 850px) {
+  .search_add_task_btn {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 115px;
+    height: 0px;
+  }
+  .error-msg-not-found {
+    font-size: 13px;
+  }
+  .search-container {
+    height: 65px;
   }
 }
 
@@ -55,11 +86,14 @@
   .board-content {
     margin: 0px;
   }
+  .search_add_task_btn {
+    margin-bottom: 55px;
+  }
   .title-section {
     margin: 50px 0px 50px 0px;
     justify-content: flex-start;
     align-items: normal;
-    gap: 30px;
+    /* gap: 30px; */
   }
   .title {
     display: flex;

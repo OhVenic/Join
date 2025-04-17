@@ -73,12 +73,16 @@ function cardDetails(id) {
     </ul>
     <div class="overlay-footer">
     <div class="task-overlay-footer">
-     <div class="contact-change edit" onclick="editTask(${task.id})"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
+     <div class="contact-change edit" onclick="editTask(${
+       task.id
+     })"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
                     <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
                     <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
                     <p>Edit</p>
                   </div>
-                  <div class="contact-change delete-display" onclick="deleteTask(${task.id})" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
+                  <div class="contact-change delete-display" onclick="deleteTask(${
+                    task.id
+                  })" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
                     <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
                     <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
                     <p>Delete</p>
@@ -116,7 +120,7 @@ function deleteTask(id) {
 async function confirmDeleteTask() {
   if (taskToDelete) {
     await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskToDelete}.json`, {
-      method: "DELETE"
+      method: "DELETE",
     });
     taskToDelete = null;
     document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
@@ -210,7 +214,7 @@ function editTask(id) {
   `;
 
   // Set priority
-  document.getElementById('edit-priority-hidden').value = task.priority;
+  document.getElementById("edit-priority-hidden").value = task.priority;
   selectPriorityEdit(task.priority);
 
   // Reset & prepare contact selections
@@ -220,7 +224,7 @@ function editTask(id) {
   // assigned_to sind Kontakt-Indizes (z. B. [0, 1])
   if (Array.isArray(task.assigned_to)) {
     editSelectedContacts = [...task.assigned_to];
-    editSelectedContactsNames = task.assigned_to.map(i => contacts[i]?.name);
+    editSelectedContactsNames = task.assigned_to.map((i) => contacts[i]?.name);
   }
 
   // Render Kontaktliste
@@ -259,7 +263,7 @@ function selectPriorityEdit(prio) {
   document.getElementById("edit-priority-hidden").value = prio;
 
   const prioButtons = ["low", "medium", "urgent"];
-  prioButtons.forEach(p => {
+  prioButtons.forEach((p) => {
     const btn = document.getElementById(`prio-${p}`);
     btn.classList.remove("prio-selected-low", "prio-selected-medium", "prio-selected-urgent");
 
@@ -336,11 +340,18 @@ function subtaskProgress(subtasksArr) {
 function findTask() {
   let inputValueRef = document.getElementById("searchfield");
   let inputValue = inputValueRef.value.trim();
+  let taskNotFoundElement = document.getElementById("task-not-found");
+
   if (inputValue.length > 2) {
     searchTaskTitles();
   } else {
     filteredTasks = [];
     updateHTML();
+
+    if (taskNotFoundElement) {
+      taskNotFoundElement.classList.add("dp-none");
+    }
+    inputValueRef.style.borderColor = "";
   }
 }
 let filteredTasks = [];
@@ -348,19 +359,21 @@ function searchTaskTitles() {
   let searchFieldRef = document.getElementById("searchfield");
   if (searchFieldRef.value.length > 2) {
     filteredTasks = tasksArr.filter((task) => task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase()));
-    console.log(filteredTasks);
     updateHTML();
   }
-}
 
-function showPriority(priority) {
-  let prioHTML = "";
-  if (priority) {
-    prioHTML += `<img class="prio-img-card-s" src="./assets/icons/priority-${priority}.svg" alt="Prio Btn">`;
+  let taskNotFoundElement = document.getElementById("task-not-found");
+  if (filteredTasks.length === 0) {
+    if (taskNotFoundElement) {
+      taskNotFoundElement.classList.remove("dp-none");
+    }
+    searchFieldRef.style.borderColor = "red";
   } else {
-    prioHTML = "";
+    if (taskNotFoundElement) {
+      taskNotFoundElement.classList.add("dp-none");
+    }
+    searchFieldRef.style.borderColor = "";
   }
-  return prioHTML;
 }
 
 async function init() {

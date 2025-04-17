@@ -20,10 +20,6 @@ function closeSubMenu() {
   }
 }
 
-function preventBubbling(event) {
-  event.stopPropagation();
-}
-
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
   if (loginInfo[0].isGuestLoggedIn === true) {

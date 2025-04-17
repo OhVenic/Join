@@ -14,9 +14,6 @@
   align-items: center;
   /* flex: 1; */
 }
-h1 {
-  font-size: 61px;
-}
 .go-back-arrow {
   position: absolute;
   top: 20px;

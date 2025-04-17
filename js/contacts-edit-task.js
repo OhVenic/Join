@@ -45,8 +45,8 @@ function editRenderContactList() {
   
   //to keep track of the selected elements in the dropdown List
   //we need to create an array, to somewhere save these elements
-  let editSelectedContacts = [];
-  let editSelectedContactsNames = [];
+  // let editSelectedContacts = [];
+  // let editSelectedContactsNames = [];
   function editSelectContact(i) {
     document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
     document.getElementById(`${i}`).style.color = "white";

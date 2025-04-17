@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
     
-    <link rel="stylesheet" href="./css/add-task.css" />
-    <link rel="stylesheet" href="./css/responsive/add-task-resp.css" />
-    <link rel="stylesheet" href="./css/global_Dora.css" />
-    <link rel="stylesheet" href="./css/navbar-header-ver2.css" />
+    <link rel="stylesheet" href="./css/add-task/add-task.css" />
+    <link rel="stylesheet" href="./css/add-task/add-task-resp.css" />
+    <link rel="stylesheet" href="./css/standard/standard.css" />
+    <link rel="stylesheet" href="./css/standard/navbar-header.css" />
+    <link rel="icon" href="./assets/icons/join-main-logo.png" type="image/png">
   </head>
   <body onload="init()" onclick="closeSubMenu()">
     <header class="header-general">
@@ -260,7 +261,7 @@
                 src="./assets/icons/add.svg"
                 alt="Add subtask"
               />
-              <div class="cancel-or-accept">
+              <!-- <div class="cancel-or-accept"> -->
                 <img
                   onclick="cancelSubTask()"
                   id="cancel-task-img"
@@ -276,7 +277,7 @@
                   alt="Accept Subtask"
                   onclick="addSubtask()"
                 />
-              </div>
+              <!-- </div> -->
               <div class="subtask-list" id="subtask-list"></div>
             </div>
           </section>
@@ -342,6 +343,7 @@
     <script src="./js/add-task/contacts-add-task.js"></script>
     <script src="./js/add-task/prioBtn.js"></script>
     <script src="./js/add-task/subTask-add-task.js"></script>
+    <script src="./templates/add-task/add-task-template.js"></script>
     <!-- <script src="./js/storage.js"></script> -->
   </body>
 </html>

@@ -1,5 +1,3 @@
-/*Category Section */
-
 let category = ["Technical Task", "User Story"];
 
 function showCategoryList(event) {

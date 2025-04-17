@@ -1,6 +1,5 @@
-/* Functions with the Priority Buttons*/
-
 let selectedPrio;
+
 function selectPrio(prio) {
   const prios = ["urgent", "medium", "low"];
   prios.forEach((p) => unselectPrio(p));

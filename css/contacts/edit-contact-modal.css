@@ -1,0 +1,179 @@
+.edit-contact-modal {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 1000;
+  width: 1100px;
+  height: 600px;
+  border-radius: 20px;
+  display: flex;
+}
+.edit-contact-modal-header {
+  background-color: rgba(42, 54, 71, 1);
+  color: white;
+  width: 500px;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.edit-cont-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.main-logo-modal {
+  width: 55px;
+  height: 66px;
+}
+.separator-modal {
+  width: 90px;
+  height: 2px;
+  background-color: rgba(0, 124, 238, 1);
+}
+.edit-contact-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+.edit-modal-title {
+  font-size: 50px;
+}
+
+.avatar-user {
+  width: 120px;
+  height: 120px;
+}
+.edit-main-modal-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding: 30px;
+}
+.edit-contact-modal-form {
+  left: 400px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.edit-contact-modal-form input {
+  width: 422px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid rgb(167, 162, 162);
+}
+
+.edit-contact-modal-btns {
+  display: flex;
+  gap: 30px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 0px 0px #0000001a;
+}
+.delete {
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 126px;
+  height: 56px;
+  border: 1px solid #2a3647;
+}
+.delete:hover {
+  color: #29abe2;
+  border: 1px solid #29abe2;
+  cursor: pointer;
+}
+
+.delete-display:hover {
+  color: #29abe2;
+  cursor: pointer;
+}
+.save-contact {
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 214px;
+  height: 57px;
+  gap: 10px;
+  color: #ffffff;
+  display: flex;
+  background-color: #2a3647;
+  transition: background-color 100ms ease-in-out;
+}
+.save-contact:hover {
+  background-color: #29abe2;
+}
+
+.exit-modal-btn {
+  position: absolute;
+  right: 80px;
+  top: 50px;
+  width: 32px;
+  height: 32px;
+}
+.exit-modal-btn:hover {
+  border-radius: 50%;
+  background-color: rgb(167, 162, 162, 0.2);
+  cursor: pointer;
+}
+
+.avatar-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+  border: 2px solid white;
+  /* padding: 16px; */
+  font-size: 50px;
+  width: 120px;
+  height: 120px;
+}
+
+.modal-edit-cont {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translateX(100vw);
+  animation: slideInFromRightModal 0.45s forwards;
+}
+
+@keyframes slideInFromRightModal {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.closing-edit {
+  animation: slideOutToRightModal 0.45s forward;
+}
+
+@keyframes slideOutToRightModal {
+  0% {
+    transform: translateX(-50%); /* Start from the center */
+  }
+  100% {
+    transform: translateX(100vw); /* Slide back off-screen */
+  }
+}
+
+.edit-resp-menu {
+  display: none;
+}

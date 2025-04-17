@@ -14,29 +14,11 @@ async function showLoggedInInfo() {
 }
 let usersArr = [];
 
-function contactListItemTemplate(contact) {
-  return `<div class="contact-list-item">
-            <div id="contact-separation"></div>
-            <div class="contact-data" id="contact-${contact.id}" onclick='showContactDetails("${contact.id}")'>
-              <div class="contact-avatar" style="background-color:${contact.user.color};" id="avatar-${contact.id}">${contact.user.avatar}</div>
-              <div class="contact-right">
-                <p class="list-contact-name">${contact.user.name}</p>
-                <span class="list-contact-email">${contact.user.email}</span>
-              </div>
-            </div>
-          </div>`;
-}
-
-function contactAlphabetTemplate(contact) {
-  return `<div class="alphabet-letter">${getFirstLetter(contact.user.name)}</div>
-  <div class="separator"></div>`;
-}
 async function getUsersFromDatabase() {
   let userResponse = await getAllUsers("contactList");
   let UserKeysArray = Object.keys(userResponse);
   for (let index = 0; index < UserKeysArray.length; index++) {
     let user = userResponse[UserKeysArray[index]];
-    // Validate the user object before adding it to the array
     if (user && user.name && user.email) {
       usersArr.push({
         id: UserKeysArray[index],
@@ -46,28 +28,23 @@ async function getUsersFromDatabase() {
       console.warn(`Invalid user data at key ${UserKeysArray[index]}:`, user);
     }
   }
-  console.log(usersArr);
 }
 
 function renderContacts() {
-  // Create a sorted copy of the array to avoid modifying the original
   let sortedContactArr = [...usersArr].sort((a, b) => a.user.name.localeCompare(b.user.name));
   const contactsContainer = document.getElementById("contacts");
-  contactsContainer.innerHTML = ""; // Clear the container
-  let lastLetter = ""; // Keep track of the last rendered letter
+  contactsContainer.innerHTML = "";
+  let lastLetter = "";
   for (let i = 0; i < sortedContactArr.length; i++) {
     const contact = sortedContactArr[i];
-    // Skip rendering if the contact name is "Guest"
     if (contact.user.name === "Guest") {
       continue;
     }
     let currentLetter = getFirstLetter(contact.user.name);
-    // Render the letter and separator only if it's different from the last one
     if (currentLetter !== lastLetter) {
       contactsContainer.innerHTML += contactAlphabetTemplate(contact);
-      lastLetter = currentLetter; // Update the last rendered letter
+      lastLetter = currentLetter;
     }
-    // Render the contact item
     contactsContainer.innerHTML += contactListItemTemplate(contact);
   }
 }
@@ -80,36 +57,50 @@ function getFirstLetter(name) {
 // CONTACT DETAILS, WHEN SELECTED, ON THE RIGHT SIDE
 
 function showContactDetails(id) {
-  // Find the contact by matching the id
   const contact = usersArr.find((user) => user.id === String(id));
   if (!contact) {
     console.error(`Contact with id ${id} not found.`);
     return;
   }
   document.getElementById("contact-display-contact-data").innerHTML = contactDetailTemplate(contact);
+  if (window.innerWidth < 900) {
+    document.getElementById("contact-display-container").style.display = "block";
+  }
   highlightSelected(id);
 }
 
-function highlightSelected(id) {
-  // Step 1: Find the previously selected contact
+function hideContactDetailsFloating() {
+  if (window.innerWidth < 900) {
+    document.getElementById("contact-display-container").style.display = "none";
+  } else if (window.innerWidth > 900) {
+    document.getElementById("contact-display-container").style.display = "block";
+  }
   const previouslySelected = document.querySelector(".contact-data.highlighted");
   if (previouslySelected) {
-    // Step 2: Remove the 'highlighted' class and reset styles
     previouslySelected.classList.remove("highlighted");
-    previouslySelected.style.backgroundColor = "transparent"; // Reset background color
-    previouslySelected.style.borderRadius = "10px"; // Reset border radius
-    previouslySelected.style.color = "black"; // Reset text color
+    previouslySelected.style.backgroundColor = "transparent";
+    previouslySelected.style.borderRadius = "10px";
+    previouslySelected.style.color = "black";
   }
+}
 
-  // Step 3: Find the newly selected contact by its ID
-  const selectedContact = document.getElementById(`contact-${id}`);
-
-  // Step 4: Add the 'highlighted' class and apply highlight styles
+function highlightSelected(id) {
+  let previouslySelected = document.querySelector(".contact-data.highlighted");
+  if (previouslySelected) {
+    previouslySelected.classList.remove("highlighted");
+    previouslySelected.style.backgroundColor = "transparent";
+    previouslySelected.style.borderRadius = "10px";
+    previouslySelected.style.color = "black";
+  }
+  let selectedContact = document.getElementById(`contact-${id}`);
   if (selectedContact) {
     selectedContact.classList.add("highlighted");
-    selectedContact.style.backgroundColor = "rgba(42, 54, 71, 1)"; // Highlight background color
-    selectedContact.style.borderRadius = "10px"; // Rounded corners
-    selectedContact.style.color = "white"; // Highlight text color
+    selectedContact.style.backgroundColor = "rgba(42, 54, 71, 1)";
+    selectedContact.style.borderRadius = "10px";
+    selectedContact.style.color = "white";
+  }
+  if (window.innerWidth > 900) {
+    document.getElementById("contact-display-container").style.display = "block";
   }
 }
 
@@ -117,34 +108,14 @@ function hideContactDetails() {
   document.getElementById("contact-display-contact-data").innerHTML = "";
 }
 
-function contactDetailTemplate(contact) {
-  return `<div class="contact-data-1">
-              <div class="avatar-m" id="avatar-detail-${contact.id}" style="background-color:${contact.user.color}">${contact.user.avatar}</div>
-              <div class="contact-disp-main">
-                <div class="contact-name-m">${contact.user.name}</div>
-                <div class="contact-edit-delete">
-                  <div class="contact-change edit" id="${contact.id}" onclick="openEditContactModal('${contact.id}')" onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
-                    <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
-                    <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
-                    <p>Edit</p>
-                  </div>
-                  <div class="contact-change delete-display" id="${contact.id}" onclick="deleteContact('${contact.id}')" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
-                    <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
-                    <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
-                    <p>Delete</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="contact-data-2">
-              <p class="contact-data-2-title">Contact information</p>
-              <div class="email-phone">
-                <span class="email-title">Email</span>
-                <p class="email blue">${contact.user.email}</p>
-                <span class="phone-title">Phone</span>
-                <p class="phone">${contact.user.phoneNumber}</p>
-              </div>
-            </div>`;
+function openEditMenu() {
+  document.getElementById("contact-edit-delete").classList.add("open-menu");
+  document.getElementById("contact-edit-delete").classList.remove("close-menu");
+}
+
+function closeEditMenu() {
+  document.getElementById("contact-edit-delete").classList.remove("open-menu");
+  document.getElementById("contact-edit-delete").classList.add("close-menu");
 }
 
 function changeToBlueIconEdit() {
@@ -169,11 +140,9 @@ function changeToBlackIconDelete() {
 // ADD CONTACT MODAL
 
 function openAddContactModal() {
-  // Clear the input fields
   document.getElementById("add-cont-name").value = "";
   document.getElementById("add-cont-email").value = "";
   document.getElementById("add-cont-phone").value = "";
-  // Show the modal
   document.getElementById("modal-cont").classList.remove("dp-none");
   document.getElementById("overlay").classList.remove("dp-none");
 }
@@ -189,20 +158,17 @@ async function getAllUsers(path) {
   return (responseToJson = await response.json());
 }
 
-//refactored
 function createContact() {
-  const { name, email, phone } = getContactInputs();
+  let { name, email, phone } = getContactInputs();
   if (areInputsEmpty(name, email, phone)) return console.log("inputs are empty");
   if (userAlreadyExists(usersArr, name, email)) return console.log("already exists");
-  const newUser = createNewUser(name, email, phone);
+  let newUser = createNewUser(name, email, phone);
   usersArr.push(newUser);
   saveUserToDatabase(newUser);
   renderContacts();
   showContactDetails(newUser.id);
-  // Highlight the newly created contact
   highlightSelected(newUser.id);
-  // Scroll to the newly created contact
-  const newContactElement = document.getElementById(`contact-${newUser.id}`);
+  let newContactElement = document.getElementById(`contact-${newUser.id}`);
   if (newContactElement) {
     newContactElement.scrollIntoView({ behavior: "smooth", block: "center" });
   }
@@ -231,13 +197,9 @@ function getContactInputs() {
   };
 }
 
-function areInputsEmpty(name, email, phone) {
-  return !name || !email || !phone;
-}
-
 function createNewUser(name, email, phone) {
   return {
-    id: generateUniqueId(), // Generate a unique ID
+    id: generateUniqueId(),
     user: {
       color: createRandomColor(),
       email,
@@ -250,7 +212,7 @@ function createNewUser(name, email, phone) {
 }
 
 function generateUniqueId() {
-  return String(Date.now()); // Use the current timestamp as a unique ID
+  return String(Date.now());
 }
 
 function saveUserToDatabase({ id, user }) {
@@ -295,11 +257,7 @@ function openEditContactModal(id) {
     console.error(`Contact with id ${id} not found.`);
     return;
   }
-
   document.getElementById("modal-cont-edit").classList.remove("dp-none");
-  console.log(`${id} clicked`);
-  console.log(contact.user.avatar);
-
   document.getElementById("avatar-user").innerHTML = `${contact.user.avatar}`;
   document.getElementById("avatar-user").style.backgroundColor = `${contact.user.color}`;
   document.getElementById("edit-cont-name").value = `${contact.user.name}`;
@@ -324,14 +282,10 @@ function saveContact(id) {
   let name = document.getElementById("edit-cont-name");
   let email = document.getElementById("edit-cont-email");
   let phone = document.getElementById("edit-cont-phone");
-  console.log(name.value, email.value, phone.value);
-
   usersArr[contactIndex].user.name = name.value;
   usersArr[contactIndex].user.email = email.value;
   usersArr[contactIndex].user.phoneNumber = phone.value;
   usersArr[contactIndex].user.avatar = createAvatar(name.value);
-  console.log(usersArr);
-
   let editedUser = editUser(contactIndex);
   saveUserToDatabase(editedUser);
   renderContacts();
@@ -361,20 +315,13 @@ async function addEditSingleUser(id, user) {
   putData(`contactList/${id}`, user);
 }
 
-function btnsTemplateEditContact(index) {
-  return `<div class="delete btn" onclick="deleteContact(${index})">Delete</div>
-          <div class="save-contact btn" onclick="saveContact(${index})"><p>Save</p>
-          <img src="./assets/icons/check-white.svg" alt="Check White Icon">
-          </div>`;
-}
-
 function deleteContact(id) {
   const index = usersArr.findIndex((user) => user.id === String(id));
   if (index === -1) {
     console.error(`Contact with id ${id} not found.`);
     return;
   }
-  usersArr.splice(index, 1); // Remove the contact from the usersArr array
+  usersArr.splice(index, 1);
   removeSingleUser(id);
   closeEditContactModal();
   hideContactDetails();

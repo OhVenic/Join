@@ -17,30 +17,14 @@ function closeSubMenu() {
     document.getElementById("subMenu").classList.add("dp-none");
   }
 }
-async function logOut() {
-  // localStorage.removeItem("user");
-  await putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: false, userLoggedIn: { name: "", avatar: "" } });
-  window.location.href = "index.html";
-}
-function preventBubbling(event) {
-  event.stopPropagation();
-}
-async function loginGuest() {
-  console.log("guest logged in");
-  await putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: true, userLoggedIn: { name: "", avatar: "" } });
-  window.location.href = "./dashboard.html";
-}
-
-//let isGuestLoggedIn =
 
 let loginInfo = [];
+
 async function loadLoginInfo(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
     let responseToJson = await response.json();
-    console.log(responseToJson);
     loginInfo.push(responseToJson);
-    console.log(loginInfo);
   } catch (error) {
     console.error("Response Failed");
   }
@@ -56,17 +40,25 @@ async function putLoginInfo(path = "", data = {}) {
   return (responseToJson = await response.json());
 }
 
+async function logOut() {
+  await putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: false, userLoggedIn: { name: "", avatar: "" } });
+  window.location.href = "index.html";
+}
+
+async function loginGuest() {
+  console.log("guest logged in");
+  await putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: true, userLoggedIn: { name: "", avatar: "" } });
+  window.location.href = "./dashboard.html";
+}
+
 let tasksArr = [];
 async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
     let responseToJson = await response.json();
-    console.log(responseToJson);
     for (let key in responseToJson) {
       tasksArr.push(responseToJson[key]);
     }
-    console.log(tasksArr);
-    console.log(tasksArr.length);
   } catch (error) {
     console.error("Response Failed");
   }
@@ -84,7 +76,6 @@ async function loadContacts(path = "") {
   } catch (error) {
     console.error("Response Failed");
   }
-  console.log(contacts);
 }
 
 async function putData(path = "", data = {}) {
@@ -103,4 +94,8 @@ async function deleteData(path = "") {
     method: "DELETE",
   });
   return (responseToJson = await response.json());
+}
+
+function preventBubbling(event) {
+  event.stopPropagation();
 }

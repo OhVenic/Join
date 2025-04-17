@@ -239,38 +239,3 @@ function signUp() {
     goToLogin();
   }
 }
-
-//to refactor! ORIGINAL
-// function addUser() {
-//   let email = document.getElementById("email");
-//   let password = document.getElementById("password");
-//   let name = document.getElementById("name");
-//   if (areInputsEmpty() || userAlreadyExists(usersArr, email.value, password.value)) {
-//     console.log("input empty or user already exists");
-//     showRequiredFields();
-//     showErrorMsgs();
-//   } else if (document.getElementById("password").value !== document.getElementById("confirm-password").value) {
-//     document.getElementById("error-confirm-pw").classList.remove("dp-none");
-//   } else {
-//     console.log("input is not empty and user does not exist");
-//     usersArr.push({
-//       id: String(usersArr.length),
-//       user: {
-//         color: createRandomColor(),
-//         email: email.value,
-//         name: name.value,
-//         password: password.value,
-//         avatar: createAvatar(name.value),
-//         phoneNumber: "",
-//       },
-//     });
-//     addEditSingleUser(usersArr[usersArr.length - 1].id, {
-//       color: usersArr[usersArr.length - 1].user.color,
-//       avatar: usersArr[usersArr.length - 1].user.avatar,
-//       email: usersArr[usersArr.length - 1].user.email,
-//       name: usersArr[usersArr.length - 1].user.name,
-//       password: usersArr[usersArr.length - 1].user.password,
-//       phoneNumber: "",
-//     });
-//   }
-// }

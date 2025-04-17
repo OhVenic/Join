@@ -165,20 +165,20 @@
 }
 
 .prio-selected-low {
-  background-color: #7AE229;
-  border-color: #7AE229;
+  background-color: #7ae229;
+  border-color: #7ae229;
   color: white;
 }
 
 .prio-selected-medium {
-  background-color: #FFA800;
-  border-color: #FFA800;
+  background-color: #ffa800;
+  border-color: #ffa800;
   color: white;
 }
 
 .prio-selected-urgent {
-  background-color: #FF3D00;
-  border-color: #FF3D00;
+  background-color: #ff3d00;
+  border-color: #ff3d00;
   color: white;
 }
 
@@ -581,8 +581,9 @@ li {
   top: 0;
   left: 0;
   width: 100vw;
+
   height: 100vh;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -595,7 +596,7 @@ li {
   border-radius: 12px;
   text-align: center;
   max-width: 300px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .confirmation-buttons {
@@ -705,8 +706,6 @@ li {
 .task-list {
   margin-bottom: 6px;
 }
-<<<<<<< HEAD
-=======
 
 /* Dropdown für Kontakte */
 .edit-assigned-section {
@@ -798,9 +797,3 @@ li {
 .dp-none {
   display: none;
 }
-
-
-
-
-
->>>>>>> dc5464fbfa12b5d5221327e480fa85d65a2c124d
