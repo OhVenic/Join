@@ -272,22 +272,22 @@ function selectPriorityEdit(prio) {
     }
   });
 }
-let tasksArr2 = [];
+// let tasksArr = [];
 
-async function getTasksFromDatabase() {
-  let userResponse = await getAllUsers("taskList");
-  let UserKeysArray = Object.keys(userResponse);
-  tasksArr = UserKeysArray.map((key) => ({
-    id: key,
-    ...userResponse[key],
-  }));
-  console.log("tasksArr:", tasksArr);
-}
+// async function getTasksFromDatabase() {
+//   let userResponse = await getAllUsers("taskList");
+//   let UserKeysArray = Object.keys(userResponse);
+//   tasksArr = UserKeysArray.map((key) => ({
+//     id: key,
+//     ...userResponse[key],
+//   }));
+//   console.log("tasksArr:", tasksArr);
+// }
 
-async function getAllTasks(path) {
-  let response = await fetch(BASE_URL + path + ".json");
-  return (responseToJson = await response.json());
-}
+// async function getAllTasks(path) {
+//   let response = await fetch(BASE_URL + path + ".json");
+//   return (responseToJson = await response.json());
+// }
 
 async function closeCardDetails() {
   tasksArr = [];
@@ -374,6 +374,16 @@ function searchTaskTitles() {
     }
     searchFieldRef.style.borderColor = "";
   }
+}
+
+function showPriority(priority) {
+  let prioHTML = "";
+  if (priority) {
+    prioHTML += `<img class="prio-img-card-s" src="./assets/icons/priority-${priority}.svg" alt="Prio Btn">`;
+  } else {
+    prioHTML = "";
+  }
+  return prioHTML;
 }
 
 async function init() {
