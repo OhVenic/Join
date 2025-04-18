@@ -136,7 +136,6 @@ function cancelDeleteTask() {
 function editTask(id) {
   const task = tasksArr.find((task) => String(task.id) === String(id));
   if (!task) return;
-
   const overlay = document.getElementById("card-details-overlay");
   const content = overlay.querySelector(".card-details-content");
 
@@ -170,7 +169,7 @@ function editTask(id) {
 
       <div class="assigned-to-section frame-39">
         <label>Assigned to</label>
-        <div class="custom-dropdown" onclick="toggleEditContactDropdown(event)">
+        <div class="custom-dropdown" onclick="toggleEditContactDropdown(${task.id})">
           <div class="custom-dropdown-input">Select contacts to assign</div>
           <img class="assigned-to-img dropdown-img" src="./assets/icons/arrow_drop_down.svg" />
           <div class="drop-down-contact-list dp-none" id="edit-contact-dropdown" onclick="event.stopPropagation()"></div>
@@ -181,12 +180,16 @@ function editTask(id) {
       <div class="subtask-section">
         <label>Subtasks</label>
         <div id="edit-subtasks-list">
-          ${(task.subtasks || []).map((subtask, index) => `
+          ${(task.subtasks || [])
+            .map(
+              (subtask, index) => `
             <div class="subtask-edit-row">
               <span>${subtask}</span>
               <button type="button" onclick="deleteSubtask('${task.id}', ${index})">🗑️</button>
             </div>
-          `).join("")}
+          `
+            )
+            .join("")}
         </div>
         <div class="add-subtask-row">
           <input id="new-subtask" class="edit-input" placeholder="Add new subtask" />
@@ -205,7 +208,7 @@ function editTask(id) {
     </form>
   `;
 
-  document.getElementById('edit-priority-hidden').value = task.priority;
+  document.getElementById("edit-priority-hidden").value = task.priority;
   selectPriorityEdit(task.priority);
 
   editSelectedContacts = Array.isArray(task.assigned_to) ? [...task.assigned_to] : [];
@@ -224,7 +227,7 @@ async function saveEditedTask(event, taskId) {
   const date = form.date.value;
   const priority = document.getElementById("edit-priority-hidden").value;
 
-  const task = tasksArr.find(t => String(t.id) === String(taskId));
+  const task = tasksArr.find((t) => String(t.id) === String(taskId));
   if (!task) return;
 
   // Subtasks (werden im task bereits aktualisiert durch add/delete)
@@ -240,25 +243,24 @@ async function saveEditedTask(event, taskId) {
     date,
     priority,
     assigned_to,
-    subtasks
+    subtasks,
   };
 
   try {
-    await fetch(`${BASE_URL}tasks/${taskId}.json`, {
+    await fetch(`${BASE_URL}taskList/${taskId}.json`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedTask)
+      body: JSON.stringify(updatedTask),
     });
 
     // Lokales Array aktualisieren
-    const index = tasksArr.findIndex(t => String(t.id) === String(taskId));
+    const index = tasksArr.findIndex((t) => String(t.id) === String(taskId));
     if (index !== -1) tasksArr[index] = updatedTask;
 
     closeCardDetails();
     renderBoard(); // falls du ein Board-Update willst
-
   } catch (error) {
     console.error("Fehler beim Speichern des Tasks:", error);
   }

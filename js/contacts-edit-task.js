@@ -1,9 +1,9 @@
 // Toggle für das Dropdown-Menü
-function toggleEditDropdown(event) {
+function toggleEditDropdown(index) {
   event.stopPropagation();
   const dropdown = document.getElementById("edit-contact-dropdown");
   dropdown.classList.toggle("dp-none");
-  renderEditContactDropdown(); // Aktualisiere Dropdown-Inhalt
+  renderEditContactDropdown(index); // Aktualisiere Dropdown-Inhalt
 }
 
 // Rendern des Dropdown-Menüs
@@ -14,7 +14,7 @@ function renderEditContactDropdown() {
   contacts.forEach((contact, index) => {
     const selected = editSelectedContacts.includes(index);
     container.innerHTML += `
-      <div class="contactListElement" onclick="toggleEditContactSelection(${index})">
+      <div class="contactListElement" onclick="toggleEditContactSelection(${contact})">
         <div class="contact">
           <span class="avatar">${contact.avatar}</span>
           <span>${contact.name}</span>
@@ -36,23 +36,27 @@ function toggleEditContactSelection(index) {
     editSelectedContacts.push(index);
   }
   renderEditContactDropdown(); // Aktualisiere Dropdown-Inhalt
-  renderSelectedAvatars();     // Update Avatare unten
+  renderSelectedAvatars(index);
+  console.log(index); // Update Avatare unten
 }
 
-function renderSelectedAvatars() {
-  const avatarContainer = document.getElementById("selected-avatars-edit");
+function renderSelectedAvatars(index) {
+  const avatarContainer = document.getElementById("edit-selected-avatars");
   if (!avatarContainer) {
-    console.error('Avatar container not found');
-    return;  // Verhindert Fehler, wenn das Element nicht existiert
+    console.error("Avatar container not found");
+    return; // Verhindert Fehler, wenn das Element nicht existiert
   }
+  console.log(index);
 
   avatarContainer.innerHTML = "";
-  
+
   editSelectedContacts.forEach((index) => {
     const contact = contacts[index];
+    console.log(index);
+    console.log(contact);
     avatarContainer.innerHTML += `
-      <div class="selected-avatar" style="background-color:${contact.color}">
-        ${contact.avatar}
+      <div class="selected-avatar" style="background-color:purple">
+        avatar
       </div>
     `;
   });
@@ -69,7 +73,7 @@ async function addSubtask(taskId) {
   const text = input.value.trim();
   if (!text) return;
 
-  const task = tasksArr.find(t => String(t.id) === String(taskId));
+  const task = tasksArr.find((t) => String(t.id) === String(taskId));
   if (!task.subtasks) task.subtasks = [];
   task.subtasks.push(text);
 
@@ -78,7 +82,7 @@ async function addSubtask(taskId) {
 }
 
 async function deleteSubtask(taskId, index) {
-  const task = tasksArr.find(t => String(t.id) === String(taskId));
+  const task = tasksArr.find((t) => String(t.id) === String(taskId));
   if (!task || !task.subtasks) return;
 
   task.subtasks.splice(index, 1);
@@ -90,9 +94,9 @@ async function updateTaskInFirebase(task) {
     await fetch(`${BASE_URL}tasks/${task.id}.json`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(task)
+      body: JSON.stringify(task),
     });
   } catch (error) {
     console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
