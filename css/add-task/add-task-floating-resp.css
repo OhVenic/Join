@@ -97,7 +97,7 @@
     width: 100%;
     margin: 0 auto;
     height: calc(100% - 175px);
-    margin-top: 15px;
+    margin-top: 15px !important;
   }
   .main-board {
     padding: 20px;

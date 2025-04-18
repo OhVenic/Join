@@ -13,9 +13,10 @@
   justify-content: space-between;
   align-items: flex-end;
 }
-
-.search_add_task_btn {
+.title {
   display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .body {
@@ -99,6 +100,7 @@
 }
 
 .search_add_task_btn {
+  position: relative;
   display: flex;
   gap: 20px;
 }
@@ -108,8 +110,11 @@
   height: 48px;
 }
 
-.searchfield {
+.search-field-and-icon {
   position: relative;
+}
+
+.searchfield {
   width: 312px;
   border-radius: 10px;
   border: 1px solid rgba(168, 168, 168, 1);
