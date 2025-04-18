@@ -34,9 +34,7 @@
   .searchfield {
     width: 80%;
   }
-  .search_add_task_btn {
-    justify-content: flex-start;
-  }
+ 
   .search-field-and-icons {
     position: relative;
     width: 300px;
@@ -98,9 +96,16 @@
   .title {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    gap: 60px;
   }
   .title h1 {
     font-size: 47px;
+  }
+  .title-cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .main {
     margin-left: 20px;
@@ -110,7 +115,7 @@
   .search_add_task_btn {
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
   }
   .searchfield {
     width: 100%;
@@ -127,6 +132,8 @@
   }
   .add-task-btn-s {
     display: block;
+    height: 44px;
+    width: 44px;
   }
 
   .add-task-btn-s:hover {

@@ -311,7 +311,7 @@ function getInitials(element, contacts) {
     initials = element["assigned_to"]
       .map((name) => {
         let contact = contacts.find((c) => c.name === name);
-        let color = contact.color;
+        let color = contact && contact.color ? contact.color : "#999";
         let avatar = contact && contact.avatar ? contact.avatar : "G";
         return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
       })

@@ -311,7 +311,7 @@
                 />
                 <p>Board</p>
               </div></a>
-              <a href="contacts_Dora.html"><div class="menu-btns">
+              <a href="contacts.html"><div class="menu-btns">
                 <img
                   class="menu-icon"
                   src="./assets/icons/icon-contacts.png"
@@ -328,18 +328,22 @@
           <div class="board-content">
           <div class="title-section">
             <div class="title">
-              <h1>Board</h1>
-            <img class="add-task-btn-s" id="add-task-btn-s" onclick="selectColumnForTask('main-add-to-do');" src="./assets/icons/plus add task mobile.svg" alt="Add Task Icon Small">
-            </div>
-            <div class="search-container">
-              <div class="search-field-and-icons">
-            <input type="text" class="searchfield" id="searchfield" placeholder="Find Task" oninput="findTask()">
-            <div class="separator-search"></div>
-            <img class="search-icon" onclick="searchTaskTitles()" src="./assets/icons/board_search.svg" alt="Find Task Icon">
-          </div>
-            <div class="error-msg-not-found red dp-none" id="task-not-found">No tasks found</div>
-          </div>
-            <div class="add-task-btn" id="main-add-to-do" onclick="selectColumnForTask('main-add-to-do');">Add task <img src="./assets/icons/board_add-task.svg" alt="Add Task Icon"></div>
+              <div class="title-cont">
+                <h1>Board</h1>
+              <img class="add-task-btn-s" id="add-task-btn-s" onclick="selectColumnForTask('main-add-to-do');" src="./assets/icons/plus add task mobile.svg" alt="Add Task Icon Small">
+              </div>
+              <div class="search_add_task_btn">
+                <div class="search-container">
+                  <div class="search-field-and-icons">
+                <input type="text" class="searchfield" id="searchfield" placeholder="Find Task" oninput="findTask()">
+                
+                <div class="separator-search"></div>
+                <img class="search-icon" onclick="searchTaskTitles()" src="./assets/icons/board_search.svg" alt="Find Task Icon">
+              </div>
+                <div class="error-msg-not-found red dp-none" id="task-not-found">No tasks found</div>
+              </div>
+                <div class="add-task-btn" id="main-add-to-do" onclick="selectColumnForTask('main-add-to-do');">Add task <img src="./assets/icons/board_add-task.svg" alt="Add Task Icon"></div>
+              </div>
           </div>
           </div>
             <div class="board-columns">
@@ -400,7 +404,7 @@
       <a href="add-task.html"><div class="menu-btns-resp">            
         <img class="menu-btn-icon-resp"  src="./assets/icons/icon-add-task.png" alt="Add task button icon">
         <p>Add Tasks</p></div></a>
-      <a href="contacts_Dora.html"><div class="menu-btns-resp">            
+      <a href="contacts.html"><div class="menu-btns-resp">            
         <img class="menu-btn-icon-resp"  src="./assets/icons/icon-contacts.png" alt="Contacts button icon">
         <p>Contacts</p>
       </div></a>

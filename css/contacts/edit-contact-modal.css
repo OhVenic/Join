@@ -22,6 +22,20 @@
   justify-content: center;
   align-items: center;
 }
+.edit-input-name,
+.edit-input-phone,
+.edit-input-email {
+  height: 57px;
+  position: relative;
+  width: 422px;
+}
+.name,
+.email,
+.phone {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
 .edit-cont-header-wrapper {
   display: flex;
   flex-direction: column;
@@ -115,6 +129,46 @@
 }
 .save-contact:hover {
   background-color: #29abe2;
+}
+
+.edited-contact-msg {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #2a3647;
+  color: #ffffff;
+  border-radius: 20px;
+  width: 326px;
+  height: 74px;
+  box-shadow: 0px 4px 0px 0px rgb(0, 0, 0, 0.1);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+  animation: slideInFromRightEdit ease-in-out 0.45s 1 normal forwards;
+  z-index: 9999;
+}
+
+@keyframes slideInFromRightEdit {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.closing {
+  animation: slideOutToRightEdit ease-in-out 0.45s 1 normal forwards;
+}
+
+@keyframes slideOutToRightEdit {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
 }
 
 .exit-modal-btn {

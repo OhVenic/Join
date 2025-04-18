@@ -21,23 +21,18 @@
   .edit-contact-modal-form {
     width: 300px;
   }
-  .name {
-    right: 60px;
-    top: 130px;
-  }
-  .email {
-    right: 60px;
-    top: 190px;
-  }
-  .phone {
-    right: 60px;
-    top: 250px;
-  }
+
   .modal-title {
     font-size: 45px;
   }
   .exit-modal-btn {
     right: 50px;
+  }
+  .edit-input-name,
+  .edit-input-phone,
+  .edit-input-email {
+    height: 57px;
+    width: 300px;
   }
 }
 
@@ -88,18 +83,6 @@
   .exit-modal-btn {
     display: none;
   }
-  .name {
-    right: 50px;
-    top: 60px;
-  }
-  .email {
-    right: 50px;
-    top: 120px;
-  }
-  .phone {
-    right: 50px;
-    top: 180px;
-  }
   .edit-contact-modal-content {
     gap: 20px;
   }
@@ -112,6 +95,9 @@
   .edit-main-modal-cont {
     margin-top: 20px;
   }
+  .edit-contact-modal-btns {
+    margin-bottom: 20px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -121,18 +107,13 @@
   .name,
   .email,
   .phone {
-    right: 20px;
+    right: 10px;
   }
 }
 
 @media (max-width: 600px) {
   .edit-contact-modal {
     width: 430px;
-  }
-  .name,
-  .email,
-  .phone {
-    right: -10px;
   }
   .edit-contact-modal-form input::placeholder {
     font-size: 14px;
@@ -162,16 +143,14 @@
   .name,
   .email,
   .phone {
-    right: -15px;
+    right: 15px;
+    top: 5px;
   }
-  .name {
-    top: 55px;
-  }
-  .email {
-    top: 105px;
-  }
-  .phone {
-    top: 155px;
+  .edit-input-name,
+  .edit-input-phone,
+  .edit-input-email {
+    height: 57px;
+    width: 250px;
   }
   .input-imgs {
     height: 23px;
@@ -183,7 +162,7 @@
     height: 30px;
   }
   .edit-modal-title {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .edit-contact-modal-form {
@@ -195,6 +174,14 @@
   }
   .edit-contact-modal-form input {
     font-size: 12px;
+  }
+  .edited-contact-msg {
+    width: 230px;
+    height: 60px;
+    font-size: 13px;
+  }
+  .edit-contact-modal-btns {
+    margin-bottom: 40px;
   }
 }
 @media (max-width: 400px) {
@@ -217,16 +204,7 @@
   .name,
   .email,
   .phone {
-    right: -20px;
-  }
-  .name {
-    top: 55px;
-  }
-  .email {
-    top: 105px;
-  }
-  .phone {
-    top: 155px;
+    right: 10px;
   }
   .edit-contact-modal-form input::placeholder {
     font-size: 11px;
