@@ -133,9 +133,6 @@ function cancelDeleteTask() {
   document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
 }
 
-let editSelectedContacts = [];
-let editSelectedContactsNames = [];
-
 function editTask(id) {
   const task = tasksArr.find((task) => String(task.id) === String(id));
   if (!task) return;
@@ -171,36 +168,36 @@ function editTask(id) {
       </div>
       <input type="hidden" name="priority" id="edit-priority-hidden" />
       
-      <div class="assigned-to-section frame-39">
-        <label for="assigned-to">Assigned to</label>
-        <input
-          type="text"
-          id="assigned-to"
-          class="selection"
-          placeholder="Select contacts to assign"
-          onclick="editShowContactList(event)"
-        />
-        <img
-          id="assigned-to-img-down"
-          class="assigned-to-img dropdown-img"
-          src="./assets/icons/arrow_drop_down.svg"
-          alt="Select contact dropdown arrow"
-          onclick="editShowContactList(event)"
-        />
-        <img
-          id="assigned-to-img-up"
-          class="assigned-to-img dropdown-img dp-none"
-          src="./assets/icons/arrow_drop_down_up.svg"
-          alt="Select contact dropdown arrow"
-          onclick="editShowContactList(event)"
-        />
-        <div
-          class="drop-down-contact-list dp-none"
-          id="drop-down-contact-list"
-          onclick="preventBubbling(event)"
-        ></div>
-        <div id="selected-avatars"></div>
-      </div>
+       <div class="assigned-to-section frame-39">
+              <label for="assigned-to">Assigned to</label>
+             <input
+  type="text"
+  id="assigned-to"
+  class="selection"
+  placeholder="Select contacts to assign"
+  onclick="editShowContactList(event)"
+/>
+<img
+  id="assigned-to-img-down"
+  class="assigned-to-img dropdown-img"
+  src="./assets/icons/arrow_drop_down.svg"
+  alt="Select contact dropdown arrow"
+  onclick="editShowContactList(event)"
+/>
+<img
+  id="assigned-to-img-up"
+  class="assigned-to-img dropdown-img dp-none"
+  src="./assets/icons/arrow_drop_down_up.svg"
+  alt="Select contact dropdown arrow"
+  onclick="editShowContactList(event)"
+/>
+              <div
+                class="drop-down-contact-list dp-none"
+                id="drop-down-contact-list"
+                onclick="preventBubbling(event)"
+              ></div>
+              <div id="selected-avatars"></div>
+            </div>
 
       <div class="edit-btn-row">
         <button type="submit" class="task-btn">
