@@ -1,72 +1,100 @@
-function editRenderContactList() {
-  document.getElementById("drop-down-contact-list").innerHTML += "";
-  for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
-    document.getElementById("drop-down-contact-list").innerHTML += editContactListDropDownTemplate(indexContact);
-    if (editSelectedContacts.includes(indexContact)) {
-      editSelectContact(indexContact);
-    }
-  }
-}
-
-function editShowContactList(event) {
+// Toggle für das Dropdown-Menü
+function toggleEditDropdown(event) {
   event.stopPropagation();
-  if (document.getElementById("assigned-to-img-up").classList.contains("dp-none")) {
-    document.getElementById("assigned-to-img-up").classList.remove("dp-none");
-    document.getElementById("assigned-to-img-down").classList.add("dp-none");
-    document.getElementById("drop-down-contact-list").classList.remove("dp-none");
-    editRenderContactList();
+  const dropdown = document.getElementById("edit-contact-dropdown");
+  dropdown.classList.toggle("dp-none");
+  renderEditContactDropdown(); // Aktualisiere Dropdown-Inhalt
+}
+
+// Rendern des Dropdown-Menüs
+function renderEditContactDropdown() {
+  const container = document.getElementById("edit-contact-dropdown");
+  container.innerHTML = "";
+
+  contacts.forEach((contact, index) => {
+    const selected = editSelectedContacts.includes(index);
+    container.innerHTML += `
+      <div class="contactListElement" onclick="toggleEditContactSelection(${index})">
+        <div class="contact">
+          <span class="avatar">${contact.avatar}</span>
+          <span>${contact.name}</span>
+        </div>
+        <div>
+          <img id="edit-check-${index}" src="./assets/icons/${selected ? "btn-checked" : "btn-unchecked"}.svg" />
+        </div>
+      </div>
+    `;
+  });
+}
+
+// Toggle für Kontakt-Auswahl im Dropdown
+function toggleEditContactSelection(index) {
+  const pos = editSelectedContacts.indexOf(index);
+  if (pos > -1) {
+    editSelectedContacts.splice(pos, 1);
   } else {
-    editCloseContactList();
+    editSelectedContacts.push(index);
   }
+  renderEditContactDropdown(); // Aktualisiere Dropdown-Inhalt
+  renderSelectedAvatars();     // Update Avatare unten
 }
 
-function editCloseContactList() {
-  document.getElementById("drop-down-contact-list").classList.add("dp-none");
-  document.getElementById("assigned-to-img-up").classList.add("dp-none");
-  document.getElementById("assigned-to-img-down").classList.remove("dp-none");
-  document.getElementById("drop-down-contact-list").innerHTML = "";
-}
-
-let editSelectedContacts = [];
-let editSelectedContactsNames = [];
-
-function editSelectContact(i) {
-  document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
-  document.getElementById(`${i}`).style.color = "white";
-  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
-  if (!editSelectedContacts.includes(i)) {
-    editSelectedContacts.push(i);
-    editSelectedContactsNames.push(contacts[i].name);
+function renderSelectedAvatars() {
+  const avatarContainer = document.getElementById("selected-avatars-edit");
+  if (!avatarContainer) {
+    console.error('Avatar container not found');
+    return;  // Verhindert Fehler, wenn das Element nicht existiert
   }
-  editShowSelectedAvatar(i);
+
+  avatarContainer.innerHTML = "";
+  
+  editSelectedContacts.forEach((index) => {
+    const contact = contacts[index];
+    avatarContainer.innerHTML += `
+      <div class="selected-avatar" style="background-color:${contact.color}">
+        ${contact.avatar}
+      </div>
+    `;
+  });
 }
 
-function editUnselectContact(i) {
-  document.getElementById(`${i}`).style.backgroundColor = "white";
-  document.getElementById(`${i}`).style.color = "black";
-  document.getElementById(`${i}`).style.borderRadius = "10px";
-  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-unchecked.svg";
-  const index = editSelectedContacts.indexOf(i);
-  if (index > -1) {
-    editSelectedContacts.splice(index, 1);
+function toggleEditContactDropdown(event) {
+  event.stopPropagation();
+  const dropdown = document.getElementById("edit-contact-dropdown");
+  dropdown.classList.toggle("dp-none");
+}
+
+async function addSubtask(taskId) {
+  const input = document.getElementById("new-subtask");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const task = tasksArr.find(t => String(t.id) === String(taskId));
+  if (!task.subtasks) task.subtasks = [];
+  task.subtasks.push(text);
+
+  await updateTaskInFirebase(taskId, task);
+  editTask(taskId); // neu rendern
+}
+
+async function deleteSubtask(taskId, index) {
+  const task = tasksArr.find(t => String(t.id) === String(taskId));
+  if (!task || !task.subtasks) return;
+
+  task.subtasks.splice(index, 1);
+  await updateTaskInFirebase(taskId, task);
+  editTask(taskId); // neu rendern
+}
+async function updateTaskInFirebase(task) {
+  try {
+    await fetch(`${BASE_URL}tasks/${task.id}.json`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(task)
+    });
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
   }
-  editRemoveUnSelectedAvatar(i);
-}
-
-function editToggleContactSelection(i) {
-  const contactElement = document.getElementById(i);
-  contactElement.style.backgroundColor === "rgb(42, 54, 71)" ? editUnselectContact(i) : editSelectContact(i);
-}
-
-function editShowSelectedAvatar(i) {
-  let element = document.getElementById(`avatar-${i}`);
-  if (!element) {
-    document.getElementById(
-      "selected-avatars"
-    ).innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
-  }
-}
-
-function editRemoveUnSelectedAvatar(i) {
-  document.getElementById(`avatar-${i}`).remove();
 }

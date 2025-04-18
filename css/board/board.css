@@ -802,3 +802,20 @@ li {
 .dp-none {
   display: none;
 }
+
+.avatar-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.selected-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
