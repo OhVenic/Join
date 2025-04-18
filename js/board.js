@@ -136,6 +136,7 @@ function cancelDeleteTask() {
 function editTask(id) {
   const task = tasksArr.find((task) => String(task.id) === String(id));
   if (!task) return;
+
   const overlay = document.getElementById("card-details-overlay");
   const content = overlay.querySelector(".card-details-content");
 
@@ -166,35 +167,36 @@ function editTask(id) {
         </button>
       </div>
       <input type="hidden" name="priority" id="edit-priority-hidden" />
-
+      
       <div class="assigned-to-section frame-39">
-        <label>Assigned to</label>
-        <div class="custom-dropdown" onclick="toggleEditContactDropdown(${task.id})">
-          <div class="custom-dropdown-input">Select contacts to assign</div>
-          <img class="assigned-to-img dropdown-img" src="./assets/icons/arrow_drop_down.svg" />
-          <div class="drop-down-contact-list dp-none" id="edit-contact-dropdown" onclick="event.stopPropagation()"></div>
-        </div>
-        <div id="edit-selected-avatars" class="selected-avatars-row"></div>
-      </div>
-
-      <div class="subtask-section">
-        <label>Subtasks</label>
-        <div id="edit-subtasks-list">
-          ${(task.subtasks || [])
-            .map(
-              (subtask, index) => `
-            <div class="subtask-edit-row">
-              <span>${subtask}</span>
-              <button type="button" onclick="deleteSubtask('${task.id}', ${index})">🗑️</button>
-            </div>
-          `
-            )
-            .join("")}
-        </div>
-        <div class="add-subtask-row">
-          <input id="new-subtask" class="edit-input" placeholder="Add new subtask" />
-          <button type="button" onclick="addSubtask('${task.id}')">➕</button>
-        </div>
+        <label for="assigned-to">Assigned to</label>
+        <input
+          type="text"
+          id="assigned-to"
+          class="selection"
+          placeholder="Select contacts to assign"
+          onclick="editShowContactList(event)"
+        />
+        <img
+          id="assigned-to-img-down"
+          class="assigned-to-img dropdown-img"
+          src="./assets/icons/arrow_drop_down.svg"
+          alt="Select contact dropdown arrow"
+          onclick="editShowContactList(event)"
+        />
+        <img
+          id="assigned-to-img-up"
+          class="assigned-to-img dropdown-img dp-none"
+          src="./assets/icons/arrow_drop_down_up.svg"
+          alt="Select contact dropdown arrow"
+          onclick="editShowContactList(event)"
+        />
+        <div
+          class="drop-down-contact-list dp-none"
+          id="drop-down-contact-list"
+          onclick="preventBubbling(event)"
+        ></div>
+        <div id="selected-avatars"></div>
       </div>
 
       <div class="edit-btn-row">
@@ -208,62 +210,50 @@ function editTask(id) {
     </form>
   `;
 
-  document.getElementById("edit-priority-hidden").value = task.priority;
+  // Set priority
+  document.getElementById('edit-priority-hidden').value = task.priority;
   selectPriorityEdit(task.priority);
 
-  editSelectedContacts = Array.isArray(task.assigned_to) ? [...task.assigned_to] : [];
-  renderEditContactDropdown();
-  renderSelectedAvatars();
+  // Reset & prepare contact selections
+  editSelectedContacts = [];
+  editSelectedContactsNames = [];
+
+  // assigned_to sind Kontakt-Indizes (z. B. [0, 1])
+  if (Array.isArray(task.assigned_to)) {
+    editSelectedContacts = [...task.assigned_to];
+    editSelectedContactsNames = task.assigned_to.map(i => contacts[i]?.name);
+  }
+
+  // Render Kontaktliste
+  editRenderContactList();
+
+  // Visuell selektieren
+  for (let i of editSelectedContacts) {
+    editSelectContact(i);
+  }
 
   overlay.classList.remove("dp-none");
 }
 
 async function saveEditedTask(event, taskId) {
   event.preventDefault();
-
   const form = event.target;
-  const title = form.title.value.trim();
-  const description = form.description.value.trim();
-  const date = form.date.value;
-  const priority = document.getElementById("edit-priority-hidden").value;
-
-  const task = tasksArr.find((t) => String(t.id) === String(taskId));
-  if (!task) return;
-
-  // Subtasks (werden im task bereits aktualisiert durch add/delete)
-  const subtasks = task.subtasks || [];
-
-  // Kontakte (falls wieder aktiviert)
-  const assigned_to = Array.isArray(editSelectedContacts) ? editSelectedContacts : [];
 
   const updatedTask = {
-    ...task,
-    title,
-    description,
-    date,
-    priority,
-    assigned_to,
-    subtasks,
+    ...tasksArr.find((task) => String(task.id) === String(taskId)),
+    title: form.title.value.trim(),
+    description: form.description.value.trim(),
+    date: form.date.value,
+    priority: form.priority.value,
+    assigned_to: [...editSelectedContacts], // <- das hier!
   };
 
-  try {
-    await fetch(`${BASE_URL}taskList/${taskId}.json`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedTask),
-    });
+  await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
+    method: "PUT",
+    body: JSON.stringify(updatedTask),
+  });
 
-    // Lokales Array aktualisieren
-    const index = tasksArr.findIndex((t) => String(t.id) === String(taskId));
-    if (index !== -1) tasksArr[index] = updatedTask;
-
-    closeCardDetails();
-    renderBoard(); // falls du ein Board-Update willst
-  } catch (error) {
-    console.error("Fehler beim Speichern des Tasks:", error);
-  }
+  closeCardDetails();
 }
 
 function selectPriorityEdit(prio) {

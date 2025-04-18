@@ -1,104 +1,92 @@
-// Toggle für das Dropdown-Menü
-function toggleEditDropdown(index) {
+function editRenderContactList() {
+  console.log(contacts);
+  document.getElementById("drop-down-contact-list").innerHTML += "";
+  for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
+    document.getElementById("drop-down-contact-list").innerHTML += editContactListDropDownTemplate(indexContact);
+    if (editSelectedContacts.includes(indexContact)) {
+      editSelectContact(indexContact);
+    }
+  }
+}
+
+function editContactListDropDownTemplate(i) {
+  return `<div class="contactListElement" id="${i}" onclick="editToggleContactSelection(${i})">
+            <div class="contact">
+            <span class="avatar">${contacts[i].avatar}</span>
+            <span>${contacts[i].name}</span>
+            </div>
+            <div><img id="btn-checkbox-${i}" src="./assets/icons/btn-unchecked.svg" alt="Button Unchecked"/></div>
+            </div>`;
+}
+
+function editShowContactList(event) {
   event.stopPropagation();
-  const dropdown = document.getElementById("edit-contact-dropdown");
-  dropdown.classList.toggle("dp-none");
-  renderEditContactDropdown(index); // Aktualisiere Dropdown-Inhalt
-}
-
-// Rendern des Dropdown-Menüs
-function renderEditContactDropdown() {
-  const container = document.getElementById("edit-contact-dropdown");
-  container.innerHTML = "";
-
-  contacts.forEach((contact, index) => {
-    const selected = editSelectedContacts.includes(index);
-    container.innerHTML += `
-      <div class="contactListElement" onclick="toggleEditContactSelection(${contact})">
-        <div class="contact">
-          <span class="avatar">${contact.avatar}</span>
-          <span>${contact.name}</span>
-        </div>
-        <div>
-          <img id="edit-check-${index}" src="./assets/icons/${selected ? "btn-checked" : "btn-unchecked"}.svg" />
-        </div>
-      </div>
-    `;
-  });
-}
-
-// Toggle für Kontakt-Auswahl im Dropdown
-function toggleEditContactSelection(index) {
-  const pos = editSelectedContacts.indexOf(index);
-  if (pos > -1) {
-    editSelectedContacts.splice(pos, 1);
+  if (document.getElementById("assigned-to-img-up").classList.contains("dp-none")) {
+    document.getElementById("assigned-to-img-up").classList.remove("dp-none");
+    document.getElementById("assigned-to-img-down").classList.add("dp-none");
+    document.getElementById("drop-down-contact-list").classList.remove("dp-none");
+    editRenderContactList();
   } else {
-    editSelectedContacts.push(index);
+    editCloseContactList();
   }
-  renderEditContactDropdown(); // Aktualisiere Dropdown-Inhalt
-  renderSelectedAvatars(index);
-  console.log(index); // Update Avatare unten
 }
 
-function renderSelectedAvatars(index) {
-  const avatarContainer = document.getElementById("edit-selected-avatars");
-  if (!avatarContainer) {
-    console.error("Avatar container not found");
-    return; // Verhindert Fehler, wenn das Element nicht existiert
+function editCloseContactList() {
+  document.getElementById("drop-down-contact-list").classList.add("dp-none");
+  document.getElementById("assigned-to-img-up").classList.add("dp-none");
+  document.getElementById("assigned-to-img-down").classList.remove("dp-none");
+  document.getElementById("drop-down-contact-list").innerHTML = "";
+}
+
+//to keep track of the selected elements in the dropdown List
+//we need to create an array, to somewhere save these elements
+let editSelectedContacts = [];
+let editSelectedContactsNames = [];
+function editSelectContact(i) {
+  document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
+  document.getElementById(`${i}`).style.color = "white";
+  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
+  //it check whether the contact (index) is already in our array
+  if (!editSelectedContacts.includes(i)) {
+    //if not then pushes into it
+    editSelectedContacts.push(i);
+    editSelectedContactsNames.push(contacts[i].name);
   }
-  console.log(index);
-
-  avatarContainer.innerHTML = "";
-
-  editSelectedContacts.forEach((index) => {
-    const contact = contacts[index];
-    console.log(index);
-    console.log(contact);
-    avatarContainer.innerHTML += `
-      <div class="selected-avatar" style="background-color:purple">
-        avatar
-      </div>
-    `;
-  });
+  editShowSelectedAvatar(i);
 }
 
-function toggleEditContactDropdown(event) {
-  event.stopPropagation();
-  const dropdown = document.getElementById("edit-contact-dropdown");
-  dropdown.classList.toggle("dp-none");
-}
-
-async function addSubtask(taskId) {
-  const input = document.getElementById("new-subtask");
-  const text = input.value.trim();
-  if (!text) return;
-
-  const task = tasksArr.find((t) => String(t.id) === String(taskId));
-  if (!task.subtasks) task.subtasks = [];
-  task.subtasks.push(text);
-
-  await updateTaskInFirebase(taskId, task);
-  editTask(taskId); // neu rendern
-}
-
-async function deleteSubtask(taskId, index) {
-  const task = tasksArr.find((t) => String(t.id) === String(taskId));
-  if (!task || !task.subtasks) return;
-
-  task.subtasks.splice(index, 1);
-  await updateTaskInFirebase(taskId, task);
-  editTask(taskId); // neu rendern
-}
-async function updateTaskInFirebase(task) {
-  try {
-    await fetch(`${BASE_URL}tasks/${task.id}.json`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(task),
-    });
-  } catch (error) {
-    console.error("Fehler beim Aktualisieren des Tasks in Firebase:", error);
+function editUnselectContact(i) {
+  document.getElementById(`${i}`).style.backgroundColor = "white";
+  document.getElementById(`${i}`).style.color = "black";
+  document.getElementById(`${i}`).style.borderRadius = "10px";
+  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-unchecked.svg";
+  //we need to save the index of our value
+  // (which is also the index, but not the same!)
+  const index = editSelectedContacts.indexOf(i);
+  // If the contact is found in the selectedContacts array, remove it
+  if (index > -1) {
+    editSelectedContacts.splice(index, 1);
   }
+  editRemoveUnSelectedAvatar(i);
+}
+
+function editToggleContactSelection(i) {
+  const contactElement = document.getElementById(i);
+  contactElement.style.backgroundColor === "rgb(42, 54, 71)" ? editUnselectContact(i) : editSelectContact(i);
+}
+
+/*Showing the avatar of the selected contact*/
+
+function editShowSelectedAvatar(i) {
+  let element = document.getElementById(`avatar-${i}`);
+  if (!element) {
+    document.getElementById(
+      "selected-avatars"
+    ).innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
+  }
+  console.log(contacts[i].avatar);
+}
+
+function editRemoveUnSelectedAvatar(i) {
+  document.getElementById(`avatar-${i}`).remove();
 }
