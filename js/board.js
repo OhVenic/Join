@@ -211,7 +211,7 @@ function editTask(id) {
   `;
 
   // Set priority
-  document.getElementById('edit-priority-hidden').value = task.priority;
+  document.getElementById("edit-priority-hidden").value = task.priority;
   selectPriorityEdit(task.priority);
 
   // Reset & prepare contact selections
@@ -221,7 +221,7 @@ function editTask(id) {
   // assigned_to sind Kontakt-Indizes (z. B. [0, 1])
   if (Array.isArray(task.assigned_to)) {
     editSelectedContacts = [...task.assigned_to];
-    editSelectedContactsNames = task.assigned_to.map(i => contacts[i]?.name);
+    editSelectedContactsNames = task.assigned_to.map((i) => contacts[i]?.name);
   }
 
   // Render Kontaktliste

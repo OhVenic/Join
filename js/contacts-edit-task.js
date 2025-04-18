@@ -43,6 +43,7 @@ function editCloseContactList() {
 let editSelectedContacts = [];
 let editSelectedContactsNames = [];
 function editSelectContact(i) {
+  console.log(i);
   document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
   document.getElementById(`${i}`).style.color = "white";
   document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
