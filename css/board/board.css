@@ -193,107 +193,6 @@
   filter: brightness(0) invert(1);
 }
 
-.dropdown-edit {
-  border: 1px solid #d1d1d1;
-  border-radius: 10px;
-  padding: 12px;
-  cursor: pointer;
-  position: relative;
-  background-color: white;
-  margin-bottom: 16px;
-}
-
-.dropdown-header-edit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dropdown-content-edit {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #d1d1d1;
-  border-radius: 8px;
-  padding: 8px;
-  margin-top: 6px;
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  z-index: 2;
-}
-
-.contact-item-edit {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.contact-item-edit:hover {
-  background-color: #f0f0f0;
-}
-
-.contact-left-edit {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar-circle-edit {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.selected-contacts-edit {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.contact-option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.contact-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.contact-initials {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.contact-badge {
-  display: inline-block;
-  background-color: gray;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 20px;
-  margin: 4px;
-  font-weight: bold;
-}
-
 .search-icon,
 .separator-search {
   position: absolute;
@@ -519,26 +418,18 @@ li {
 .card-details-content {
   background-color: white;
   padding: 24px;
+  padding-bottom: 0px;
   border-radius: 24px;
   width: 400px;
   height: 600px;
   overflow-y: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .card-details-content::-webkit-scrollbar {
   height: 100%;
-}
-
-.overlay-footer {
-  position: fixed;
-  width: 345px;
-  bottom: 150px;
-  left: auto;
-  right: calc(50% - 170px);
-  background: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .margin-bottom {
@@ -551,11 +442,11 @@ li {
   align-items: center;
 }
 
-.edit {
+.edit-icon {
   margin-right: 12px;
 }
 
-.edit:hover,
+.edit-icon:hover,
 .delete:hover {
   cursor: pointer;
   color: rgba(0, 124, 238, 1);
@@ -569,12 +460,31 @@ li {
 .task-overlay-contact {
   display: flex;
   align-items: center;
-  margin: 4px 0 4px 12px;
+  margin: 8px 0 8px 12px;
+}
+
+.task-subtask {
+  margin-bottom: 8px;
+}
+
+.task-list {
+  margin: 4px;
+}
+
+.card-overlay {
+  height: 100%;
 }
 
 .task-overlay-footer {
   display: flex;
-  justify-content: end;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-bottom: 12px;
+  padding-top: 4px;
+  position: sticky;
+  bottom: 0;
+  background-color: white;
 }
 
 .margin-left {
@@ -699,123 +609,28 @@ li {
   display: flex;
 }
 
-.assigned-person {
-  display: flex;
-  align-items: center;
-}
-
-.task-subtask {
-  margin-bottom: 12px;
-}
-
-.task-list {
-  margin-bottom: 6px;
-}
-
-/* Dropdown für Kontakte */
-.edit-assigned-section {
-  margin-bottom: 16px;
-}
-
-.dropdown-edit {
-  border: 1px solid #d1d1d1;
-  border-radius: 10px;
-  padding: 12px;
-  cursor: pointer;
-  position: relative;
-  background-color: white;
-  margin-bottom: 16px;
-}
-
-.dropdown-header-edit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dropdown-content-edit {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #d1d1d1;
-  border-radius: 8px;
-  padding: 8px;
-  margin-top: 6px;
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  z-index: 2;
-}
-
-.contact-item-edit {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.contact-item-edit:hover {
-  background-color: #f0f0f0;
-}
-
-.contact-left-edit {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar-circle-edit {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+.avatar {
+  background-color: #29abe2;
+  border: 2px solid white;
   color: white;
-  font-weight: bold;
+}
+
+.avatar-card-edit {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.selected-contacts-edit {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.contact-badge {
-  display: inline-block;
-  background-color: gray;
   color: white;
-  padding: 6px 10px;
-  border-radius: 20px;
-  margin: 4px;
-  font-weight: bold;
-}
-
-.assigned-to-img {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
-
-.dp-none {
-  display: none;
-}
-
-.avatar-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.selected-avatar {
-  width: 32px;
-  height: 32px;
+  border: 2px solid #ffffff;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  color: white;
-  display: flex;
+  padding: 16px;
+  font-size: 16px;
+  margin-left: -10px;
+}
+
+.edit-selected-avatars {
+  display: flex !important;
   align-items: center;
-  justify-content: center;
-  font-size: 14px;
+  margin-left: 10px;
 }

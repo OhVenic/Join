@@ -1,14 +1,16 @@
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${
-    element.id
-  })">
-      <div class="category-card-s" style="background-color: ${getCategoryColor(element.category)}">${
-    element.category
-  }</div>
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${
+      element.id
+    })" onclick="cardDetails(${element.id})">
+      <div class="category-card-s" style="background-color: ${getCategoryColor(
+        element.category
+      )}">${element.category}</div>
       <div class="title-card-s">${element.title}</div>
       <div class="description-card-s">${element.description}</div>
-      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element.subtasks)}</div>
+      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(
+        element.subtasks
+      )}</div>
       <div class="footer-card-s">
         <div class="assigned-to-card-s">
           <div class="selected-avatars">${getInitials(element, contacts)}</div>
@@ -42,6 +44,7 @@ function cardDetails(id) {
   }
 
   content.innerHTML = `
+  <div class="card-main-content">
     <div class="card-overlay-header-flex">
       <p class="category-card-s">${task.category}</p>
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
@@ -70,10 +73,9 @@ function cardDetails(id) {
           )
           .join("") || "<li>No Subtasks</li>"
       }
-    </ul>
-    <div class="overlay-footer">
+    </ul></div>
     <div class="task-overlay-footer">
-     <div class="contact-change edit" onclick="editTask(${
+     <div class="contact-change edit-icon" onclick="editTask(${
        task.id
      })"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
                     <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
@@ -86,7 +88,7 @@ function cardDetails(id) {
                     <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
                     <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
                     <p>Delete</p>
-                  </div></div></div>
+                  </div></div>
   `;
 
   overlay.classList.remove("dp-none");
@@ -101,10 +103,13 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   if (subtask) {
     subtask.status = subtask.status === "done" ? "undone" : "done";
 
-    await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
-      method: "PUT",
-      body: JSON.stringify(task),
-    });
+    await fetch(
+      `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`,
+      {
+        method: "PUT",
+        body: JSON.stringify(task),
+      }
+    );
 
     updateHTML();
   }
@@ -114,23 +119,32 @@ let taskToDelete = null;
 
 function deleteTask(id) {
   taskToDelete = id;
-  document.getElementById("delete-confirmation-overlay").classList.remove("dp-none");
+  document
+    .getElementById("delete-confirmation-overlay")
+    .classList.remove("dp-none");
 }
 
 async function confirmDeleteTask() {
   if (taskToDelete) {
-    await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskToDelete}.json`, {
-      method: "DELETE",
-    });
+    await fetch(
+      `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskToDelete}.json`,
+      {
+        method: "DELETE",
+      }
+    );
     taskToDelete = null;
-    document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
+    document
+      .getElementById("delete-confirmation-overlay")
+      .classList.add("dp-none");
     closeCardDetails();
   }
 }
 
 function cancelDeleteTask() {
   taskToDelete = null;
-  document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
+  document
+    .getElementById("delete-confirmation-overlay")
+    .classList.add("dp-none");
 }
 
 function editTask(id) {
@@ -141,6 +155,7 @@ function editTask(id) {
   const content = overlay.querySelector(".card-details-content");
 
   content.innerHTML = `
+  <div>
     <div class="card-overlay-header-flex-right">
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
     </div>
@@ -167,70 +182,56 @@ function editTask(id) {
         </button>
       </div>
       <input type="hidden" name="priority" id="edit-priority-hidden" />
-      
-      <div class="assigned-to-section frame-39">
-        <label for="assigned-to">Assigned to</label>
-        <input
-          type="text"
-          id="assigned-to"
-          class="selection"
-          placeholder="Select contacts to assign"
-          onclick="editShowContactList(event)"
-        />
-        <img
-          id="assigned-to-img-down"
-          class="assigned-to-img dropdown-img"
-          src="./assets/icons/arrow_drop_down.svg"
-          alt="Select contact dropdown arrow"
-          onclick="editShowContactList(event)"
-        />
-        <img
-          id="assigned-to-img-up"
-          class="assigned-to-img dropdown-img dp-none"
-          src="./assets/icons/arrow_drop_down_up.svg"
-          alt="Select contact dropdown arrow"
-          onclick="editShowContactList(event)"
-        />
-        <div
-          class="drop-down-contact-list dp-none"
-          id="drop-down-contact-list"
-          onclick="preventBubbling(event)"
-        ></div>
-        <div id="selected-avatars"></div>
-      </div>
 
+       <div class="assigned-to-section frame-39">
+              <label for="assigned-to">Assigned to</label>
+<input
+  type="text"
+  id="edit-assigned-to"
+  class="selection"
+  placeholder="Select contacts to assign"
+  onclick="toggleEditContactDropdown('${task.id}')"
+/>
+
+<img
+  id="assigned-to-img-down"
+  class="assigned-to-img dropdown-img"
+  src="./assets/icons/arrow_drop_down.svg"
+  alt="Select contact dropdown arrow"
+  onclick="toggleEditContactDropdown(); event.stopPropagation();"
+/>
+
+<img
+  id="assigned-to-img-up"
+  class="assigned-to-img dropdown-img dp-none"
+  src="./assets/icons/arrow_drop_down_up.svg"
+  alt="Select contact dropdown arrow"
+  onclick="toggleEditContactDropdown(); event.stopPropagation();"
+/>
+              <div
+                class="drop-down-contact-list dp-none"
+                id="edit-drop-down-contact-list"
+                onclick="preventBubbling(event)"
+              >Hallo</div>
+              <div id="edit-selected-avatars" class="edit-selected-avatars"></div>
+            </div>
       <div class="edit-btn-row">
         <button type="submit" class="task-btn">
           Ok <svg class="white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
           </svg>
         </button>
-        <button type="button" class="btn btn-cancel" onclick="cardDetails('${task.id}')">Abbrechen</button>
+        <button type="button" class="btn btn-cancel" onclick="cardDetails('${task.id}')">Cancel</button>
       </div>
     </form>
+    </div>
   `;
 
-  // Set priority
   document.getElementById("edit-priority-hidden").value = task.priority;
   selectPriorityEdit(task.priority);
 
-  // Reset & prepare contact selections
-  editSelectedContacts = [];
-  editSelectedContactsNames = [];
-
-  // assigned_to sind Kontakt-Indizes (z. B. [0, 1])
-  if (Array.isArray(task.assigned_to)) {
-    editSelectedContacts = [...task.assigned_to];
-    editSelectedContactsNames = task.assigned_to.map((i) => contacts[i]?.name);
-  }
-
-  // Render Kontaktliste
-  editRenderContactList();
-
-  // Visuell selektieren
-  for (let i of editSelectedContacts) {
-    editSelectContact(i);
-  }
+  loadContactsForDropdown();
+loadAssignedContacts(task.id); 
 
   overlay.classList.remove("dp-none");
 }
@@ -245,13 +246,15 @@ async function saveEditedTask(event, taskId) {
     description: form.description.value.trim(),
     date: form.date.value,
     priority: form.priority.value,
-    assigned_to: [...editSelectedContacts], // <- das hier!
   };
 
-  await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
-    method: "PUT",
-    body: JSON.stringify(updatedTask),
-  });
+  await fetch(
+    `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`,
+    {
+      method: "PUT",
+      body: JSON.stringify(updatedTask),
+    }
+  );
 
   closeCardDetails();
 }
@@ -262,7 +265,11 @@ function selectPriorityEdit(prio) {
   const prioButtons = ["low", "medium", "urgent"];
   prioButtons.forEach((p) => {
     const btn = document.getElementById(`prio-${p}`);
-    btn.classList.remove("prio-selected-low", "prio-selected-medium", "prio-selected-urgent");
+    btn.classList.remove(
+      "prio-selected-low",
+      "prio-selected-medium",
+      "prio-selected-urgent"
+    );
 
     if (p === prio) {
       btn.classList.add(`prio-selected-${p}`);
@@ -355,7 +362,9 @@ let filteredTasks = [];
 function searchTaskTitles() {
   let searchFieldRef = document.getElementById("searchfield");
   if (searchFieldRef.value.length > 2) {
-    filteredTasks = tasksArr.filter((task) => task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase()));
+    filteredTasks = tasksArr.filter((task) =>
+      task["title"].toLowerCase().includes(searchFieldRef.value.toLowerCase())
+    );
     updateHTML();
   }
 
@@ -397,7 +406,8 @@ async function showLoggedInInfo() {
   if (loginInfo[0].isGuestLoggedIn === true) {
     document.getElementById("initialLetter").innerHTML = "G";
   } else {
-    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
+    document.getElementById("initialLetter").innerHTML =
+      loginInfo[0].userLoggedIn.avatar;
   }
 }
 
@@ -419,7 +429,9 @@ function allowDrop(ev) {
 }
 
 function moveTo(column) {
-  const task = tasksArr.find((task) => String(task.id) === currentDraggedElement);
+  const task = tasksArr.find(
+    (task) => String(task.id) === currentDraggedElement
+  );
   if (task) {
     task["column"] = column;
     editColumnChange(currentDraggedElement, tasksArr);
@@ -440,7 +452,10 @@ function renderToDo() {
   document.getElementById("to-do").innerHTML = "";
   for (let i = 0; i < toDo.length; i++) {
     const element = toDo[i];
-    document.getElementById("to-do").innerHTML += cardTemplate(element, contacts);
+    document.getElementById("to-do").innerHTML += cardTemplate(
+      element,
+      contacts
+    );
   }
   console.log(tasksArr);
 
@@ -448,23 +463,35 @@ function renderToDo() {
 }
 
 function renderInProgress() {
-  let actualInProgressList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
-  let inProgress = actualInProgressList.filter((t) => t["column"] == "in-progress");
+  let actualInProgressList =
+    filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let inProgress = actualInProgressList.filter(
+    (t) => t["column"] == "in-progress"
+  );
   document.getElementById("in-progress").innerHTML = "";
   for (let i = 0; i < inProgress.length; i++) {
     const element = inProgress[i];
-    document.getElementById("in-progress").innerHTML += cardTemplate(element, contacts);
+    document.getElementById("in-progress").innerHTML += cardTemplate(
+      element,
+      contacts
+    );
   }
   checkForEmptyColumn(inProgress, "In Progress", "in-progress");
 }
 
 function renderAwaitFeedback() {
-  let actualAwaitFeedbackList = filteredTasks.length > 0 ? filteredTasks : tasksArr;
-  let awaitFeedBack = actualAwaitFeedbackList.filter((t) => t["column"] == "await-feedback");
+  let actualAwaitFeedbackList =
+    filteredTasks.length > 0 ? filteredTasks : tasksArr;
+  let awaitFeedBack = actualAwaitFeedbackList.filter(
+    (t) => t["column"] == "await-feedback"
+  );
   document.getElementById("await-feedback").innerHTML = "";
   for (let i = 0; i < awaitFeedBack.length; i++) {
     const element = awaitFeedBack[i];
-    document.getElementById("await-feedback").innerHTML += cardTemplate(element, contacts);
+    document.getElementById("await-feedback").innerHTML += cardTemplate(
+      element,
+      contacts
+    );
   }
   checkForEmptyColumn(awaitFeedBack, "Await Feedback", "await-feedback");
 }
@@ -475,14 +502,19 @@ function renderDone() {
   document.getElementById("done").innerHTML = "";
   for (let i = 0; i < done.length; i++) {
     const element = done[i];
-    document.getElementById("done").innerHTML += cardTemplate(element, contacts);
+    document.getElementById("done").innerHTML += cardTemplate(
+      element,
+      contacts
+    );
   }
   checkForEmptyColumn(done, "Done", "done");
 }
 
 function checkForEmptyColumn(col, colName, id) {
   if (col.length === 0) {
-    document.getElementById(`${id}`).innerHTML = `<div class="no-task" id="no-task">No Tasks ${colName}</div>`;
+    document.getElementById(
+      `${id}`
+    ).innerHTML = `<div class="no-task" id="no-task">No Tasks ${colName}</div>`;
   } else if (col.length < 0) {
     document.getElementById("no-task").remove();
   }

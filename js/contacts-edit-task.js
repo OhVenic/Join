@@ -1,93 +1,98 @@
-function editRenderContactList() {
-  console.log(contacts);
-  document.getElementById("drop-down-contact-list").innerHTML += "";
-  for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
-    document.getElementById("drop-down-contact-list").innerHTML += editContactListDropDownTemplate(indexContact);
-    if (editSelectedContacts.includes(indexContact)) {
-      editSelectContact(indexContact);
+async function loadContactsForDropdown(taskId) {
+  const contactsUrl = 'https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json';
+  const taskUrl = `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`;
+
+  const dropdown = document.getElementById("edit-drop-down-contact-list");
+  const avatarContainer = document.getElementById("edit-selected-avatars");
+
+  dropdown.innerHTML = "";
+  avatarContainer.innerHTML = "";
+
+  try {
+    const [contactsResponse, taskResponse] = await Promise.all([
+      fetch(contactsUrl),
+      fetch(taskUrl)
+    ]);
+    const contactsData = await contactsResponse.json();
+    const taskData = await taskResponse.json();
+
+    const assignedNames = taskData?.assigned_to || [];
+
+    for (const id in contactsData) {
+      const contact = contactsData[id];
+
+      const contactElement = document.createElement("div");
+      contactElement.innerHTML = `
+        <div class="contactListElement" onclick="toggleEditContact('${contact.avatar}', '${contact.name}')">
+          <div class="avatar-card-edit" style="background-color:${contact.color}">
+            ${contact.avatar}
+          </div>
+          <span>${contact.name}</span>
+        </div>
+      `;
+      dropdown.appendChild(contactElement);
+
+      if (assignedNames.includes(contact.name)) {
+        const avatarDiv = document.createElement("div");
+        avatarDiv.classList.add("selected-avatar-card-s");
+        avatarDiv.style = `background-color:${contact.color}`;
+        avatarDiv.innerText = contact.avatar;
+        avatarContainer.appendChild(avatarDiv);
+      }
     }
+  } catch (error) {
+    console.error("Fehler beim Laden der Kontakte oder Task:", error);
   }
 }
 
-function editContactListDropDownTemplate(i) {
-  return `<div class="contactListElement" id="${i}" onclick="editToggleContactSelection(${i})">
-            <div class="contact">
-            <span class="avatar">${contacts[i].avatar}</span>
-            <span>${contacts[i].name}</span>
-            </div>
-            <div><img id="btn-checkbox-${i}" src="./assets/icons/btn-unchecked.svg" alt="Button Unchecked"/></div>
-            </div>`;
-}
+let editDropdownOpen = false;
 
-function editShowContactList(event) {
-  event.stopPropagation();
-  if (document.getElementById("assigned-to-img-up").classList.contains("dp-none")) {
-    document.getElementById("assigned-to-img-up").classList.remove("dp-none");
-    document.getElementById("assigned-to-img-down").classList.add("dp-none");
-    document.getElementById("drop-down-contact-list").classList.remove("dp-none");
-    editRenderContactList();
+function toggleEditContactDropdown(taskId) {
+  const dropdown = document.getElementById("edit-drop-down-contact-list");
+  const imgDown = document.getElementById("assigned-to-img-down");
+  const imgUp = document.getElementById("assigned-to-img-up");
+
+  if (!editDropdownOpen) {
+    dropdown.classList.remove("dp-none");
+    imgDown.classList.add("dp-none");
+    imgUp.classList.remove("dp-none");
+    loadContactsForDropdown(taskId); // Hier taskId übergeben
   } else {
-    editCloseContactList();
+    dropdown.classList.add("dp-none");
+    imgDown.classList.remove("dp-none");
+    imgUp.classList.add("dp-none");
   }
+
+  editDropdownOpen = !editDropdownOpen;
 }
 
-function editCloseContactList() {
-  document.getElementById("drop-down-contact-list").classList.add("dp-none");
-  document.getElementById("assigned-to-img-up").classList.add("dp-none");
-  document.getElementById("assigned-to-img-down").classList.remove("dp-none");
-  document.getElementById("drop-down-contact-list").innerHTML = "";
-}
+async function loadAssignedContacts(taskId) {
+  const url = `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`;
+  const container = document.getElementById("edit-selected-avatars");
+  container.innerHTML = "";
 
-//to keep track of the selected elements in the dropdown List
-//we need to create an array, to somewhere save these elements
-let editSelectedContacts = [];
-let editSelectedContactsNames = [];
-function editSelectContact(i) {
-  console.log(i);
-  document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
-  document.getElementById(`${i}`).style.color = "white";
-  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
-  //it check whether the contact (index) is already in our array
-  if (!editSelectedContacts.includes(i)) {
-    //if not then pushes into it
-    editSelectedContacts.push(i);
-    editSelectedContactsNames.push(contacts[i].name);
+  try {
+    const response = await fetch(url);
+    const taskData = await response.json();
+
+    if (!taskData || !taskData.assigned_to) return;
+
+    const assignedNames = Object.values(taskData.assigned_to);
+    
+    const contactResponse = await fetch('https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json');
+    const allContacts = await contactResponse.json();
+
+    for (const id in allContacts) {
+      const contact = allContacts[id];
+      if (assignedNames.includes(contact.name)) {
+        const avatarDiv = document.createElement("div");
+        avatarDiv.innerHTML = ` <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+            ${contact.avatar}
+          </div>`;
+        container.appendChild(avatarDiv);
+      }
+    }
+  } catch (error) {
+    console.error("Fehler beim Laden der zugewiesenen Kontakte:", error);
   }
-  editShowSelectedAvatar(i);
-}
-
-function editUnselectContact(i) {
-  document.getElementById(`${i}`).style.backgroundColor = "white";
-  document.getElementById(`${i}`).style.color = "black";
-  document.getElementById(`${i}`).style.borderRadius = "10px";
-  document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-unchecked.svg";
-  //we need to save the index of our value
-  // (which is also the index, but not the same!)
-  const index = editSelectedContacts.indexOf(i);
-  // If the contact is found in the selectedContacts array, remove it
-  if (index > -1) {
-    editSelectedContacts.splice(index, 1);
-  }
-  editRemoveUnSelectedAvatar(i);
-}
-
-function editToggleContactSelection(i) {
-  const contactElement = document.getElementById(i);
-  contactElement.style.backgroundColor === "rgb(42, 54, 71)" ? editUnselectContact(i) : editSelectContact(i);
-}
-
-/*Showing the avatar of the selected contact*/
-
-function editShowSelectedAvatar(i) {
-  let element = document.getElementById(`avatar-${i}`);
-  if (!element) {
-    document.getElementById(
-      "selected-avatars"
-    ).innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
-  }
-  console.log(contacts[i].avatar);
-}
-
-function editRemoveUnSelectedAvatar(i) {
-  document.getElementById(`avatar-${i}`).remove();
 }
