@@ -159,7 +159,7 @@ function editTask(id) {
     <div class="card-overlay-header-flex-right">
       <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
     </div>
-    <form onsubmit="saveEditedTask(event, '${task.id}')">
+    <form onsubmit="saveEditedTask(event, '${task.id}')" class="edit-form">
       <label>Title:</label>
       <input required name="title" value="${task.title}" class="edit-input" />
       
@@ -209,11 +209,44 @@ function editTask(id) {
   onclick="toggleEditContactDropdown(); event.stopPropagation();"
 />
               <div
-                class="drop-down-contact-list dp-none"
+                class="edit-drop-down-contact-list dp-none"
                 id="edit-drop-down-contact-list"
                 onclick="preventBubbling(event)"
-              >Hallo</div>
+              ></div>
               <div id="edit-selected-avatars" class="edit-selected-avatars"></div>
+            </div>
+
+            <div class="add-subtask frame-39">
+              <label for="subtask" class="edit-subtask-label">Subtasks</label>
+              <input
+                onclick=""
+                type="text"
+                id="edit-subtask"
+                class="subtask"
+                placeholder="Add new subtask"
+              />
+              <img
+                id="edit-Add-subtask-img"
+                class="edit-add-subtask-img"
+                src="./assets/icons/add.svg"
+                alt="Add subtask"
+              />
+                <img
+                  onclick=""
+                  id="edit-cancel-task-img"
+                  class="edit-cancel-task-img subtask-img dp-none"
+                  src="./assets/icons/cancel.svg"
+                  alt="Cancel Subtask"
+                />
+                <div id="edit-small-separator" class="edit-small-separator dp-none"></div>
+                <img
+                  id="edit-accept-task-img"
+                  class="edit-accept-task-img subtask-img dp-none"
+                  src="./assets/icons/check.svg"
+                  alt="Accept Subtask"
+                  onclick=""
+                />
+              <div class="subtask-list" id="edit-subtask-list"></div>
             </div>
       <div class="edit-btn-row">
         <button type="submit" class="task-btn">
@@ -234,6 +267,7 @@ function editTask(id) {
 loadAssignedContacts(task.id); 
 
   overlay.classList.remove("dp-none");
+  setupEditSubtaskInput(task);
 }
 
 async function saveEditedTask(event, taskId) {
@@ -246,6 +280,8 @@ async function saveEditedTask(event, taskId) {
     description: form.description.value.trim(),
     date: form.date.value,
     priority: form.priority.value,
+    assigned_to: assignedContactNames,
+    subtasks: editSubtasks,
   };
 
   await fetch(

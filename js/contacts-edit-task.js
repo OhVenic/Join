@@ -1,47 +1,44 @@
-async function loadContactsForDropdown(taskId) {
-  const contactsUrl = 'https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json';
-  const taskUrl = `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`;
+let assignedContactNames = [];
 
+async function loadContactsForDropdown() {
+  const url = 'https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json';
   const dropdown = document.getElementById("edit-drop-down-contact-list");
-  const avatarContainer = document.getElementById("edit-selected-avatars");
 
+  const scrollPos = dropdown.scrollTop; // ⬅️ scroll position merken
   dropdown.innerHTML = "";
-  avatarContainer.innerHTML = "";
 
   try {
-    const [contactsResponse, taskResponse] = await Promise.all([
-      fetch(contactsUrl),
-      fetch(taskUrl)
-    ]);
-    const contactsData = await contactsResponse.json();
-    const taskData = await taskResponse.json();
+    const response = await fetch(url);
+    const data = await response.json();
 
-    const assignedNames = taskData?.assigned_to || [];
+    if (data) {
+      for (const id in data) {
+        const contact = data[id];
+        const isSelected = assignedContactNames.includes(contact.name);
 
-    for (const id in contactsData) {
-      const contact = contactsData[id];
+        const contactElement = document.createElement("div");
+        contactElement.classList.add("contactListElement");
+        if (isSelected) contactElement.classList.add("selected");
+        contactElement.onclick = () => toggleAssignContact(contact.name, contact.avatar);
 
-      const contactElement = document.createElement("div");
-      contactElement.innerHTML = `
-        <div class="contactListElement" onclick="toggleEditContact('${contact.avatar}', '${contact.name}')">
-          <div class="avatar-card-edit" style="background-color:${contact.color}">
-            ${contact.avatar}
+        contactElement.innerHTML = `
+           <div class="avatar-card-edit" style="background-color:${contact.color}">
+             ${contact.avatar}
+           </div>
+           <span>${contact.name}</span>
+         </div>
+          <div>
+            <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
           </div>
-          <span>${contact.name}</span>
-        </div>
-      `;
-      dropdown.appendChild(contactElement);
+        `;
 
-      if (assignedNames.includes(contact.name)) {
-        const avatarDiv = document.createElement("div");
-        avatarDiv.classList.add("selected-avatar-card-s");
-        avatarDiv.style = `background-color:${contact.color}`;
-        avatarDiv.innerText = contact.avatar;
-        avatarContainer.appendChild(avatarDiv);
+        dropdown.appendChild(contactElement);
       }
+
+      dropdown.scrollTop = scrollPos; // ⬅️ scroll position wiederherstellen
     }
   } catch (error) {
-    console.error("Fehler beim Laden der Kontakte oder Task:", error);
+    console.error("Fehler beim Laden der Kontakte:", error);
   }
 }
 
@@ -78,7 +75,7 @@ async function loadAssignedContacts(taskId) {
     if (!taskData || !taskData.assigned_to) return;
 
     const assignedNames = Object.values(taskData.assigned_to);
-    
+    assignedContactNames = assignedNames;
     const contactResponse = await fetch('https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json');
     const allContacts = await contactResponse.json();
 
@@ -95,4 +92,34 @@ async function loadAssignedContacts(taskId) {
   } catch (error) {
     console.error("Fehler beim Laden der zugewiesenen Kontakte:", error);
   }
+ 
 }
+
+function toggleAssignContact(name, avatar) {
+  const index = assignedContactNames.indexOf(name);
+  if (index > -1) {
+    assignedContactNames.splice(index, 1);
+  } else {
+    assignedContactNames.push(name); 
+  }
+
+  renderAssignedAvatars();     
+  loadContactsForDropdown();   
+}
+
+async function renderAssignedAvatars() {
+  const container = document.getElementById("edit-selected-avatars");
+  container.innerHTML = "";
+
+  const response = await fetch('https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json');
+  const contacts = await response.json();
+
+  for (const id in contacts) {
+    const contact = contacts[id];
+    if (assignedContactNames.includes(contact.name)) {
+      container.innerHTML += `
+       <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+             ${contact.avatar}
+           </div>`;
+  }
+}}
