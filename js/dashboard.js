@@ -11,33 +11,27 @@ async function init() {
  * Zeigt den aktuell eingeloggten Nutzer im Dashboard an und passt den Begrüßungstext je nach Uhrzeit an.
  * @returns {Promise<void>}
  */
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour >= 17) return "Good Evening";
+  if (hour >= 12) return "Good Afternoon";
+  if (hour >= 6) return "Good Morning"; // Ab 6 Uhr wird "Good Morning" angezeigt
+  return "Good Night"; // Vor 6 Uhr wird "Good Night" angezeigt
+}
+
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
 
-  const now = new Date();
-  const hour = now.getHours();
-  let greeting = "Good Morning";
+  const greeting = getGreeting();
+  const isGuest = loginInfo[0].isGuestLoggedIn;
+  const user = isGuest ? { avatar: "G", name: "" } : loginInfo[0].userLoggedIn;
 
-  if (hour >= 12 && hour < 17) {
-    greeting = "Good Afternoon";
-  } else if (hour >= 17) {
-    greeting = "Good Evening";
-  }
-
-  if (loginInfo[0].isGuestLoggedIn === true) {
-    document.getElementById("initialLetter").innerHTML = "G";
-    document.getElementById("dashboard-name").innerHTML = "";
-    document.getElementById("dashboard-time").innerHTML = greeting;
-    document.getElementById("dashboard-name-greeting").innerHTML = `
-      <p class="dashboard-greeting-p">${greeting}</p>`;
-  } else {
-    document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
-    document.getElementById("dashboard-name").innerHTML = loginInfo[0].userLoggedIn.name;
-    document.getElementById("dashboard-time").innerHTML = greeting;
-    document.getElementById("dashboard-name-greeting").innerHTML = `
-      <p class="dashboard-greeting-p">${greeting}</p>
-      <p class="dashboard-name" id="dashboard-name">${loginInfo[0].userLoggedIn.name}</p>`;
-  }
+  document.getElementById("initialLetter").innerHTML = user.avatar;
+  document.getElementById("dashboard-name").innerHTML = user.name;
+  document.getElementById("dashboard-time").innerHTML = greeting;
+  document.getElementById("dashboard-name-greeting").innerHTML = isGuest 
+    ? `<p class="dashboard-greeting-p">${greeting}</p>` 
+    : `<p class="dashboard-greeting-p">${greeting}</p><p class="dashboard-name">${user.name}</p>`;
 }
 
 /**

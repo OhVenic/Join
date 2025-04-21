@@ -5,50 +5,41 @@
  * @param {Array} contacts - An array of contact objects assigned to the task.
  * @returns {string} The HTML string for the task card.
  */
-
 function cardTemplate(element, contacts) {
   return `
-          <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${
-    element.id
-  })">
-            <div class="card-s-header">
-              <div class="category-card-s" style="background-color: ${getCategoryColor(element.category)}">
-                ${element.category}
-              </div>
-              <div class="card-s-move-resp-menu dp-none" id="card-s-move-resp-menu-${element.id}">
-                <p class="move-resp-menu-title">Move to</p>
-                <div class="move-1 move" id="column-1-${element.id}" onclick="moveToColumn(${
-    element.id
-  }, 'in-progress')">
-                  <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
-                  <p>In Progress</p>
-                </div>
-                <div class="move-2 move" id="column-2-${element.id}" onclick="moveToColumn(${
-    element.id
-  }, 'await-feedback')">
-                  <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
-                  <p>Await Feedback</p>
-                </div>
-                <div class="move-3 move" id="column-3-${element.id}" onclick="moveToColumn(${element.id}, 'done')">
-                  <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
-                  <p>Done</p>
-                </div>
-              </div>
-              <img onclick="moveTaskRespMenu(${
-                element.id
-              }, event)" class="card-s-move-resp" id="card-s-move-resp" src="./assets/icons/move-card-resp.svg" alt="Icon Responsive Drag and Drop">
-            </div>
-            <div class="title-card-s">${element.title}</div>
-            <div class="description-card-s">${getShortenedDescription(element.description)}</div>
-            <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element.subtasks)}</div>
-            <div class="footer-card-s">
-              <div class="assigned-to-card-s">
-                <div class="selected-avatars">${getInitials(element, contacts)}</div>
-              </div>
-              <div class="prio-card-s">${showPriority(element.priority)}</div>
-            </div>
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${element.id})">
+      <div class="card-s-header">
+        <div class="category-card-s" style="background-color: ${getCategoryColor(element.category)}">
+          ${element.category}
+        </div>
+        <div class="card-s-move-resp-menu dp-none" id="card-s-move-resp-menu-${element.id}">
+          <p class="move-resp-menu-title">Move to</p>
+          <div class="move-1 move" id="column-1-${element.id}" onclick="moveToColumn(${element.id}, 'in-progress')">
+            <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
+            <p>In Progress</p>
           </div>
-        `;
+          <div class="move-2 move" id="column-2-${element.id}" onclick="moveToColumn(${element.id}, 'await-feedback')">
+            <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
+            <p>Await Feedback</p>
+          </div>
+          <div class="move-3 move" id="column-3-${element.id}" onclick="moveToColumn(${element.id}, 'done')">
+            <img class="add-to-column-icon" src="./assets/icons/add.svg" alt="Icon">
+            <p>Done</p>
+          </div>
+        </div>
+        <img onclick="moveTaskRespMenu(${element.id}, event)" class="card-s-move-resp" id="card-s-move-resp" src="./assets/icons/move-card-resp.svg" alt="Icon Responsive Drag and Drop">
+      </div>
+      <div class="title-card-s">${element.title}</div>
+      <div class="description-card-s">${getShortenedDescription(element.description)}</div>
+      <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element.subtasks)}</div>
+      <div class="footer-card-s">
+        <div class="assigned-to-card-s">
+          <div class="selected-avatars">${getInitials(element, contacts)}</div>
+        </div>
+        <div class="prio-card-s">${showPriority(element.priority)}</div>
+      </div>
+    </div>
+  `;
 }
 
 /**
@@ -59,7 +50,8 @@ function cardTemplate(element, contacts) {
  * @returns {string} The HTML string for the detailed task card view.
  */
 function getCardDetailsTemplate(task, initialsHTML) {
-  return `<div class="card-main-content">
+  return `
+    <div class="card-main-content">
       <div class="card-overlay-header-flex">
         <p class="category-card-s">${task.category}</p>
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
@@ -88,22 +80,21 @@ function getCardDetailsTemplate(task, initialsHTML) {
             )
             .join("") || "<li>No Subtasks</li>"
         }
-      </ul></div>
-      <div class="task-overlay-footer">
-       <div class="contact-change edit-icon" onclick="editTask(${
-         task.id
-       })"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
-                      <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
-                      <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
-                      <p>Edit</p>
-                    </div>
-                    <div class="contact-change delete-display" onclick="deleteTask(${
-                      task.id
-                    })" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
-                      <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
-                      <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
-                      <p>Delete</p>
-                    </div></div>`;
+      </ul>
+    </div>
+    <div class="task-overlay-footer">
+      <div class="contact-change edit-icon" onclick="editTask(${task.id})"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
+        <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
+        <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
+        <p>Edit</p>
+      </div>
+      <div class="contact-change delete-display" onclick="deleteTask(${task.id})" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
+        <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
+        <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
+        <p>Delete</p>
+      </div>
+    </div>
+  `;
 }
 
 /**
@@ -113,7 +104,8 @@ function getCardDetailsTemplate(task, initialsHTML) {
  * @returns {string} The HTML string for the edit task form.
  */
 function getEditTaskTemplate(task) {
-  return `<div>
+  return `
+    <div>
       <div class="card-overlay-header-flex-right">
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
       </div>
@@ -215,14 +207,15 @@ function getEditTaskTemplate(task) {
           <button type="button" class="btn btn-cancel" onclick="cardDetails('${task.id}')">Cancel</button>
         </div>
       </div>
-    </div>`;
+    </div>
+  `;
 }
 
 /**
- * Gibt das HTML-Template für ein Subtask-Element im Edit-Overlay zurück.
- * @param {number} index - Index des Subtasks
- * @param {{ title: string, checked: boolean }} subtask - Subtask-Objekt
- * @returns {string} HTML-String für den Subtask
+ * Returns the HTML template for a subtask item in the edit overlay.
+ * @param {number} index - Index of the subtask.
+ * @param {{ title: string, checked: boolean }} subtask - Subtask object.
+ * @returns {string} HTML string for the subtask.
  */
 function getEditSubtaskTemplate(index, subtask) {
   return `
@@ -239,5 +232,31 @@ function getEditSubtaskTemplate(index, subtask) {
       <img class="subtask-edit-icons delete-2" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>
       <div class="subtask-list-item-separator-2"></div>
       <img class="subtask-edit-icons accept" onclick="editAcceptSubtaskItem(${index})" src="./assets/icons/check.svg" alt="Accept Subtask Icon"/>
-    </div>`;
+    </div>
+  `;
+}
+
+/**
+ * Generiert das HTML für ein Kontakt-Element.
+ * @param {Object} contact - Das Kontakt-Objekt.
+ * @param {boolean} isSelected - Gibt an, ob der Kontakt ausgewählt ist.
+ * @returns {HTMLElement} Das HTML-Element für den Kontakt.
+ */
+function createContactElement(contact, isSelected) {
+  const contactElement = document.createElement("div");
+  contactElement.classList.add("contactListElement");
+  if (isSelected) contactElement.classList.add("selected");
+  contactElement.onclick = () => toggleAssignContact(contact.name, contact.avatar);
+
+  contactElement.innerHTML = `
+    <div class="avatar-card-edit" style="background-color:${contact.color}">
+      ${contact.avatar}
+    </div>
+    <p class="contact-list-name">${contact.name}</p>
+    <div>
+      <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
+    </div>
+  `;
+  
+  return contactElement;
 }

@@ -1,9 +1,9 @@
-/** @type {{title: string, checked: boolean}[]} Die aktuell bearbeiteten Subtasks */
+/** @type {{title: string, checked: boolean}[]} The currently edited subtasks */
 let editSubtasks = [];
 
 /**
- * Initialisiert das Subtask-Inputfeld im Edit-Overlay, inklusive Eventlistener für Klick und Eingabe.
- * @param {Object} task - Die Aufgabe, deren Subtasks bearbeitet werden
+ * Initializes the subtask input field in the edit overlay, including event listeners for click and input.
+ * @param {Object} task - The task whose subtasks are being edited.
  */
 function setupEditSubtaskInput(task) {
   editSubtasks = task.subtasks || [];
@@ -24,7 +24,7 @@ function setupEditSubtaskInput(task) {
 
   input.addEventListener("input", () => {
     const hasText = input.value.trim().length > 0;
-    // Hier könntest du visuelles Feedback einbauen, falls gewünscht
+    // Here you could add visual feedback if desired.
   });
 
   acceptBtn.onclick = () => {
@@ -34,7 +34,7 @@ function setupEditSubtaskInput(task) {
       input.value = "";
       renderEditSubtasks();
 
-      // UI zurücksetzen
+      // Reset the UI
       addBtn.classList.remove("dp-none");
       cancelBtn.classList.add("dp-none");
       acceptBtn.classList.add("dp-none");
@@ -45,7 +45,7 @@ function setupEditSubtaskInput(task) {
   cancelBtn.onclick = () => {
     input.value = "";
 
-    // UI zurücksetzen
+    // Reset the UI
     addBtn.classList.remove("dp-none");
     cancelBtn.classList.add("dp-none");
     acceptBtn.classList.add("dp-none");
@@ -54,7 +54,7 @@ function setupEditSubtaskInput(task) {
 }
 
 /**
- * Rendert alle aktuellen Subtasks im Edit-Overlay.
+ * Renders all current subtasks in the edit overlay.
  */
 function renderEditSubtasks() {
   const list = document.getElementById("edit-subtask-list");
@@ -65,8 +65,8 @@ function renderEditSubtasks() {
 }
 
 /**
- * Löscht ein Subtask-Element aus der Liste.
- * @param {number} index - Index des Subtasks im Array
+ * Deletes a subtask item from the list.
+ * @param {number} index - The index of the subtask in the array.
  */
 function deleteEditSubtask(index) {
   editSubtasks.splice(index, 1);
@@ -74,8 +74,8 @@ function deleteEditSubtask(index) {
 }
 
 /**
- * Wechselt ein Subtask-Element in den Editiermodus und aktiviert Enter-Taste zur Bestätigung.
- * @param {number} index - Index des Subtasks im Array
+ * Switches a subtask item into edit mode and enables the Enter key for confirmation.
+ * @param {number} index - The index of the subtask in the array.
  */
 function editEditSubtaskItem(index) {
   const inputContainer = document.getElementById(`input-container-${index}`);
@@ -95,8 +95,8 @@ function editEditSubtaskItem(index) {
 }
 
 /**
- * Speichert den neuen Text eines bearbeiteten Subtasks und rendert die Liste neu.
- * @param {number} index - Index des Subtasks im Array
+ * Saves the new text of an edited subtask and re-renders the list.
+ * @param {number} index - The index of the subtask in the array.
  */
 function editAcceptSubtaskItem(index) {
   const inputField = document.getElementById(`input-${index}`);
@@ -109,9 +109,8 @@ function editAcceptSubtaskItem(index) {
 }
 
 /**
- * Eventhandler, der beim Drücken der Enter-Taste im Subtask-Inputfeld
- * einen neuen Subtask erstellt.
- * @param {KeyboardEvent} event - Das Tastatur-Event
+ * Event handler that creates a new subtask when the Enter key is pressed in the subtask input field.
+ * @param {KeyboardEvent} event - The keyboard event.
  */
 function handleSubtaskEnter(event) {
   if (event.key === "Enter") {
@@ -128,8 +127,8 @@ function handleSubtaskEnter(event) {
 }
 
 /**
- * Fügt einen neuen Subtask dem Bearbeitungs-Array hinzu und rendert die Liste neu.
- * @param {string} subtaskText - Der Titel des neuen Subtasks
+ * Adds a new subtask to the edit array and re-renders the list.
+ * @param {string} subtaskText - The title of the new subtask.
  */
 function addEditSubtask(subtaskText) {
   editSubtasks.push({ title: subtaskText, done: false });
@@ -137,9 +136,9 @@ function addEditSubtask(subtaskText) {
 }
 
 /**
- * (Optional, wird aktuell nicht genutzt)
- * Schaltet den Status eines Subtasks zwischen "checked" und "unchecked" um.
- * @param {number} index - Index des Subtasks im Array
+ * (Optional, not currently in use)
+ * Toggles the status of a subtask between "checked" and "unchecked".
+ * @param {number} index - The index of the subtask in the array.
  */
 function toggleEditSubtask(index) {
   editSubtasks[index].checked = !editSubtasks[index].checked;

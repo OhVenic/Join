@@ -1,58 +1,34 @@
-/** @type {string[]} Liste der aktuell zugewiesenen Kontaktnamen */
+/** @type {string[]} List of currently assigned contact names */
 let assignedContactNames = [];
 
 /**
- * Lädt die Kontakte aus der Firebase-Datenbank und rendert sie im Dropdown-Menü.
- * Wenn Kontakte bereits ausgewählt sind, wird das im UI markiert.
+ * Loads the contacts from the Firebase database and renders them in the dropdown menu.
+ * If contacts are already selected, it marks them in the UI.
  */
-async function loadContactsForDropdown() {
+function loadContactsForDropdown() {
   const url = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json";
   const dropdown = document.getElementById("edit-drop-down-contact-list");
 
-  const scrollPos = dropdown.scrollTop;
-  dropdown.innerHTML = "";
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data) {
-      for (const id in data) {
-        const contact = data[id];
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      dropdown.innerHTML = ''; // Zuerst leeren wir den Inhalt
+      Object.values(data || {}).forEach(contact => {
         const isSelected = assignedContactNames.includes(contact.name);
-
-        const contactElement = document.createElement("div");
-        contactElement.classList.add("contactListElement");
-        if (isSelected) contactElement.classList.add("selected");
-        contactElement.onclick = () => toggleAssignContact(contact.name, contact.avatar);
-
-        contactElement.innerHTML = `
-          <div class="avatar-card-edit" style="background-color:${contact.color}">
-            ${contact.avatar}
-          </div>
-          <p class="contact-list-name">${contact.name}</p>
-        </div>
-        <div>
-          <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
-        </div>
-        `;
-
-        dropdown.appendChild(contactElement);
-      }
-
-      dropdown.scrollTop = scrollPos;
-    }
-  } catch (error) {
-    console.error("Fehler beim Laden der Kontakte:", error);
-  }
+        const contactElement = createContactElement(contact, isSelected);
+        dropdown.appendChild(contactElement); // Füge das Element hinzu
+      });
+      dropdown.scrollTop = dropdown.scrollTop; // Behalte die Scrollposition bei
+    })
+    .catch(console.error);
 }
 
-/** @type {boolean} Gibt an, ob das Dropdown-Menü geöffnet ist */
+/** @type {boolean} Indicates whether the dropdown menu is open */
 let editDropdownOpen = false;
 
 /**
- * Öffnet oder schließt das Dropdown-Menü zur Kontaktauswahl.
- * @param {string|number} taskId - Die ID der Aufgabe, um zugewiesene Kontakte zu laden.
+ * Opens or closes the contact selection dropdown menu.
+ * @param {string|number} taskId - The ID of the task to load assigned contacts for.
  */
 function toggleEditContactDropdown(taskId) {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
@@ -74,8 +50,8 @@ function toggleEditContactDropdown(taskId) {
 }
 
 /**
- * Schließt das Dropdown-Menü, wenn außerhalb davon geklickt wurde.
- * @param {MouseEvent} event - Das Klick-Event
+ * Closes the contact dropdown menu if clicked outside of it.
+ * @param {MouseEvent} event - The click event.
  */
 function checkAndCloseEditDropdown(event) {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
@@ -89,7 +65,7 @@ function checkAndCloseEditDropdown(event) {
 }
 
 /**
- * Schließt das Dropdown-Menü zur Kontaktauswahl.
+ * Closes the contact selection dropdown menu.
  */
 function closeEditContactDropdown() {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
@@ -103,49 +79,40 @@ function closeEditContactDropdown() {
 }
 
 /**
- * Lädt die zugewiesenen Kontakte einer Aufgabe aus der Firebase-Datenbank
- * und rendert deren Avatare im Edit-Overlay.
- * @param {string|number} taskId - Die ID der Aufgabe
+ * Loads the assigned contacts for a task from the Firebase database
+ * and renders their avatars in the edit overlay.
+ * @param {string|number} taskId - The ID of the task.
  */
-async function loadAssignedContacts(taskId) {
-  const url = `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`;
+function loadAssignedContacts(taskId) {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
 
-  try {
-    const response = await fetch(url);
-    const taskData = await response.json();
-
-    if (!taskData || !taskData.assigned_to) return;
-
-    const assignedNames = Object.values(taskData.assigned_to);
-    assignedContactNames = assignedNames;
-    const contactResponse = await fetch(
-      "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json"
-    );
-    const allContacts = await contactResponse.json();
-
-    for (const id in allContacts) {
-      const contact = allContacts[id];
-      if (assignedNames.includes(contact.name)) {
-        const avatarDiv = document.createElement("div");
-        avatarDiv.innerHTML = `
-          <div class="selected-avatar-card-s" style="background-color:${contact.color}">
-            ${contact.avatar}
-          </div>`;
-        container.appendChild(avatarDiv);
-      }
-    }
-  } catch (error) {
-    console.error("Fehler beim Laden der zugewiesenen Kontakte:", error);
-  }
+  fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`)
+    .then(res => res.json())
+    .then(taskData => taskData?.assigned_to || [])
+    .then(assignedNames => {
+      assignedContactNames = assignedNames;
+      return fetch("https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json")
+        .then(res => res.json());
+    })
+    .then(allContacts => {
+      Object.values(allContacts || {}).forEach(contact => {
+        if (assignedContactNames.includes(contact.name)) {
+          container.innerHTML += `
+            <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+              ${contact.avatar}
+            </div>`;
+        }
+      });
+    })
+    .catch(console.error);
 }
 
 /**
- * Fügt einen Kontakt zur Auswahl hinzu oder entfernt ihn,
- * aktualisiert anschließend das Avatar-UI und lädt das Dropdown neu.
- * @param {string} name - Der Name des Kontakts
- * @param {string} avatar - Das Avatar-Zeichen
+ * Toggles the assignment of a contact to a task, updates the avatar UI,
+ * and reloads the dropdown.
+ * @param {string} name - The name of the contact.
+ * @param {string} avatar - The avatar character of the contact.
  */
 function toggleAssignContact(name, avatar) {
   const index = assignedContactNames.indexOf(name);
@@ -160,7 +127,7 @@ function toggleAssignContact(name, avatar) {
 }
 
 /**
- * Rendert die aktuell zugewiesenen Kontakte mit ihren Avataren im Edit-Overlay.
+ * Renders the currently assigned contacts with their avatars in the edit overlay.
  */
 async function renderAssignedAvatars() {
   const container = document.getElementById("edit-selected-avatars");
