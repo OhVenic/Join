@@ -1,5 +1,5 @@
 /**
- * Initialisiert die Anwendung, lädt Daten und zeigt die Login-Informationen an.
+ * Initializes the application, loads data, and displays the login information.
  * @returns {Promise<void>}
  */
 async function init() {
@@ -8,17 +8,21 @@ async function init() {
 }
 
 /**
- * Zeigt den aktuell eingeloggten Nutzer im Dashboard an und passt den Begrüßungstext je nach Uhrzeit an.
- * @returns {Promise<void>}
+ * Returns a greeting message based on the current time of day.
+ * @returns {string} - A greeting message ("Good Morning", "Good Afternoon", "Good Evening", or "Good Night").
  */
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour >= 17) return "Good Evening";
   if (hour >= 12) return "Good Afternoon";
-  if (hour >= 6) return "Good Morning"; // Ab 6 Uhr wird "Good Morning" angezeigt
-  return "Good Night"; // Vor 6 Uhr wird "Good Night" angezeigt
+  if (hour >= 6) return "Good Morning"; // "Good Morning" is shown from 6 AM onwards
+  return "Good Night"; // "Good Night" is shown before 6 AM
 }
 
+/**
+ * Displays the logged-in user information on the dashboard and adjusts the greeting based on the time of day.
+ * @returns {Promise<void>}
+ */
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
 
@@ -35,7 +39,7 @@ async function showLoggedInInfo() {
 }
 
 /**
- * Lädt alle Tasks aus der Datenbank, berechnet Statistiken und zeigt sie im Dashboard an.
+ * Loads all tasks from the database, calculates statistics, and displays them on the dashboard.
  * @returns {Promise<void>}
  */
 async function loadData() {
@@ -54,17 +58,17 @@ async function loadData() {
 }
 
 /**
- * Setzt den Textinhalt eines Elements anhand der ID und einer Anzahl.
- * @param {string} id - Die ID des Elements.
- * @param {number} count - Die Anzahl, die angezeigt werden soll.
+ * Sets the text content of an element based on its ID and a count.
+ * @param {string} id - The ID of the element.
+ * @param {number} count - The count to display.
  */
 function updateTaskCount(id, count) {
   document.getElementById(id).innerHTML = count;
 }
 
 /**
- * Bestimmt und zeigt die früheste Deadline unter den Aufgaben an.
- * @param {Array} tasks - Alle Aufgabenobjekte.
+ * Determines and displays the earliest deadline among the tasks.
+ * @param {Array} tasks - Array of task objects.
  */
 function updateDeadline(tasks) {
   const datedTasks = tasks.filter((t) => !!t.date);
@@ -78,9 +82,9 @@ function updateDeadline(tasks) {
 }
 
 /**
- * Formatiert ein Datum im Format "YYYY-MM-DD" zu einem lesbaren englischen Datum.
- * @param {string} dateStr - Datum als String im Format "YYYY-MM-DD"
- * @returns {string} - Formatierter Datumsstring z.B. "April 18, 2025"
+ * Formats a date string in "YYYY-MM-DD" format to a readable English date.
+ * @param {string} dateStr - A date string in "YYYY-MM-DD" format.
+ * @returns {string} - The formatted date string (e.g., "April 18, 2025").
  */
 function formatDateToEnglish(dateStr) {
   let date = new Date(dateStr);
@@ -92,7 +96,7 @@ function formatDateToEnglish(dateStr) {
 }
 
 /**
- * Blendet das Begrüßungs-Overlay nach dem Laden der Seite aus.
+ * Hides the greeting overlay after the page has loaded.
  */
 window.addEventListener("load", () => {
   const greeting = document.querySelector(".greeting");
