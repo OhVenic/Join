@@ -1,10 +1,15 @@
+/** @type {string[]} Liste der aktuell zugewiesenen Kontaktnamen */
 let assignedContactNames = [];
 
+/**
+ * Lädt die Kontakte aus der Firebase-Datenbank und rendert sie im Dropdown-Menü.
+ * Wenn Kontakte bereits ausgewählt sind, wird das im UI markiert.
+ */
 async function loadContactsForDropdown() {
   const url = 'https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json';
   const dropdown = document.getElementById("edit-drop-down-contact-list");
 
-  const scrollPos = dropdown.scrollTop; // ⬅️ scroll position merken
+  const scrollPos = dropdown.scrollTop;
   dropdown.innerHTML = "";
 
   try {
@@ -22,28 +27,33 @@ async function loadContactsForDropdown() {
         contactElement.onclick = () => toggleAssignContact(contact.name, contact.avatar);
 
         contactElement.innerHTML = `
-           <div class="avatar-card-edit" style="background-color:${contact.color}">
-             ${contact.avatar}
-           </div>
-           <p class="contact-list-name">${contact.name}</p>
-         </div>
-          <div>
-            <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
+          <div class="avatar-card-edit" style="background-color:${contact.color}">
+            ${contact.avatar}
           </div>
+          <p class="contact-list-name">${contact.name}</p>
+        </div>
+        <div>
+          <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
+        </div>
         `;
 
         dropdown.appendChild(contactElement);
       }
 
-      dropdown.scrollTop = scrollPos; // ⬅️ scroll position wiederherstellen
+      dropdown.scrollTop = scrollPos;
     }
   } catch (error) {
     console.error("Fehler beim Laden der Kontakte:", error);
   }
 }
 
+/** @type {boolean} Gibt an, ob das Dropdown-Menü geöffnet ist */
 let editDropdownOpen = false;
 
+/**
+ * Öffnet oder schließt das Dropdown-Menü zur Kontaktauswahl.
+ * @param {string|number} taskId - Die ID der Aufgabe, um zugewiesene Kontakte zu laden.
+ */
 function toggleEditContactDropdown(taskId) {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
   const imgDown = document.getElementById("assigned-to-img-down");
@@ -53,7 +63,7 @@ function toggleEditContactDropdown(taskId) {
     dropdown.classList.remove("dp-none");
     imgDown.classList.add("dp-none");
     imgUp.classList.remove("dp-none");
-    loadContactsForDropdown(taskId); // Hier taskId übergeben
+    loadContactsForDropdown(taskId);
   } else {
     dropdown.classList.add("dp-none");
     imgDown.classList.remove("dp-none");
@@ -63,6 +73,40 @@ function toggleEditContactDropdown(taskId) {
   editDropdownOpen = !editDropdownOpen;
 }
 
+/**
+ * Schließt das Dropdown-Menü, wenn außerhalb davon geklickt wurde.
+ * @param {MouseEvent} event - Das Klick-Event
+ */
+function checkAndCloseEditDropdown(event) {
+  const dropdown = document.getElementById("edit-drop-down-contact-list");
+  const input = document.getElementById("edit-assigned-to");
+
+  if (!editDropdownOpen) return;
+
+  if (dropdown.contains(event.target) || input.contains(event.target)) return;
+
+  closeEditContactDropdown();
+}
+
+/**
+ * Schließt das Dropdown-Menü zur Kontaktauswahl.
+ */
+function closeEditContactDropdown() {
+  const dropdown = document.getElementById("edit-drop-down-contact-list");
+  const imgDown = document.getElementById("assigned-to-img-down");
+  const imgUp = document.getElementById("assigned-to-img-up");
+
+  dropdown.classList.add("dp-none");
+  imgDown.classList.remove("dp-none");
+  imgUp.classList.add("dp-none");
+  editDropdownOpen = false;
+}
+
+/**
+ * Lädt die zugewiesenen Kontakte einer Aufgabe aus der Firebase-Datenbank
+ * und rendert deren Avatare im Edit-Overlay.
+ * @param {string|number} taskId - Die ID der Aufgabe
+ */
 async function loadAssignedContacts(taskId) {
   const url = `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`;
   const container = document.getElementById("edit-selected-avatars");
@@ -83,7 +127,8 @@ async function loadAssignedContacts(taskId) {
       const contact = allContacts[id];
       if (assignedNames.includes(contact.name)) {
         const avatarDiv = document.createElement("div");
-        avatarDiv.innerHTML = ` <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+        avatarDiv.innerHTML = `
+          <div class="selected-avatar-card-s" style="background-color:${contact.color}">
             ${contact.avatar}
           </div>`;
         container.appendChild(avatarDiv);
@@ -92,9 +137,14 @@ async function loadAssignedContacts(taskId) {
   } catch (error) {
     console.error("Fehler beim Laden der zugewiesenen Kontakte:", error);
   }
- 
 }
 
+/**
+ * Fügt einen Kontakt zur Auswahl hinzu oder entfernt ihn,
+ * aktualisiert anschließend das Avatar-UI und lädt das Dropdown neu.
+ * @param {string} name - Der Name des Kontakts
+ * @param {string} avatar - Das Avatar-Zeichen
+ */
 function toggleAssignContact(name, avatar) {
   const index = assignedContactNames.indexOf(name);
   if (index > -1) {
@@ -103,10 +153,13 @@ function toggleAssignContact(name, avatar) {
     assignedContactNames.push(name); 
   }
 
-  renderAssignedAvatars();     
+  renderAssignedAvatars();
   loadContactsForDropdown();   
 }
 
+/**
+ * Rendert die aktuell zugewiesenen Kontakte mit ihren Avataren im Edit-Overlay.
+ */
 async function renderAssignedAvatars() {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
@@ -118,8 +171,9 @@ async function renderAssignedAvatars() {
     const contact = contacts[id];
     if (assignedContactNames.includes(contact.name)) {
       container.innerHTML += `
-       <div class="selected-avatar-card-s" style="background-color:${contact.color}">
-             ${contact.avatar}
-           </div>`;
+        <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+          ${contact.avatar}
+        </div>`;
+    }
   }
-}}
+}
