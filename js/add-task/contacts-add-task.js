@@ -1,3 +1,6 @@
+/**
+ * Renders the contact list dropdown by populating it with contact items.
+ */
 function renderContactList() {
   document.getElementById("drop-down-contact-list").innerHTML += "";
   for (let indexContact = 0; indexContact < contacts.length; indexContact++) {
@@ -8,6 +11,10 @@ function renderContactList() {
   }
 }
 
+/**
+ * Toggles the visibility of the contact dropdown list.
+ * @param {Event} event - The event object to stop propagation.
+ */
 function showContactList(event) {
   event.stopPropagation();
   if (document.getElementById("assigned-to-img-up").classList.contains("dp-none")) {
@@ -20,6 +27,9 @@ function showContactList(event) {
   }
 }
 
+/**
+ * Closes the contact dropdown list and resets its visibility state.
+ */
 function closeContactList() {
   document.getElementById("drop-down-contact-list").classList.add("dp-none");
   document.getElementById("assigned-to-img-up").classList.add("dp-none");
@@ -27,20 +37,30 @@ function closeContactList() {
   document.getElementById("drop-down-contact-list").innerHTML = "";
 }
 
-let selectedContacts = [];
-let selectedContactsNames = [];
-
+/**
+ * Selects a contact from the dropdown list.
+ * @param {number} i - The index of the contact in the array.
+ */
 function selectContact(i) {
   document.getElementById(`${i}`).style.backgroundColor = "#2a3647";
   document.getElementById(`${i}`).style.color = "white";
   document.getElementById(`btn-checkbox-${i}`).src = "./assets/icons/btn-checked.svg";
   if (!selectedContacts.includes(i)) {
     selectedContacts.push(i);
-    selectedContactsNames.push(contacts[i].name);
+    if (!selectedContactsNames.includes(contacts[i].name)) {
+      selectedContactsNames.push(contacts[i].name);
+    }
   }
   showSelectedAvatar(i);
 }
 
+let selectedContacts = [];
+let selectedContactsNames = [];
+
+/**
+ * Unselects a contact from the dropdown list.
+ * @param {number} i - The index of the contact in the array.
+ */
 function unselectContact(i) {
   document.getElementById(`${i}`).style.backgroundColor = "white";
   document.getElementById(`${i}`).style.color = "black";
@@ -53,11 +73,19 @@ function unselectContact(i) {
   removeUnSelectedAvatar(i);
 }
 
+/**
+ * Toggles the selection state of a contact.
+ * @param {number} i - The index of the contact in the array.
+ */
 function toggleContactSelection(i) {
   const contactElement = document.getElementById(i);
   contactElement.style.backgroundColor === "rgb(42, 54, 71)" ? unselectContact(i) : selectContact(i);
 }
 
+/**
+ * Displays the avatar of a selected contact.
+ * @param {number} i - The index of the contact in the array.
+ */
 function showSelectedAvatar(i) {
   let element = document.getElementById(`avatar-${i}`);
   if (!element) {
@@ -67,6 +95,10 @@ function showSelectedAvatar(i) {
   }
 }
 
+/**
+ * Removes the avatar of an unselected contact.
+ * @param {number} i - The index of the contact in the array.
+ */
 function removeUnSelectedAvatar(i) {
   document.getElementById(`avatar-${i}`).remove();
 }

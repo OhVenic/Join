@@ -34,7 +34,7 @@
   .searchfield {
     width: 80%;
   }
- 
+
   .search-field-and-icons {
     position: relative;
     width: 300px;
@@ -173,5 +173,17 @@
   }
   .card-s {
     flex-shrink: 0;
+  }
+
+  .card-s-move-resp {
+    display: block;
+  }
+  .card-s-move-resp:hover {
+    cursor: pointer;
+  }
+  .card-s-move-resp-menu {
+    right: -50px;
+    font-size: 12px;
+    width: 150px;
   }
 }

@@ -92,6 +92,51 @@
   display: none;
 }
 
+.card-s-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-s-move-resp {
+  display: none;
+}
+
+.card-s-move-resp-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: absolute;
+  width: 170px;
+  right: -140px;
+  height: 180px;
+  background-color: rgba(42, 54, 71, 1);
+  color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 9px;
+  z-index: 5;
+}
+
+.move-resp-menu-title {
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.add-to-column-icon {
+  filter: invert(100%);
+}
+
+.move {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  height: 25px;
+}
+.move:hover {
+  cursor: pointer;
+}
+
 /**/
 
 .board-content {
@@ -257,6 +302,7 @@
 
 /*Small Cards on Board*/
 .card-s {
+  position: relative;
   width: 210px;
   height: 220px;
   background-color: white;

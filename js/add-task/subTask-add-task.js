@@ -1,5 +1,12 @@
+/**
+ * Array to store subtasks.
+ * @type {Array<Object>}
+ */
 let subtasks = [];
 
+/**
+ * Resets the subtask buttons to their default state.
+ */
 function changeSubtaskButtons() {
   document.getElementById("add-subtask-img").classList.remove("dp-none");
   document.getElementById("accept-task-img").classList.add("dp-none");
@@ -7,6 +14,9 @@ function changeSubtaskButtons() {
   document.getElementById("small-separator").classList.add("dp-none");
 }
 
+/**
+ * Adds a new subtask to the list.
+ */
 function addSubtask() {
   let subtaskObj = {};
   let inputRef = document.getElementById("subtask");
@@ -21,6 +31,9 @@ function addSubtask() {
   }
 }
 
+/**
+ * Handles the Enter key event to add a subtask.
+ */
 document.getElementById("subtask").addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -31,6 +44,9 @@ document.getElementById("subtask").addEventListener("keydown", function (event) 
   }
 });
 
+/**
+ * Displays the accept or cancel buttons for subtasks.
+ */
 function acceptOrCancelSubtask() {
   document.getElementById("add-subtask-img").classList.add("dp-none");
   document.getElementById("accept-task-img").classList.remove("dp-none");
@@ -38,18 +54,33 @@ function acceptOrCancelSubtask() {
   document.getElementById("small-separator").classList.remove("dp-none");
 }
 
+/**
+ * Cancels the current subtask input.
+ */
 function cancelSubTask() {
   document.getElementById("subtask").value = "";
 }
 
+/**
+ * Shows the edit layout for a subtask item.
+ * @param {HTMLElement} element - The subtask list item element.
+ */
 function showEditLayout(element) {
   element.querySelector(".subtask-list-item-btns").classList.remove("dp-none");
 }
 
+/**
+ * Hides the edit layout for a subtask item.
+ * @param {HTMLElement} element - The subtask list item element.
+ */
 function removeEditLayout(element) {
   element.querySelector(".subtask-list-item-btns").classList.add("dp-none");
 }
 
+/**
+ * Deletes a subtask from the list.
+ * @param {number} index - The index of the subtask to delete.
+ */
 function deleteSubtaskItem(index) {
   subtasks.splice(index, 1);
   let subtaskList = document.getElementById("subtask-list");
@@ -59,6 +90,10 @@ function deleteSubtaskItem(index) {
   }
 }
 
+/**
+ * Enables editing of a subtask item.
+ * @param {number} id - The ID of the subtask to edit.
+ */
 function editSubtaskItem(id) {
   let inputContainer = document.getElementById(`input-container-${id}`);
   let listItem = document.getElementById(`subtask-list-item-${id}`);
@@ -74,6 +109,10 @@ function editSubtaskItem(id) {
   });
 }
 
+/**
+ * Accepts the changes made to a subtask item.
+ * @param {number} id - The ID of the subtask to update.
+ */
 function acceptSubtaskItem(id) {
   let inputField = document.getElementById(`input-${id}`);
   if (inputField.value.trim() !== "") {

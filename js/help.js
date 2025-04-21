@@ -1,7 +1,13 @@
+/**
+ * Initializes the help page by displaying logged-in user information.
+ */
 async function init() {
   await showLoggedInInfo();
 }
 
+/**
+ * Toggles the visibility of the submenu.
+ */
 function showSubMenu() {
   if (document.getElementById("subMenu").classList.contains("dp-none")) {
     document.getElementById("subMenu").classList.remove("dp-none");
@@ -14,12 +20,18 @@ function showSubMenu() {
   }
 }
 
+/**
+ * Closes the submenu if it is visible.
+ */
 function closeSubMenu() {
   if (!document.getElementById("subMenu").classList.contains("dp-none")) {
     document.getElementById("subMenu").classList.add("dp-none");
   }
 }
 
+/**
+ * Displays logged-in user information.
+ */
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
   if (loginInfo[0].isGuestLoggedIn === true) {

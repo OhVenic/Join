@@ -1,3 +1,6 @@
+/**
+ * Initializes the application by loading contacts, tasks, and user info.
+ */
 async function init() {
   await loadContacts("contactList");
   await loadTasks("taskList");
@@ -5,6 +8,9 @@ async function init() {
   selectPrio("medium");
 }
 
+/**
+ * Displays logged-in user information.
+ */
 async function showLoggedInInfo() {
   await loadLoginInfo("whoIsLoggedIn");
   if (loginInfo[0].isGuestLoggedIn === true) {
@@ -14,6 +20,9 @@ async function showLoggedInInfo() {
   }
 }
 
+/**
+ * Clears the task form and resets all inputs and selections.
+ */
 function clearTaskForm() {
   subtasks = [];
   clearInputs();
@@ -25,6 +34,9 @@ function clearTaskForm() {
   removeFieldRequired();
 }
 
+/**
+ * Clears all input fields in the task form.
+ */
 function clearInputs() {
   document.getElementById("subtask-list").innerHTML = "";
   document.getElementById("subtask").value = "";
@@ -36,11 +48,19 @@ function clearInputs() {
   document.getElementById("assigned-to").value = "";
 }
 
+/**
+ * Displays an error message if the task already exists.
+ */
 function errorTaskAlreadyExists() {
   document.getElementById("task-already-exists").classList.remove("dp-none");
   document.getElementById("add-task-title").style.border = "1px solid red";
 }
 
+/**
+ * Removes error messages and resets input field styles.
+ * @param {string} errorId - The ID of the error message element.
+ * @param {string} inputId - The ID of the input field element.
+ */
 function removeErrorMsgs(errorId, inputId) {
   let errorElement = document.getElementById(errorId);
   let inputElement = document.getElementById(inputId);
@@ -50,6 +70,9 @@ function removeErrorMsgs(errorId, inputId) {
   }
 }
 
+/**
+ * Displays required field error messages.
+ */
 function showFieldRequired() {
   document.getElementById("required-title").classList.remove("dp-none");
   document.getElementById("required-date").classList.remove("dp-none");
@@ -59,6 +82,9 @@ function showFieldRequired() {
   document.getElementById("category").style.border = "1px solid red";
 }
 
+/**
+ * Removes required field error messages.
+ */
 function removeFieldRequired() {
   document.getElementById("required-title").classList.add("dp-none");
   document.getElementById("required-date").classList.add("dp-none");
@@ -68,6 +94,9 @@ function removeFieldRequired() {
   document.getElementById("category").style.border = "1px solid #d1d1d1";
 }
 
+/**
+ * Displays a log message indicating the task was added to the board.
+ */
 function showLog() {
   document.getElementById("log").innerHTML = `<div class="added-to-board-msg">
         <p>Task added to board</p>
@@ -75,12 +104,19 @@ function showLog() {
       </div>`;
 }
 
+/**
+ * Redirects the user to the boards page after a delay.
+ */
 function goToBoards() {
   setTimeout(() => {
     window.location.href = "./board.html";
   }, 1000);
 }
 
+/**
+ * Loads tasks from the database.
+ * @param {string} [path=""] - The path to the tasks in the database.
+ */
 async function loadTasks(path = "") {
   try {
     let response = await fetch(BASE_URL + path + ".json");
@@ -94,11 +130,18 @@ async function loadTasks(path = "") {
   }
 }
 
+/**
+ * Checks if a task can be saved by ensuring it doesn't already exist.
+ * @returns {boolean} - True if the task can be saved, false otherwise.
+ */
 function canSaveTask() {
   const titleInput = document.getElementById("add-task-title").value;
   return !taskAlreadyExists(tasksArr, titleInput);
 }
 
+/**
+ * Saves the task inputs to the database.
+ */
 function saveTaskInputs() {
   if (canSaveTask()) {
     let id = generateUniqueId();
@@ -112,7 +155,11 @@ function saveTaskInputs() {
 }
 
 let selectedColumn = "to-do";
-
+/**
+ * Creates a task object with the provided ID.
+ * @param {string} id - The unique ID for the task.
+ * @returns {Object} - The task object.
+ */
 function createTaskObject(id) {
   return {
     id: id,
@@ -127,30 +174,57 @@ function createTaskObject(id) {
   };
 }
 
+/**
+ * Gets the title input value.
+ * @returns {string} - The title input value.
+ */
 function getTitleInput() {
   return document.getElementById("add-task-title").value;
 }
 
+/**
+ * Gets the date input value.
+ * @returns {string} - The date input value.
+ */
 function getDateInput() {
   return document.getElementById("add-task-due-date").value;
 }
 
+/**
+ * Gets the category input value.
+ * @returns {string} - The category input value.
+ */
 function getCategoryInput() {
   return document.getElementById("category").value;
 }
 
+/**
+ * Gets the description input value.
+ * @returns {string} - The description input value.
+ */
 function getDescriptionInput() {
   return document.getElementById("add-task-description").value;
 }
 
+/**
+ * Gets the assigned contacts as an object.
+ * @returns {Object} - The assigned contacts.
+ */
 function getAssignedTo() {
   return mapArrayToObject(selectedContactsNames);
 }
 
+/**
+ * Gets the subtasks as an object.
+ * @returns {Object} - The subtasks.
+ */
 function getSubtasks() {
   return mapArrayToObject(subtasks);
 }
 
+/**
+ * Creates a task if inputs are valid and the task doesn't already exist.
+ */
 function createTask() {
   if (areInputsEmpty()) {
     showFieldRequired();
@@ -163,10 +237,19 @@ function createTask() {
   }
 }
 
+/**
+ * Adds a task to the database.
+ * @param {string} id - The unique ID of the task.
+ * @param {Object} task - The task object to add.
+ */
 async function addTaskToDatabase(id, task) {
   putData(`taskList/${id}`, task);
 }
 
+/**
+ * Checks if required input fields are empty.
+ * @returns {boolean} - True if any required input field is empty, false otherwise.
+ */
 function areInputsEmpty() {
   let titleInput = document.getElementById("add-task-title");
   let dateInput = document.getElementById("add-task-due-date");
@@ -176,35 +259,37 @@ function areInputsEmpty() {
   }
 }
 
+/**
+ * Checks if a task with the given title already exists in the task array.
+ * @param {Array} tasksArr - The array of tasks.
+ * @param {string} title - The title to check.
+ * @returns {boolean} - True if the task already exists, false otherwise.
+ */
 function taskAlreadyExists(tasksArr, title) {
   return tasksArr.some((task) => task.title === title);
 }
 
-async function putData(path = "", data = {}) {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return (responseToJson = await response.json());
-}
-
-/*Functions with Clear button - "Clear form" */
-
+/**
+ * Changes the clear button icon to blue.
+ */
 function changeToBlueIcon() {
   document.getElementById("clear").classList.add("dp-none");
   document.getElementById("clear-hover").classList.remove("dp-none");
 }
 
+/**
+ * Changes the clear button icon to black.
+ */
 function changeToBlackIcon() {
   document.getElementById("clear").classList.remove("dp-none");
   document.getElementById("clear-hover").classList.add("dp-none");
 }
 
-// Helper functions
-
+/**
+ * Maps an array to an object with indices as keys.
+ * @param {Array} array - The array to map.
+ * @returns {Object} - The resulting object.
+ */
 function mapArrayToObject(array) {
   return array.reduce((obj, item, index) => {
     obj[index] = item;
@@ -212,6 +297,10 @@ function mapArrayToObject(array) {
   }, {});
 }
 
+/**
+ * Generates a unique ID based on the current timestamp.
+ * @returns {string} - The unique ID.
+ */
 function generateUniqueId() {
   return String(Date.now());
 }

@@ -1,3 +1,16 @@
+/**
+ * Generates the HTML template for a contact list item.
+ *
+ * @param {Object} contact - The contact object containing details about the contact.
+ * @param {string} contact.id - The unique ID of the contact.
+ * @param {Object} contact.user - The user details of the contact.
+ * @param {string} contact.user.color - The background color for the contact's avatar.
+ * @param {string} contact.user.avatar - The avatar text or image for the contact.
+ * @param {string} contact.user.name - The name of the contact.
+ * @param {string} contact.user.email - The email address of the contact.
+ * @returns {string} The HTML string for the contact list item.
+ */
+
 function contactListItemTemplate(contact) {
   return `<div class="contact-list-item">
               <div id="contact-separation"></div>
@@ -11,11 +24,32 @@ function contactListItemTemplate(contact) {
             </div>`;
 }
 
+/**
+ * Generates the HTML template for an alphabet letter separator in the contact list.
+ *
+ * @param {Object} contact - The contact object containing details about the contact.
+ * @param {Object} contact.user - The user details of the contact.
+ * @param {string} contact.user.name - The name of the contact.
+ * @returns {string} The HTML string for the alphabet letter separator.
+ */
 function contactAlphabetTemplate(contact) {
   return `<div class="alphabet-letter">${getFirstLetter(contact.user.name)}</div>
     <div class="separator"></div>`;
 }
 
+/**
+ * Generates the HTML template for the detailed view of a contact.
+ *
+ * @param {Object} contact - The contact object containing details about the contact.
+ * @param {string} contact.id - The unique ID of the contact.
+ * @param {Object} contact.user - The user details of the contact.
+ * @param {string} contact.user.color - The background color for the contact's avatar.
+ * @param {string} contact.user.avatar - The avatar text or image for the contact.
+ * @param {string} contact.user.name - The name of the contact.
+ * @param {string} contact.user.email - The email address of the contact.
+ * @param {string} contact.user.phoneNumber - The phone number of the contact.
+ * @returns {string} The HTML string for the detailed contact view.
+ */
 function contactDetailTemplate(contact) {
   return `<div class="contact-data-1">
                 <div class="edit-resp-menu" onclick="openEditMenu();preventBubbling(event)"><img src="./assets/icons/more_vert.svg" alt="Edit-Delete Responsive Button"></div>

@@ -33,6 +33,9 @@
   left: 60px;
   top: 40px;
 }
+button {
+  border: unset;
+}
 
 .signup-window {
   display: flex;
