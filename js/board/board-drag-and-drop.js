@@ -70,17 +70,15 @@ function moveToColumn(taskId, targetColumn) {
   updateHTML();
 }
 
-/**
- * Closes all responsive move-to-column menus except the one being interacted with.
- */
-function closeMoveToColumnResp() {
+// Add this event listener to close the menu when clicking outside
+document.addEventListener("click", (event) => {
   const menus = document.querySelectorAll(".card-s-move-resp-menu");
   menus.forEach((menu) => {
     if (!menu.classList.contains("dp-none") && !menu.contains(event.target)) {
       menu.classList.add("dp-none");
     }
   });
-}
+});
 
 /**
  * Opens the responsive move-to-column menu for a specific task.
@@ -88,7 +86,7 @@ function closeMoveToColumnResp() {
  * @param {Event} event - The event triggering the menu.
  */
 function moveTaskRespMenu(id, event) {
-  event.stopPropagation();
+  event.stopPropagation(); // Prevent the click from propagating to the document
   const menuElement = document.getElementById(`card-s-move-resp-menu-${id}`);
   if (!menuElement) {
     console.error(`Menu element with ID card-s-move-resp-menu-${id} not found.`);
@@ -103,7 +101,6 @@ function moveTaskRespMenu(id, event) {
   const columnOptions = getColumnOptions(currentColumn);
   updateMenuOptions(id, columnOptions);
 }
-
 /**
  * Retrieves the available column options excluding the current column.
  * @param {string} currentColumn - The current column of the task.
