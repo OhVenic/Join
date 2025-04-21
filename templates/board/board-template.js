@@ -237,10 +237,10 @@ function getEditSubtaskTemplate(index, subtask) {
 }
 
 /**
- * Generiert das HTML für ein Kontakt-Element.
- * @param {Object} contact - Das Kontakt-Objekt.
- * @param {boolean} isSelected - Gibt an, ob der Kontakt ausgewählt ist.
- * @returns {HTMLElement} Das HTML-Element für den Kontakt.
+ * Generates the HTML for a contact element.
+ * @param {Object} contact - The contact object.
+ * @param {boolean} isSelected - Indicates whether the contact is selected.
+ * @returns {HTMLElement} The HTML element representing the contact.
  */
 function createContactElement(contact, isSelected) {
   const contactElement = document.createElement("div");
