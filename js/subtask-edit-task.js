@@ -52,18 +52,16 @@ function setupEditSubtaskInput(task) {
     list.innerHTML = "";
     editSubtasks.forEach((subtask, index) => {
       list.innerHTML += `
-       <div class="subtask-list-item" id="subtask-list-item-${index}" 
-      onmouseover="showEditLayout(this)" 
-      onmouseout="removeEditLayout(this)">
-      <li id="title-${index}">${subtask.title}</li>
-      <div class="subtask-list-item-btns dp-none">
+       <div class="subtask-list-item" id="subtask-list-item-${index}" >
+      <li id="title-${index}" class="subtask-title">${subtask.title}</li>
+      <div class="subtask-list-item-btns">
         <img class="subtask-edit-icons edit" onclick="editEditSubtaskItem(${index})" src="./assets/icons/edit.svg" alt="Edit Subtask Icon"/>
         <div class="subtask-list-item-separator"></div>
         <img class="subtask-edit-icons delete" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>
       </div>
     </div>
     <div id="input-container-${index}" class="change-input dp-none">
-      <input id="input-${index}" type="text" class="input">
+      <input id="input-${index}" type="text" class="edit-input-subtask">
         <img class="subtask-edit-icons delete-2" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Edit Subtask Icon"/>
         <div class="subtask-list-item-separator-2"></div>
         <img class="subtask-edit-icons accept" onclick="editAcceptSubtaskItem(${index})" src="./assets/icons/check.svg" alt="Delete Subtask Icon"/>

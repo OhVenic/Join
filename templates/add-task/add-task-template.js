@@ -9,11 +9,9 @@ function contactListDropDownTemplate(i) {
 }
 
 function subtaskListTemplate(i) {
-  return `<div class="subtask-list-item" id="subtask-list-item-${i}" 
-      onmouseover="showEditLayout(this)" 
-      onmouseout="removeEditLayout(this)">
+  return `<div class="subtask-list-item" id="subtask-list-item-${i}" >
       <li id="title-${i}">${subtasks[i].title}</li>
-      <div class="subtask-list-item-btns dp-none">
+      <div class="subtask-list-item-btns">
         <img class="subtask-edit-icons edit" onclick="editSubtaskItem(${i})" src="./assets/icons/edit.svg" alt="Edit Subtask Icon"/>
         <div class="subtask-list-item-separator"></div>
         <img class="subtask-edit-icons delete" onclick="deleteSubtaskItem(${i})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>

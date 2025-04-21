@@ -42,7 +42,7 @@
 }
 
 .dp-none {
-  display: none;
+  display: none !important;
 }
 
 /*from Daniel*/
@@ -562,6 +562,10 @@ li {
   color: black;
 }
 
+.edit-input-subtask {
+  width: 280px !important;
+}
+
 .edit-textarea {
   resize: vertical;
   min-height: 80px;
@@ -674,6 +678,7 @@ li {
 .subtask {
   align-items: center !important;
   display: flex;
+  width: 350px;
 }
 
 .edit-add-subtask-img {
@@ -708,4 +713,10 @@ li {
   border: 1px solid #d1d1d1;
   top: 55px;
   right: 40px;
+}
+
+.edit-checkbox {
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
 }

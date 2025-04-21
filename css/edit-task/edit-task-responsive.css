@@ -1,0 +1,79 @@
+@media (max-width: 500px) {
+.card-details-content {
+    height: 450px;
+    width: 280px;
+    padding: 12px 12px 0 12px;
+}
+
+.card-details-content p {
+    font-size: 16px;
+}
+
+.task-title {
+    font-size: 28px
+}
+
+.edit-input {
+    width: 245px;
+}
+
+.edit-form {
+    width: 250px;
+}
+
+.edit-textarea {
+    width: 245px;
+}
+
+.card-overlay-header-flex-right {
+    width: 230px;
+}
+
+.selection {
+    width: 245px;
+}
+
+.prio-btn {
+    width: 75px;
+    font-size: 12px
+}
+
+.contact-list-name {
+    font-size: 12px !important;
+}
+
+.avatar-card-edit {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.subtask {
+    width: 245px;
+    font-size: 12px !important;
+}
+
+.edit-cancel-task-img,
+.edit-accept-task-img,
+.edit-small-separator {
+    top: 50px;
+}
+
+.edit-add-subtask-img {
+    top: 55px
+}
+
+.subtask-list-item li {
+    font-size: 12px !important;
+}
+
+.edit-input-subtask {
+    font-size: 12px !important;
+    width: 180px !important;
+}
+
+.subtask-title {
+    width: 180px
+}
+
+}

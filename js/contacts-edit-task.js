@@ -25,7 +25,7 @@ async function loadContactsForDropdown() {
            <div class="avatar-card-edit" style="background-color:${contact.color}">
              ${contact.avatar}
            </div>
-           <span>${contact.name}</span>
+           <p class="contact-list-name">${contact.name}</p>
          </div>
           <div>
             <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />

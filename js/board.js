@@ -66,7 +66,7 @@ function cardDetails(id) {
             (st) => `
         <li class="task-list">
           <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
-            onchange="updateSubtaskStatus(${task.id}, '${st.title}')"> 
+            onchange="updateSubtaskStatus(${task.id}, '${st.title}')" class="edit-checkbox"> 
           ${st.title}
         </li>
       `
