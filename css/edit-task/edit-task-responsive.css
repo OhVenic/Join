@@ -73,7 +73,7 @@
 }
 
 .subtask-title {
-    width: 180px
+    width: 175px !important
 }
 
 }

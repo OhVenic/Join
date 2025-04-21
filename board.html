@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/add-task/add-task-floating.css">
     <link rel="stylesheet" href="./css/add-task/add-task-floating-resp.css">
     <link rel="stylesheet" href="./css/board/board-resp.css">
+    <link rel="stylesheet" href="./css/edit-task/edit-task-responsive.css">
     <link rel="icon" href="./assets/icons/join-main-logo.png" type="image/png">
   </head>
   
@@ -253,7 +254,7 @@
     </div>
     </div>
     <div id="card-details-overlay" class="card-details-overlay dp-none" onclick="closeCardDetails(event)">
-      <div class="card-details-content" onclick="event.stopPropagation()"></div>
+      <div class="card-details-content" onclick="event.stopPropagation();  checkAndCloseEditDropdown(event)"></div>
       <div id="dropdown-content-edit" class="dp-none"></div>
     </div>
 
@@ -425,12 +426,12 @@
     <script src="./templates/board/board-template.js"></script>
     <script src="./js/add-task/add-task.js"></script>
     <script src="./js/add-task/add-task-floating.js"></script>
-
+<script src="./js/board/board-edit-task-overlay.js"></script>
     <script src="./js/add-task/category-add-task.js"></script>
     <script src="./js/add-task/contacts-add-task.js"></script>
     <script src="./js/add-task/prioBtn.js"></script>
     <script src="./js/add-task/subTask-add-task.js"></script>
-    <script src="./js/contacts-edit-task.js"></script>
+    <script src="./js/board/contacts-edit-task.js"></script>
     <script src="./js/subtask-edit-task.js"></script>
 
 

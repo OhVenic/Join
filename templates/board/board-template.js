@@ -82,7 +82,7 @@ function getCardDetailsTemplate(task, initialsHTML) {
           <li class="task-list">
             <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
               onchange="updateSubtaskStatus(${task.id}, '${st.title}')" class="edit-checkbox"> 
-            ${st.title}
+            <p class="card-overlay-subtask-title">${st.title}</p>
           </li>
         `
             )
@@ -117,16 +117,16 @@ function getEditTaskTemplate(task) {
       <div class="card-overlay-header-flex-right">
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
       </div>
-      <form onsubmit="saveEditedTask(event, '${task.id}')" class="edit-form">
+      <div class="edit-form">
         <label>Title:</label>
-        <input required name="title" value="${task.title}" class="edit-input" />
+        <input required name="title" id="edit-title" value="${task.title}" class="edit-input" />
         
         <label>Description:</label>
-        <textarea name="description" class="edit-textarea">${task.description}</textarea>
+        <textarea name="description" id="edit-description" class="edit-textarea">${task.description}</textarea>
         
         <label>Due Date:</label>
-        <input required name="date" type="date" value="${task.date}" class="edit-input" />
-  
+        <input required name="date" id="edit-date" type="date" value="${task.date}" class="edit-input" />
+
         <label>Priority:</label>
         <div class="priority-btn-group">
           <button type="button" class="prio-btn" id="prio-low" onclick="selectPriorityEdit('low')">
@@ -140,80 +140,104 @@ function getEditTaskTemplate(task) {
           </button>
         </div>
         <input type="hidden" name="priority" id="edit-priority-hidden" />
-  
-         <div class="assigned-to-section frame-39">
-                <label for="assigned-to">Assigned to</label>
-  <input
-    type="text"
-    id="edit-assigned-to"
-    class="selection"
-    placeholder="Select contacts to assign"
-    onclick="toggleEditContactDropdown('${task.id}')"
-  />
-  
-  <img
-    id="assigned-to-img-down"
-    class="assigned-to-img dropdown-img"
-    src="./assets/icons/arrow_drop_down.svg"
-    alt="Select contact dropdown arrow"
-    onclick="toggleEditContactDropdown(); event.stopPropagation();"
-  />
-  
-  <img
-    id="assigned-to-img-up"
-    class="assigned-to-img dropdown-img dp-none"
-    src="./assets/icons/arrow_drop_down_up.svg"
-    alt="Select contact dropdown arrow"
-    onclick="toggleEditContactDropdown(); event.stopPropagation();"
-  />
-                <div
-                  class="edit-drop-down-contact-list dp-none"
-                  id="edit-drop-down-contact-list"
-                  onclick="preventBubbling(event)"
-                ></div>
-                <div id="edit-selected-avatars" class="edit-selected-avatars"></div>
-              </div>
-  
-              <div class="add-subtask frame-39">
-                <label for="subtask" class="edit-subtask-label">Subtasks</label>
-                <input
-                  onclick=""
-                  type="text"
-                  id="edit-subtask"
-                  class="subtask"
-                  placeholder="Add new subtask"
-                />
-                <img
-                  id="edit-Add-subtask-img"
-                  class="edit-add-subtask-img"
-                  src="./assets/icons/add.svg"
-                  alt="Add subtask"
-                />
-                  <img
-                    onclick=""
-                    id="edit-cancel-task-img"
-                    class="edit-cancel-task-img subtask-img dp-none"
-                    src="./assets/icons/cancel.svg"
-                    alt="Cancel Subtask"
-                  />
-                  <div id="edit-small-separator" class="edit-small-separator dp-none"></div>
-                  <img
-                    id="edit-accept-task-img"
-                    class="edit-accept-task-img subtask-img dp-none"
-                    src="./assets/icons/check.svg"
-                    alt="Accept Subtask"
-                    onclick=""
-                  />
-                <div class="subtask-list" id="edit-subtask-list"></div>
-              </div>
+
+        <div class="assigned-to-section frame-39">
+          <label for="assigned-to">Assigned to</label>
+          <input
+            type="text"
+            id="edit-assigned-to"
+            class="selection"
+            placeholder="Select contacts to assign"
+            onclick="toggleEditContactDropdown('${task.id}')"
+          />
+
+          <img
+            id="assigned-to-img-down"
+            class="assigned-to-img dropdown-img"
+            src="./assets/icons/arrow_drop_down.svg"
+            alt="Select contact dropdown arrow"
+            onclick="toggleEditContactDropdown(); event.stopPropagation();"
+          />
+
+          <img
+            id="assigned-to-img-up"
+            class="assigned-to-img dropdown-img dp-none"
+            src="./assets/icons/arrow_drop_down_up.svg"
+            alt="Select contact dropdown arrow"
+            onclick="toggleEditContactDropdown(); event.stopPropagation();"
+          />
+          <div
+            class="edit-drop-down-contact-list dp-none"
+            id="edit-drop-down-contact-list"
+            onclick="preventBubbling(event)"
+          ></div>
+          <div id="edit-selected-avatars" class="edit-selected-avatars"></div>
+        </div>
+
+        <div class="add-subtask frame-39">
+          <label for="subtask" class="edit-subtask-label">Subtasks</label>
+          <input
+            type="text"
+            id="edit-subtask"
+            class="subtask"
+            placeholder="Add new subtask"
+            onkeydown="handleSubtaskEnter(event)"
+          />
+          <img
+            id="edit-Add-subtask-img"
+            class="edit-add-subtask-img"
+            src="./assets/icons/add.svg"
+            alt="Add subtask"
+          />
+          <img
+            id="edit-cancel-task-img"
+            class="edit-cancel-task-img subtask-img dp-none"
+            src="./assets/icons/cancel.svg"
+            alt="Cancel Subtask"
+          />
+          <div id="edit-small-separator" class="edit-small-separator dp-none"></div>
+          <img
+            id="edit-accept-task-img"
+            class="edit-accept-task-img subtask-img dp-none"
+            src="./assets/icons/check.svg"
+            alt="Accept Subtask"
+          />
+          <div class="subtask-list" id="edit-subtask-list"></div>
+        </div>
+
         <div class="edit-btn-row">
-          <button type="submit" class="task-btn">
-            Ok <svg class="white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <button onclick="saveEditedTaskManual('${task.id}')" class="task-btn">
+            Ok
+            <svg class="white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
             </svg>
           </button>
           <button type="button" class="btn btn-cancel" onclick="cardDetails('${task.id}')">Cancel</button>
         </div>
-      </form>
-      </div>`;
+      </div>
+    </div>`;
+}
+
+/**
+ * Gibt das HTML-Template für ein Subtask-Element im Edit-Overlay zurück.
+ * @param {number} index - Index des Subtasks
+ * @param {{ title: string, checked: boolean }} subtask - Subtask-Objekt
+ * @returns {string} HTML-String für den Subtask
+ */
+function getEditSubtaskTemplate(index, subtask) {
+  return `
+    <div class="subtask-list-item" id="subtask-list-item-${index}">
+      <li id="title-${index}" class="subtask-title">${subtask.title}</li>
+      <div class="subtask-list-item-btns">
+        <img class="subtask-edit-icons edit" onclick="editEditSubtaskItem(${index})" src="./assets/icons/edit.svg" alt="Edit Subtask Icon"/>
+        <div class="subtask-list-item-separator"></div>
+        <img class="subtask-edit-icons delete" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>
+      </div>
+    </div>
+    <div id="input-container-${index}" class="change-input dp-none">
+      <input id="input-${index}" type="text" class="edit-input-subtask">
+      <img class="subtask-edit-icons delete-2" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>
+      <div class="subtask-list-item-separator-2"></div>
+      <img class="subtask-edit-icons accept" onclick="editAcceptSubtaskItem(${index})" src="./assets/icons/check.svg" alt="Accept Subtask Icon"/>
+    </div>`;
 }

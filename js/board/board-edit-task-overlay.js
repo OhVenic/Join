@@ -12,6 +12,7 @@ function cardDetails(id) {
   const initialsHTML = generateAssignedToHTML(task["assigned_to"]);
   content.innerHTML = getCardDetailsTemplate(task, initialsHTML);
   overlay.classList.remove("dp-none");
+  document.body.style.overflow = "hidden";
 }
 
 /**
@@ -126,15 +127,13 @@ function editTask(id) {
  * @param {Event} event - The form submission event.
  * @param {string} taskId - The ID of the task being edited.
  */
-async function saveEditedTask(event, taskId) {
-  event.preventDefault();
-  const form = event.target;
+async function saveEditedTaskManual(taskId) {
   const updatedTask = {
     ...tasksArr.find((task) => String(task.id) === String(taskId)),
-    title: form.title.value.trim(),
-    description: form.description.value.trim(),
-    date: form.date.value,
-    priority: form.priority.value,
+    title: document.getElementById("edit-title").value.trim(),
+    description: document.getElementById("edit-description").value.trim(),
+    date: document.getElementById("edit-date").value,
+    priority: document.getElementById("edit-priority-hidden").value,
     assigned_to: assignedContactNames,
     subtasks: editSubtasks,
   };
@@ -145,7 +144,6 @@ async function saveEditedTask(event, taskId) {
   });
   closeCardDetails();
 }
-
 /**
  * Updates the priority selection in the edit task overlay.
  * @param {string} prio - The selected priority (e.g., "low", "medium", "urgent").
@@ -169,6 +167,7 @@ async function closeCardDetails() {
   tasksArr = [];
   await loadTasks("taskList");
   document.getElementById("card-details-overlay").classList.add("dp-none");
+  document.body.style.overflow = "";
 }
 
 //NOAH END
