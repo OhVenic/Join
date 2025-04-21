@@ -1,5 +1,3 @@
-//NOAH START
-
 /**
  * Displays the details of a task in an overlay.
  * @param {string} id - The ID of the task to display.

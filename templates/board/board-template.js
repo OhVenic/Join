@@ -39,7 +39,7 @@ function cardTemplate(element, contacts) {
               }, event)" class="card-s-move-resp" id="card-s-move-resp" src="./assets/icons/move-card-resp.svg" alt="Icon Responsive Drag and Drop">
             </div>
             <div class="title-card-s">${element.title}</div>
-            <div class="description-card-s">${element.description}</div>
+            <div class="description-card-s">${getShortenedDescription(element.description)}</div>
             <div class="subtask-card-s" id="subtask-card-s">${subtaskProgress(element.subtasks)}</div>
             <div class="footer-card-s">
               <div class="assigned-to-card-s">

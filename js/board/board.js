@@ -29,26 +29,56 @@ function getCategoryColor(category) {
 }
 
 /**
- * Generates HTML for the initials of assigned contacts.
- * @param {Object} element - The task element containing assigned contacts.
- * @param {Object[]} contacts - The list of all contacts.
+ * Renders HTML for contact avatars based on the provided contact names and contact list.
+ * @param {string[]} displayedContacts - Array of contact names to display.
+ * @param {Object[]} contacts - Array of contact objects, each containing `name`, `color`, and `avatar` properties.
+ * @returns {string} HTML string for the rendered contact avatars.
+ */
+function renderContactAvatars(displayedContacts, contacts) {
+  return displayedContacts
+    .map((name) => {
+      let contact = contacts.find((c) => c.name === name);
+      let color = contact && contact.color ? contact.color : "#999";
+      let avatar = contact && contact.avatar ? contact.avatar : "G";
+      return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
+    })
+    .join("");
+}
+
+/**
+ * Generates HTML for the initials of assigned contacts, including a "more" indicator if there are additional contacts.
+ * @param {Object} element - The task element containing the `assigned_to` property.
+ * @param {Object[]} contacts - Array of contact objects, each containing `name`, `color`, and `avatar` properties.
  * @returns {string} HTML string for the initials of assigned contacts.
  */
 function getInitials(element, contacts) {
-  let initials = "";
-  if (element["assigned_to"]) {
-    initials = element["assigned_to"]
-      .map((name) => {
-        let contact = contacts.find((c) => c.name === name);
-        let color = contact && contact.color ? contact.color : "#999";
-        let avatar = contact && contact.avatar ? contact.avatar : "G";
-        return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
-      })
-      .join("");
-  } else {
-    initials = "";
+  if (!element["assigned_to"]) return "";
+
+  let assignedContacts = element["assigned_to"];
+  let displayedContacts = assignedContacts.slice(0, 4); // Get the first 4 contacts
+  let remainingCount = assignedContacts.length - 4; // Calculate remaining contacts
+
+  let initials = renderContactAvatars(displayedContacts, contacts);
+
+  if (remainingCount > 0) {
+    initials += `<div class="selected-avatar-card-s more-avatars" style="background-color: #ccc;">+${remainingCount}</div>`;
   }
+
   return initials;
+}
+
+/**
+ * Shortens a given description to a maximum of 5 words and appends ellipsis if it exceeds the limit.
+ * @param {string} description - The full description to be shortened.
+ * @returns {string} The shortened description with ellipsis if applicable.
+ */
+function getShortenedDescription(description) {
+  let descriptionArr = description.split(" ");
+  if (descriptionArr.length > 5) {
+    let newDescriptionArr = descriptionArr.slice(0, 5);
+    let shortDescription = newDescriptionArr.join(" ");
+    return shortDescription + "...";
+  }
 }
 
 /**

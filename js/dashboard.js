@@ -50,11 +50,11 @@ async function loadData() {
   const tasks = Object.values(data.taskList || {});
 
   updateTaskCount("task-all", tasks.length);
-  updateTaskCount("task-to-do", tasks.filter(t => t.column === "to-do").length);
-  updateTaskCount("task-done", tasks.filter(t => t.column === "done").length);
-  updateTaskCount("task-in-progress", tasks.filter(t => t.column === "in-progress").length);
-  updateTaskCount("task-awaiting-feedback", tasks.filter(t => t.column === "await-feedback").length);
-  updateTaskCount("task-urgent", tasks.filter(t => t.priority === "urgent").length);
+  updateTaskCount("task-to-do", tasks.filter((t) => t.column === "to-do").length);
+  updateTaskCount("task-done", tasks.filter((t) => t.column === "done").length);
+  updateTaskCount("task-in-progress", tasks.filter((t) => t.column === "in-progress").length);
+  updateTaskCount("task-awaiting-feedback", tasks.filter((t) => t.column === "await-feedback").length);
+  updateTaskCount("task-urgent", tasks.filter((t) => t.priority === "urgent").length);
 
   updateDeadline(tasks);
 }
@@ -73,7 +73,7 @@ function updateTaskCount(id, count) {
  * @param {Array} tasks - Alle Aufgabenobjekte.
  */
 function updateDeadline(tasks) {
-  const datedTasks = tasks.filter(t => !!t.date);
+  const datedTasks = tasks.filter((t) => !!t.date);
   if (datedTasks.length === 0) {
     document.getElementById("task-deadline").innerHTML = "No date found";
     return;

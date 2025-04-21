@@ -6,7 +6,7 @@ let assignedContactNames = [];
  * Wenn Kontakte bereits ausgewählt sind, wird das im UI markiert.
  */
 async function loadContactsForDropdown() {
-  const url = 'https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json';
+  const url = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json";
   const dropdown = document.getElementById("edit-drop-down-contact-list");
 
   const scrollPos = dropdown.scrollTop;
@@ -120,7 +120,9 @@ async function loadAssignedContacts(taskId) {
 
     const assignedNames = Object.values(taskData.assigned_to);
     assignedContactNames = assignedNames;
-    const contactResponse = await fetch('https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json');
+    const contactResponse = await fetch(
+      "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json"
+    );
     const allContacts = await contactResponse.json();
 
     for (const id in allContacts) {
@@ -150,11 +152,11 @@ function toggleAssignContact(name, avatar) {
   if (index > -1) {
     assignedContactNames.splice(index, 1);
   } else {
-    assignedContactNames.push(name); 
+    assignedContactNames.push(name);
   }
 
   renderAssignedAvatars();
-  loadContactsForDropdown();   
+  loadContactsForDropdown();
 }
 
 /**
@@ -164,7 +166,7 @@ async function renderAssignedAvatars() {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
 
-  const response = await fetch('https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json');
+  const response = await fetch("https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json");
   const contacts = await response.json();
 
   for (const id in contacts) {

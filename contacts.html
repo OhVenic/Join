@@ -19,9 +19,7 @@
     <div class="log-edit" id="log-edit"></div>
     <div class="log-delete" id="log-delete"></div>
     <div class="overlay dp-none" id="overlay"></div>
-
     <div class="content">
-
       <header class="header-general">
         <p class="header-p">Kanban Project Management Tool</p>
         <img class="frame-3-icon-header" src="./assets/icons/join-logo-blue.svg" alt="Join Logo" />
@@ -82,27 +80,25 @@
         </div>
       </div>
       <div class="modal-edit-cont dp-none" id="modal-cont-edit">
-        
         <div class="edit-contact-modal">
         <div class="edit-contact-modal-header">
           <div class="edit-cont-header-wrapper">
             <img class="close-resp" onclick="closeEditContactModal()" src="./assets/icons/close-white.svg" alt="Close Button Responsive">
           <img class="main-logo-modal"src="./assets/icons/join-main-logo.png" alt="Join Main Logo">
-
           <h1 class="edit-modal-title">Edit contact</h1>
           <div class="separator-modal"></div>
         </div>
         </div>
-        
         <div class="edit-contact-modal-content">
           <img class="exit-modal-btn" id="exit-modal-btn" onclick="closeEditContactModal()" src="./assets/icons/cancel.svg" alt="Cancel Modal Icon">
           <div class="edit-main-modal-cont">
             <div class="avatar-user" id="avatar-user" alt="Avatar User"></div>
             <div class="edit-contact-modal-form">
               <div class="edit-input-name">
-              <input  oninput="removeErrorMsgs('error-name-edit', 'edit-cont-name')" id="edit-cont-name" type="text" placeholder="Name">
+              <input  oninput="removeErrorMsgs('error-name-edit', 'edit-cont-name');removeErrorMsgs('error-name-exists-edit', 'edit-cont-name')" id="edit-cont-name" type="text" placeholder="Name">
               <img class="input-imgs name" src="./assets/icons/person.svg" alt="Name Icon">
               <div class="error error-name red dp-none" id="error-name-edit">Please enter a name</div>
+              <div class="error error-name red dp-none" id="error-name-exists-edit">Contact already exists</div>
             </div>
             <div class="edit-input-email">
               <input oninput="removeErrorMsgs('error-email-edit', 'edit-cont-email');removeErrorMsgs('error-valid-email-edit', 'edit-cont-email');" id="edit-cont-email" type="text" placeholder="Email">
@@ -123,7 +119,6 @@
         </div>
       </div>
     </div>
-
         <nav class="frame-3">
           <img
             class="frame-3-icon"
@@ -178,7 +173,7 @@
           <div class="contacts" id="contacts">
           </div>
         </div>
-        <div class="contact-display-container" onclick="closeEditMenu();" id="contact-display-container">
+        <div class="contact-display-container" id="contact-display-container">
           <div class="container">
            
             <div class="contact-display-header"> 
@@ -193,7 +188,6 @@
           </div>
         </div>
       </div>
-
       </main>
       <footer class="footer-resp">
         <a href="dashboard.html"><div class="menu-btns-resp">
@@ -217,7 +211,5 @@
     <script src="./js/contacts/add-new-contact.js"></script>
     <script src="./js/contacts/edit-contact.js"></script>
     <script src="./templates/contacts/contacts-template.js"></script>
-
-
   </body>
 </html>
