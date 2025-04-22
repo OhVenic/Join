@@ -74,12 +74,18 @@ function removeErrorMsgs(errorId, inputId) {
  * Displays required field error messages.
  */
 function showFieldRequired() {
-  document.getElementById("required-title").classList.remove("dp-none");
-  document.getElementById("required-date").classList.remove("dp-none");
-  document.getElementById("required-category").classList.remove("dp-none");
-  document.getElementById("add-task-title").style.border = "1px solid red";
-  document.getElementById("add-task-due-date").style.border = "1px solid red";
-  document.getElementById("category").style.border = "1px solid red";
+  if (document.getElementById("add-task-title").value.trim() === "") {
+    document.getElementById("add-task-title").style.border = "1px solid red";
+    document.getElementById("required-title").classList.remove("dp-none");
+  }
+  if (document.getElementById("add-task-due-date").value.trim() === "") {
+    document.getElementById("required-date").classList.remove("dp-none");
+    document.getElementById("add-task-due-date").style.border = "1px solid red";
+  }
+  if (document.getElementById("category").value.trim() === "") {
+    document.getElementById("category").style.border = "1px solid red";
+    document.getElementById("required-category").classList.remove("dp-none");
+  }
 }
 
 /**
@@ -87,10 +93,10 @@ function showFieldRequired() {
  */
 function removeFieldRequired() {
   document.getElementById("required-title").classList.add("dp-none");
-  document.getElementById("required-date").classList.add("dp-none");
-  document.getElementById("required-category").classList.add("dp-none");
   document.getElementById("add-task-title").style.border = "1px solid #d1d1d1";
+  document.getElementById("required-date").classList.add("dp-none");
   document.getElementById("add-task-due-date").style.border = "1px solid #d1d1d1";
+  document.getElementById("required-category").classList.add("dp-none");
   document.getElementById("category").style.border = "1px solid #d1d1d1";
 }
 

@@ -106,6 +106,9 @@ function editSubtaskItem(id) {
       event.preventDefault();
       acceptSubtaskItem(id);
     }
+    if (inputField.value.trim() === "") {
+      deleteSubtaskItem(id);
+    }
   });
 }
 
