@@ -22,14 +22,14 @@ function highlightMenuActual() {
  */
 function getMenuMappings() {
   return {
-    "/dashboard.html": ["menu-btn-dashboard", "menu-btn-resp-dashboard"],
-    "/add-task.html": ["menu-btn-add-task", "menu-btn-resp-add-task"],
-    "/board.html": ["menu-btn-board", "menu-btn-resp-board"],
-    "/contacts.html": ["menu-btn-contacts", "menu-btn-resp-contacts"],
-    "/privacy-policy.html": ["pp-btn"],
-    "/legal-notice.html": ["ln-btn"],
-    "/legal-notice-external.html": ["lne-btn"],
-    "/privacy-policy-external.html": ["ppe-btn"],
+    "/Join/dashboard.html": ["menu-btn-dashboard", "menu-btn-resp-dashboard"],
+    "/Join/add-task.html": ["menu-btn-add-task", "menu-btn-resp-add-task"],
+    "/Join/board.html": ["menu-btn-board", "menu-btn-resp-board"],
+    "/Join/contacts.html": ["menu-btn-contacts", "menu-btn-resp-contacts"],
+    "/Join/privacy-policy.html": ["pp-btn"],
+    "/Join/legal-notice.html": ["ln-btn"],
+    "/Join/legal-notice-external.html": ["lne-btn"],
+    "/Join/privacy-policy-external.html": ["ppe-btn"],
   };
 }
 
