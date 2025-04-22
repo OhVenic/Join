@@ -120,12 +120,69 @@ function editTask(id) {
   setupEditSubtaskInput(task);
 }
 
+// Helper Funktion zur Validierung
+function resetEditFormErrors() {
+  const title = document.getElementById("edit-title");
+  const date = document.getElementById("edit-date");
+  const titleError = document.getElementById("edit-title-error");
+  const [dateEmptyMsg, datePastMsg] = document.getElementById("edit-date-error").querySelectorAll("p");
+  const dateWrapper = document.getElementById("edit-date-error");
+
+  // Reset styles and messages
+  titleError.classList.add("dp-none");
+  dateWrapper.classList.add("dp-none");
+  dateEmptyMsg.classList.add("dp-none");
+  datePastMsg.classList.add("dp-none");
+  title.style.border = "1px solid #d1d1d1";
+  date.style.border = "1px solid #d1d1d1";
+}
+
+function validateEditFormFields() {
+  const title = document.getElementById("edit-title");
+  const date = document.getElementById("edit-date");
+  resetEditFormErrors(); // Reset errors first
+  let hasError = false;
+  // Title validation
+  if (!title.value.trim()) {
+    document.getElementById("edit-title-error").classList.remove("dp-none");
+    title.style.border = "1px solid red";
+    hasError = true;
+  }
+  // Date validation
+  if (validateDate(date)) {
+    hasError = true;
+  }
+  return hasError;
+}
+
+function validateDate(date) {
+  const [dateEmptyMsg, datePastMsg] = document.getElementById("edit-date-error").querySelectorAll("p");
+  const dateWrapper = document.getElementById("edit-date-error");
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  if (!date.value) {
+    dateWrapper.classList.remove("dp-none");
+    dateEmptyMsg.classList.remove("dp-none");
+    date.style.border = "1px solid red";
+    return true;
+  } else if (new Date(date.value) < today) {
+    dateWrapper.classList.remove("dp-none");
+    datePastMsg.classList.remove("dp-none");
+    date.style.border = "1px solid red";
+    return true;
+  }
+  return false;
+}
+
 /**
  * Saves the edited task to the database.
  * @param {Event} event - The form submission event.
  * @param {string} taskId - The ID of the task being edited.
  */
 async function saveEditedTaskManual(taskId) {
+  resetEditFormErrors();  // Reset errors before validation
+  if (validateEditFormFields()) return;  // Wenn Validierung fehlschlägt, abbrechen
+
   const updatedTask = {
     ...tasksArr.find((task) => String(task.id) === String(taskId)),
     title: document.getElementById("edit-title").value.trim(),

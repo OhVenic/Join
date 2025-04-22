@@ -120,12 +120,19 @@ function getEditTaskTemplate(task) {
       <div class="edit-form">
         <label>Title:</label>
         <input required name="title" id="edit-title" value="${task.title}" class="edit-input" />
-        
+        <div id="edit-title-error" class="requiredText dp-none">
+          <p class="red negative-margin">This field is required</p>
+        </div>
+
         <label>Description:</label>
         <textarea name="description" id="edit-description" class="edit-textarea">${task.description}</textarea>
         
         <label>Due Date:</label>
         <input required name="date" id="edit-date" type="date" value="${task.date}" class="edit-input" />
+        <div id="edit-date-error" class="requiredText dp-none">
+          <p class="red dp-none negative-margin">This field is required</p>
+          <p class="red dp-none negative-margin">The date must be in the future!</p>
+        </div>
 
         <label>Priority:</label>
         <div class="priority-btn-group">
@@ -150,7 +157,6 @@ function getEditTaskTemplate(task) {
             placeholder="Select contacts to assign"
             onclick="toggleEditContactDropdown('${task.id}')"
           />
-
           <img
             id="assigned-to-img-down"
             class="assigned-to-img dropdown-img"
@@ -158,7 +164,6 @@ function getEditTaskTemplate(task) {
             alt="Select contact dropdown arrow"
             onclick="toggleEditContactDropdown(); event.stopPropagation();"
           />
-
           <img
             id="assigned-to-img-up"
             class="assigned-to-img dropdown-img dp-none"
@@ -218,7 +223,6 @@ function getEditTaskTemplate(task) {
     </div>
   `;
 }
-
 /**
  * Returns the HTML template for a subtask item in the edit overlay.
  * @param {number} index - Index of the subtask.
