@@ -343,6 +343,9 @@ function openEditMenu() {
   document.getElementById("contact-edit-delete").classList.remove("close-menu");
 }
 
+/**
+ * Closes the edit menu for a contact.
+ */
 function closeEditMenu() {
   if (document.getElementById("contact-edit-delete").classList.contains("open-menu")) {
     document.getElementById("contact-edit-delete").classList.remove("open-menu");
