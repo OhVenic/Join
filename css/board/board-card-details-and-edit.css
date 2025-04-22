@@ -336,3 +336,7 @@
   height: 180px;
   overflow-y: auto;
 }
+
+.negative-margin {
+  margin-top: -10px;
+}
