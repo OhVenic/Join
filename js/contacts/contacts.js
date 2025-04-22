@@ -6,6 +6,7 @@ async function init() {
   renderContacts();
   loadLoginInfo("whoIsLoggedIn");
   await showLoggedInInfo();
+  highlightMenuActual();
 }
 
 /**

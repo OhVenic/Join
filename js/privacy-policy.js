@@ -4,6 +4,7 @@
 async function init() {
   loadLoginInfo("whoIsLoggedIn");
   await showLoggedInInfo();
+  highlightMenuActual();
 }
 
 /**

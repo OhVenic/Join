@@ -9,6 +9,7 @@ async function init() {
   await showLoggedInInfo();
   updateHTML();
   loadLoginInfo("whoIsLoggedIn");
+  highlightMenuActual();
 }
 
 //CARD ELEMENTS

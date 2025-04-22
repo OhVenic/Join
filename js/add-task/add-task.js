@@ -6,6 +6,7 @@ async function init() {
   await loadTasks("taskList");
   await showLoggedInInfo();
   selectPrio("medium");
+  highlightMenuActual();
 }
 
 /**

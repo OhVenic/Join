@@ -1,4 +1,7 @@
 /* Help Main */
+main {
+  max-width: 1440px;
+}
 
 .main-title-img {
   width: 37px;

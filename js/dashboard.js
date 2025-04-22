@@ -5,6 +5,7 @@
 async function init() {
   await loadData();
   await showLoggedInInfo();
+  highlightMenuActual();
 }
 
 /**

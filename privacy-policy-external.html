@@ -11,7 +11,7 @@
   <link rel="icon" href="./assets/icons/join-main-logo.png" type="image/png">
 </head>
 
-<body onclick="closeSubMenu()">
+<body onclick="closeSubMenu()" onload="highlightMenuActual()">
   <header class="header-general">
     <p class="header-p">Kanban Project Management Tool</p>
     <img
@@ -37,8 +37,8 @@
      
     </div></div></a>
     <div class="frame-22">
-      <a href="privacy-policy-external.html"><p class="frame-22-btns">Privacy Policy</p></a>
-      <a href="legal-notice-external.html"><p class="frame-22-btns">Legal Notice</p></a>
+      <a href="privacy-policy-external.html"><p class="frame-22-btns"id="ppe-btn">Privacy Policy</p></a>
+      <a href="legal-notice-external.html"><p class="frame-22-btns" >Legal Notice</p></a>
     </div>
   </nav>
 
@@ -95,7 +95,10 @@
     <p>Log in</p>
   </div></a>
 </footer>
-  <script src="./js/dashboard.js"></script>
+  <!-- <script src="./js/dashboard.js"></script> -->
   <script src="./js/global.js"></script>
+  <script src="./js/privacy-policy.js"></script>
+  <script src="./js/navbar.js"></script>
+
 </body>
 </html>

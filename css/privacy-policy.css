@@ -8,6 +8,7 @@
   background-color: #f6f7f8;
   min-height: 100vh;
   margin-top: 8px;
+  max-width:1440px;
 }
 
 .main-content h1 {
