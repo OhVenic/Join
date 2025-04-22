@@ -224,5 +224,3 @@ async function closeCardDetails() {
   document.getElementById("card-details-overlay").classList.add("dp-none");
   document.body.style.overflow = "";
 }
-
-//NOAH END

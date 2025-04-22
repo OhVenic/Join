@@ -19,3 +19,29 @@ function openFloatingAddTask() {
   document.getElementById("add-task-content").classList.remove("closing");
   document.documentElement.style.overflow = "hidden";
 }
+
+let scrollerElement = document.querySelector(".scroller");
+
+if (scrollerElement) {
+  /**
+   * Handles click events within the "scroller" element to manage subtask editing and saving.
+   * Closes the editing mode if the user clicks outside the input field.
+   * @param {MouseEvent} event - The click event object.
+   */
+  scrollerElement.addEventListener("click", function (event) {
+    if (!isEditingSubtask || justOpenedEdit) return;
+    let openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
+    if (!openInput) return;
+    let clickedInsideInput = openInput.contains(event.target);
+    let clickedEditButton = event.target.closest(".edit-button");
+    if (clickedInsideInput || clickedEditButton) return;
+
+    let value = document.getElementById(`input-${openInput.id.split("input-container-")[1]}`).value.trim();
+    if (value !== "") {
+      acceptSubtaskItem(openInput.id.split("input-container-")[1]);
+    } else {
+      deleteSubtaskItem(openInput.id.split("input-container-")[1]);
+    }
+    isEditingSubtask = false;
+  });
+}
