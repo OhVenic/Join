@@ -168,6 +168,7 @@
   .edit-contact-modal-form {
     width: 80%;
     align-items: center;
+    gap: 0px;
   }
   .edit-contact-modal-form input::placeholder {
     font-size: 12px;
@@ -182,6 +183,10 @@
   }
   .edit-contact-modal-btns {
     margin-bottom: 40px;
+  }
+  .avatar-user {
+    width: 60px;
+    height: 60px;
   }
 }
 @media (max-width: 400px) {
