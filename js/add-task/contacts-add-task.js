@@ -84,14 +84,27 @@ function toggleContactSelection(i) {
 
 /**
  * Displays the avatar of a selected contact.
+ * Shows only up to 4 avatars, and if there are more, displays a "+X" bubble.
  * @param {number} i - The index of the contact in the array.
  */
 function showSelectedAvatar(i) {
+  const selectedAvatarsContainer = document.getElementById("selected-avatars");
   let element = document.getElementById(`avatar-${i}`);
   if (!element) {
-    document.getElementById(
-      "selected-avatars"
-    ).innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
+    selectedAvatarsContainer.innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
+  }
+  const selectedAvatars = selectedContacts.map((contactIndex) => ({
+    color: contacts[contactIndex].color,
+    avatar: contacts[contactIndex].avatar,
+  }));
+  if (selectedAvatars.length > 4) {
+    selectedAvatarsContainer.innerHTML = "";
+    for (let j = 0; j < 4; j++) {
+      selectedAvatarsContainer.innerHTML += `<div class="selected-avatar" style="background-color:${selectedAvatars[j].color};">${selectedAvatars[j].avatar}</div>`;
+    }
+
+    const extraCount = selectedAvatars.length - 4;
+    selectedAvatarsContainer.innerHTML += `<div class="selected-avatar extra-avatar">+${extraCount}</div>`;
   }
 }
 

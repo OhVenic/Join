@@ -29,7 +29,6 @@ function clearTaskForm() {
   clearInputs();
   changeSubtaskButtons();
   unselectPrio("urgent");
-  unselectPrio("medium");
   unselectPrio("low");
   selectedContacts = [];
   removeFieldRequired();
