@@ -10,10 +10,10 @@ function loadContactsForDropdown() {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
 
   fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      dropdown.innerHTML = ''; // Zuerst leeren wir den Inhalt
-      Object.values(data || {}).forEach(contact => {
+    .then((response) => response.json())
+    .then((data) => {
+      dropdown.innerHTML = ""; // Zuerst leeren wir den Inhalt
+      Object.values(data || {}).forEach((contact) => {
         const isSelected = assignedContactNames.includes(contact.name);
         const contactElement = createContactElement(contact, isSelected);
         dropdown.appendChild(contactElement); // Füge das Element hinzu
@@ -86,17 +86,17 @@ function closeEditContactDropdown() {
 function loadAssignedContacts(taskId) {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
-
   fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`)
-    .then(res => res.json())
-    .then(taskData => taskData?.assigned_to || [])
-    .then(assignedNames => {
+    .then((res) => res.json())
+    .then((taskData) => taskData?.assigned_to || [])
+    .then((assignedNames) => {
       assignedContactNames = assignedNames;
-      return fetch("https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json")
-        .then(res => res.json());
+      return fetch("https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json").then((res) =>
+        res.json()
+      );
     })
-    .then(allContacts => {
-      Object.values(allContacts || {}).forEach(contact => {
+    .then((allContacts) => {
+      Object.values(allContacts || {}).forEach((contact) => {
         if (assignedContactNames.includes(contact.name)) {
           container.innerHTML += `
             <div class="selected-avatar-card-s" style="background-color:${contact.color}">
@@ -104,6 +104,7 @@ function loadAssignedContacts(taskId) {
             </div>`;
         }
       });
+      renderAssignedAvatars();
     })
     .catch(console.error);
 }
@@ -121,28 +122,81 @@ function toggleAssignContact(name, avatar) {
   } else {
     assignedContactNames.push(name);
   }
-
   renderAssignedAvatars();
   loadContactsForDropdown();
 }
 
 /**
- * Renders the currently assigned contacts with their avatars in the edit overlay.
+ * Renders the avatars of assigned contacts in the UI.
+ * Fetches contacts from the database, categorizes them into visible and extra,
+ * and updates the DOM accordingly.
+ * @async
+ * @returns {Promise<void>} Resolves when rendering is complete.
  */
 async function renderAssignedAvatars() {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
+  const contacts = await fetchContacts();
+  const { visibleContacts, extraContacts } = categorizeContacts(contacts);
+  renderVisibleContacts(container, visibleContacts);
+  renderExtraContacts(container, extraContacts);
+}
 
+/**
+ * Fetches the list of contacts from the Firebase database.
+ * @async
+ * @returns {Promise<Object>} A promise that resolves to the list of contacts.
+ */
+async function fetchContacts() {
   const response = await fetch("https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/contactList.json");
-  const contacts = await response.json();
+  return await response.json();
+}
 
+/**
+ * Categorizes contacts into visible and extra based on the assigned contact names.
+ * @param {Object} contacts - The list of all contacts.
+ * @returns {Object} An object containing `visibleContacts` and `extraContacts` arrays.
+ */
+function categorizeContacts(contacts) {
+  const visibleContacts = [];
+  const extraContacts = [];
   for (const id in contacts) {
     const contact = contacts[id];
     if (assignedContactNames.includes(contact.name)) {
-      container.innerHTML += `
-        <div class="selected-avatar-card-s" style="background-color:${contact.color}">
-          ${contact.avatar}
-        </div>`;
+      if (visibleContacts.length < 4) {
+        visibleContacts.push(contact);
+      } else {
+        extraContacts.push(contact);
+      }
     }
+  }
+  return { visibleContacts, extraContacts };
+}
+
+/**
+ * Renders the visible contacts' avatars in the specified container.
+ * @param {HTMLElement} container - The DOM element to render the avatars in.
+ * @param {Object[]} visibleContacts - The list of visible contacts to render.
+ */
+function renderVisibleContacts(container, visibleContacts) {
+  visibleContacts.forEach((contact) => {
+    container.innerHTML += `
+      <div class="selected-avatar-card-s" style="background-color:${contact.color}">
+        ${contact.avatar}
+      </div>`;
+  });
+}
+
+/**
+ * Renders a summary card for extra contacts if there are more than 4 assigned contacts.
+ * @param {HTMLElement} container - The DOM element to render the summary card in.
+ * @param {Object[]} extraContacts - The list of extra contacts.
+ */
+function renderExtraContacts(container, extraContacts) {
+  if (extraContacts.length > 0) {
+    container.innerHTML += `
+      <div class="selected-avatar-card-s" style="background-color:#ccc; color:white; display:flex; align-items:center; justify-content:center;">
+        +${extraContacts.length}
+      </div>`;
   }
 }

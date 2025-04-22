@@ -332,3 +332,6 @@
   outline: none;
   border: 2px solid #29abe2;
 }
+.search-container {
+  height: 67px;
+}

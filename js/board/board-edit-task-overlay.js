@@ -158,7 +158,8 @@ function validateEditFormFields() {
 function validateDate(date) {
   const [dateEmptyMsg, datePastMsg] = document.getElementById("edit-date-error").querySelectorAll("p");
   const dateWrapper = document.getElementById("edit-date-error");
-  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   if (!date.value) {
     dateWrapper.classList.remove("dp-none");
@@ -180,8 +181,8 @@ function validateDate(date) {
  * @param {string} taskId - The ID of the task being edited.
  */
 async function saveEditedTaskManual(taskId) {
-  resetEditFormErrors();  // Reset errors before validation
-  if (validateEditFormFields()) return;  // Wenn Validierung fehlschlägt, abbrechen
+  resetEditFormErrors(); // Reset errors before validation
+  if (validateEditFormFields()) return; // Wenn Validierung fehlschlägt, abbrechen
 
   const updatedTask = {
     ...tasksArr.find((task) => String(task.id) === String(taskId)),

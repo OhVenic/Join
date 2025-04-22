@@ -127,7 +127,6 @@ document.addEventListener("click", function (event) {
   let clickedEditButton = event.target.closest(".edit-button");
   if (clickedInsideInput || clickedEditButton) return;
   let mainElement = document.querySelector("main");
-  let floatinMainElement = document.querySelector(".card-details-content");
   if (mainElement.contains(event.target)) {
     let value = document.getElementById(`input-${openInput.id.split("input-container-")[1]}`).value.trim();
     if (value !== "") {
@@ -153,6 +152,5 @@ function acceptSubtaskItem(id) {
     listItem.classList.remove("dp-none");
     subtasks[id].title = inputField.value.trim();
     titleElement.innerHTML = inputField.value.trim();
-    console.log("Updated subtask:", subtasks[id]);
   }
 }
