@@ -478,6 +478,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .subtask-list {
+  width: 420px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -519,12 +520,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .change-input {
+  width:100%;
   gap: 20px;
   position: relative;
 }
 .change-input input {
   height: 30px;
-  width: 325px;
+  width: 80%;
 }
 .subtask-list-item-separator-2 {
   width: 2px;

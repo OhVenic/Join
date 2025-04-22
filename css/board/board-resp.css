@@ -60,6 +60,9 @@
   .separator-search {
     right: 45px;
   }
+  .search-container {
+    height: 67px;
+  }
 }
 
 @media (max-width: 850px) {
@@ -71,9 +74,6 @@
   }
   .error-msg-not-found {
     font-size: 13px;
-  }
-  .search-container {
-    height: 65px;
   }
 }
 
@@ -91,7 +91,6 @@
     margin: 50px 0px 50px 0px;
     justify-content: flex-start;
     align-items: normal;
-    /* gap: 30px; */
   }
   .title {
     display: flex;

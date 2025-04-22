@@ -9,7 +9,8 @@
     width: 280px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list {
     width: 280px;
     font-size: 14px;
   }
@@ -63,7 +64,8 @@
     width: 360px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list {
     width: 360px;
   }
 
@@ -87,8 +89,41 @@
     height: 80px;
     z-index: 999;
   }
+  .add-task-content {
+    width: 600px;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  .add-task-form {
+    margin-top: 20px;
+    align-items: center;
+  }
+  .add-task-main-title {
+    margin-left: 50px;
+  }
+  .add-task-close-btn {
+    position: absolute;
+    top: 35px;
+    right: 45px;
+  }
+  .add-task-1,
+  .add-task-2,
+  input,
+  .add-task-description,
+  .priority-btns,
+  #assigned-to,
+  #category,
+  #subtask,
+  .subtask-list {
+    width: 420px;
+  }
   .change-input input {
-    width: 270px !important;
+    width: 80% !important;
+  }
+}
+@media (max-width: 900px) {
+  .add-task-content {
+    width: 500px;
   }
 }
 
@@ -115,10 +150,8 @@
     border-radius: 0px;
     position: absolute;
     padding-right: 0px;
-    /* top: 482px; */
     background-color: rgb(246, 245, 245);
     align-items: center;
-    /* bottom:80px; */
   }
   .main-board {
     position: relative;
@@ -157,7 +190,11 @@
     width: 360px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list,
+  #assigned-to,
+  #category,
+  #subtask {
     width: 550px;
   }
 
@@ -268,7 +305,11 @@
     width: 450px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list,
+  #assigned-to,
+  #category,
+  #subtask {
     width: 450px;
   }
   .add-task-1,
@@ -306,7 +347,11 @@
     height: 40px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list,
+  #assigned-to,
+  #category,
+  #subtask {
     width: 360px;
   }
 
@@ -333,8 +378,11 @@
   .small-separator {
     top: 40px;
   }
+  .change-input {
+    width: 100%;
+  }
   .change-input input {
-    width: 250px !important;
+    width: 80% !important;
   }
 }
 
@@ -374,7 +422,11 @@
     width: 120px;
   }
   .drop-down-contact-list,
-  .drop-down-category-list {
+  .drop-down-category-list,
+  .subtask-list,
+  #category,
+  #subtask,
+  #assigned-to {
     width: 280px;
   }
   .change-input input {
