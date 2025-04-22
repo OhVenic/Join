@@ -519,13 +519,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .change-input {
-  /* display: flex; */
   gap: 20px;
   position: relative;
 }
 .change-input input {
   height: 30px;
-  width: 420px;
+  width: 325px;
 }
 .subtask-list-item-separator-2 {
   width: 2px;

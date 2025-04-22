@@ -7,7 +7,9 @@
  */
 function cardTemplate(element, contacts) {
   return `
-    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${element.id})">
+    <div class="card-s grab" draggable="true" ondragstart="startDragging(${element.id})" onclick="cardDetails(${
+    element.id
+  })">
       <div class="card-s-header">
         <div class="category-card-s" style="background-color: ${getCategoryColor(element.category)}">
           ${element.category}
@@ -27,7 +29,9 @@ function cardTemplate(element, contacts) {
             <p>Done</p>
           </div>
         </div>
-        <img onclick="moveTaskRespMenu(${element.id}, event)" class="card-s-move-resp" id="card-s-move-resp" src="./assets/icons/move-card-resp.svg" alt="Icon Responsive Drag and Drop">
+        <img onclick="moveTaskRespMenu(${
+          element.id
+        }, event)" class="card-s-move-resp" id="card-s-move-resp" src="./assets/icons/move-card-resp.svg" alt="Icon Responsive Drag and Drop">
       </div>
       <div class="title-card-s">${element.title}</div>
       <div class="description-card-s">${getShortenedDescription(element.description)}</div>
@@ -83,12 +87,16 @@ function getCardDetailsTemplate(task, initialsHTML) {
       </ul>
     </div>
     <div class="task-overlay-footer">
-      <div class="contact-change edit-icon" onclick="editTask(${task.id})"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
+      <div class="contact-change edit-icon" onclick="editTask(${
+        task.id
+      })"  onmouseover="changeToBlueIconEdit()" onmouseout="changeToBlackIconEdit()">
         <img id="edit-icon-n" class="icon" src="./assets/icons/edit.svg" alt="Edit Icon Normal">
         <img id="edit-icon-b" class="dp-none icon" src="./assets/icons/edit-blue.svg" alt="Edit Icon Hover">
         <p>Edit</p>
       </div>
-      <div class="contact-change delete-display" onclick="deleteTask(${task.id})" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
+      <div class="contact-change delete-display" onclick="deleteTask(${
+        task.id
+      })" onmouseover="changeToBlueIconDelete()" onmouseout="changeToBlackIconDelete()">
         <img id="delete-icon-n" class="icon" src="./assets/icons/delete.svg" alt="Delete Icon Normal">
         <img id="delete-icon-b" class="dp-none icon" src="./assets/icons/delete-blue.svg" alt="Delete Icon Hover">
         <p>Delete</p>
@@ -105,7 +113,7 @@ function getCardDetailsTemplate(task, initialsHTML) {
  */
 function getEditTaskTemplate(task) {
   return `
-    <div>
+    <div class="card-overlay-content-content">
       <div class="card-overlay-header-flex-right">
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
       </div>
@@ -257,6 +265,6 @@ function createContactElement(contact, isSelected) {
       <img src="./assets/icons/${isSelected ? "btn-checked" : "btn-unchecked"}.svg" />
     </div>
   `;
-  
+
   return contactElement;
 }

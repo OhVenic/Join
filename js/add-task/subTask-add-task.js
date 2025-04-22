@@ -91,26 +91,53 @@ function deleteSubtaskItem(index) {
 }
 
 /**
- * Enables editing of a subtask item.
+ * Enables editing mode for a specific subtask item.
  * @param {number} id - The ID of the subtask to edit.
  */
 function editSubtaskItem(id) {
-  let inputContainer = document.getElementById(`input-container-${id}`);
-  let listItem = document.getElementById(`subtask-list-item-${id}`);
-  let inputField = document.getElementById(`input-${id}`);
-  inputContainer.classList.remove("dp-none");
-  listItem.classList.add("dp-none");
-  inputField.value = subtasks[id].title;
-  inputField.addEventListener("keydown", function (event) {
+  document.getElementById(`input-container-${id}`).classList.remove("dp-none");
+  document.getElementById(`subtask-list-item-${id}`).classList.add("dp-none");
+  document.getElementById(`input-${id}`).value = subtasks[id].title;
+  isEditingSubtask = true;
+  justOpenedEdit = true;
+  setTimeout(() => {
+    justOpenedEdit = false;
+  }, 0);
+  document.getElementById(`input-${id}`).onkeydown = function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
       acceptSubtaskItem(id);
     }
-    if (inputField.value.trim() === "") {
-      deleteSubtaskItem(id);
-    }
-  });
+  };
 }
+
+let isEditingSubtask = false;
+let justOpenedEdit = false;
+
+/**
+ * Handles click events to manage subtask editing and saving.
+ * Closes the editing mode if the user clicks outside the input field.
+ * @param {MouseEvent} event - The click event object.
+ */
+document.addEventListener("click", function (event) {
+  if (!isEditingSubtask || justOpenedEdit) return;
+  let openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
+  if (!openInput) return;
+  let clickedInsideInput = document.querySelector('[id^="input-container-"]:not(.dp-none)').contains(event.target);
+  let clickedEditButton = event.target.closest(".edit-button");
+  if (clickedInsideInput || clickedEditButton) return;
+  let mainElement = document.querySelector("main");
+  let floatinMainElement = document.querySelector(".card-details-content");
+  if (mainElement.contains(event.target)) {
+    let value = document.getElementById(`input-${openInput.id.split("input-container-")[1]}`).value.trim();
+    if (value !== "") {
+      acceptSubtaskItem(openInput.id.split("input-container-")[1]);
+    } else {
+      deleteSubtaskItem(openInput.id.split("input-container-")[1]);
+    }
+    isEditingSubtask = false;
+  }
+});
 
 /**
  * Accepts the changes made to a subtask item.
