@@ -310,3 +310,13 @@ function mapArrayToObject(array) {
 function generateUniqueId() {
   return String(Date.now());
 }
+
+function areInputsEmpty() {
+  const t = id => document.getElementById(id), d = t("add-task-due-date"), [e, p] = t("required-date").querySelectorAll("p");
+  let i = !t("add-task-title").value.trim() || !t("category").value.trim(), v = d.value, today = new Date();
+  today.setHours(0,0,0,0);
+  [e, p, t("required-date")].forEach(el => el.classList.add("dp-none"));
+  if (!v) e.classList.remove("dp-none"), t("required-date").classList.remove("dp-none"), i = true;
+  else if (new Date(v) < today) p.classList.remove("dp-none"), t("required-date").classList.remove("dp-none"), d.style.border = "1px solid red", i = true;
+  return i;
+}
