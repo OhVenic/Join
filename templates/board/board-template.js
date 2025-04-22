@@ -113,7 +113,7 @@ function getCardDetailsTemplate(task, initialsHTML) {
  */
 function getEditTaskTemplate(task) {
   return `
-    <div class="card-overlay-content-content">
+    <div class="card-overlay-content-${task.id}">
       <div class="card-overlay-header-flex-right">
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
       </div>
