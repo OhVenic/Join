@@ -18,7 +18,7 @@
     <div class="log" id="log"></div>
     <div class="log-edit" id="log-edit"></div>
     <div class="log-delete" id="log-delete"></div>
-    <div class="overlay dp-none" id="overlay"></div>
+    <div class="overlay dp-none" id="overlay" onclick="closeAddContactModal();closeEditContactModal();"></div>
     <div class="content">
       <header class="header-general">
         <p class="header-p">Kanban Project Management Tool</p>
@@ -173,7 +173,7 @@
           <div class="contacts" id="contacts">
           </div>
         </div>
-        <div class="contact-display-container" id="contact-display-container">
+        <div class="contact-display-container" id="contact-display-container" onclick="closeEditMenu()">
           <div class="container">
            
             <div class="contact-display-header"> 

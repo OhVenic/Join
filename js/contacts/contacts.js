@@ -343,6 +343,12 @@ function openEditMenu() {
   document.getElementById("contact-edit-delete").classList.remove("close-menu");
 }
 
+function closeEditMenu() {
+  if (document.getElementById("contact-edit-delete").classList.contains("open-menu")) {
+    document.getElementById("contact-edit-delete").classList.remove("open-menu");
+    document.getElementById("contact-edit-delete").classList.add("close-menu");
+  }
+}
 /**
  * Changes the edit icon to a blue version.
  */

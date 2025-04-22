@@ -11,6 +11,8 @@ body {
 .main-contact {
   position: relative;
   margin-top: 8px;
+  flex: 1;
+  overflow-x: hidden;
 }
 .contact-display-container-floating {
   display: none;
