@@ -58,7 +58,7 @@ function getCardDetailsTemplate(task, initialsHTML) {
     <div class="card-main-content">
       <div class="card-overlay-header-flex">
         <p class="category-card-s">${task.category}</p>
-        <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="">
+        <img onclick="closeCardDetails()" class="add-task-close-btn-overlay" src="./assets/icons/cancel.svg" alt="">
       </div>
       <h2 class="task-title">${task.title}</h2>
       <p class="task-description">${task.description}</p>
@@ -116,7 +116,7 @@ function getEditTaskTemplate(task) {
   <div class="card-overlay-content-scrollbar">
     <div class="card-overlay-content-${task.id}">
       <div class="card-overlay-header-flex-right">
-        <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
+        <img onclick="closeCardDetails()" class="add-task-close-btn-overlay" src="./assets/icons/cancel.svg" alt="Close">
       </div>
       <div class="edit-form">
         <label>Title:</label>
