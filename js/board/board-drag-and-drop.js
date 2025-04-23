@@ -53,7 +53,7 @@ async function editColumnChange(id, tasksArr) {
   }
 }
 
-/**
+/*
  * Moves a task to a specified column and updates the UI and database.
  * @param {string|number} taskId - The ID of the task to move.
  * @param {string} targetColumn - The target column to move the task to.
