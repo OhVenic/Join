@@ -244,6 +244,19 @@ svg {
         margin-left: 0;
     }
 
+    .add-task-content {
+        margin-top: 16px;
+    }
+
+    .dashboard {
+        margin-top: 18px;
+        margin-bottom: 100px;
+    }
+    
+    .card {
+        height: 100px;
+    }
+
     .summary-user-header {
         margin-left: -160px;
         align-items: center;
@@ -262,7 +275,7 @@ svg {
     .summary-user-header h1 {
         font-size: 48px;
     }
-    
+
     .summary-user-header h2 {
         font-size: 18px;
     }
@@ -275,6 +288,7 @@ svg {
 
     .card {
         width: 142px;
+
     }
 
     .card.wide {
