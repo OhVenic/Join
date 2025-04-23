@@ -10,6 +10,7 @@ function closeAddTaskModal() {
     addTaskContent.classList.add("dp-none");
   }, 300);
   document.getElementById("overlay").classList.add("dp-none");
+  document.querySelector("body").style.overflow = "auto";
 }
 
 /**
