@@ -8,41 +8,19 @@ let editSubtasks = [];
 function setupEditSubtaskInput(task) {
   editSubtasks = task.subtasks || [];
   renderEditSubtasks();
-  const input = document.getElementById("edit-subtask");
-  const addBtn = document.getElementById("edit-Add-subtask-img");
-  const cancelBtn = document.getElementById("edit-cancel-task-img");
-  const acceptBtn = document.getElementById("edit-accept-task-img");
-  const separator = document.getElementById("edit-small-separator");
-  input.addEventListener("click", () => {
-    addBtn.classList.add("dp-none");
-    cancelBtn.classList.remove("dp-none");
-    acceptBtn.classList.remove("dp-none");
-    separator.classList.remove("dp-none");
-  });
-  input.addEventListener("input", () => {
-    const hasText = input.value.trim().length > 0;
-  });
-  acceptBtn.onclick = () => {
-    const value = input.value.trim();
-    if (value) {
-      editSubtasks.push({ title: value, checked: false });
-      input.value = "";
-      renderEditSubtasks();
-      addBtn.classList.remove("dp-none");
-      cancelBtn.classList.add("dp-none");
-      acceptBtn.classList.add("dp-none");
-      separator.classList.add("dp-none");
-    }
-  };
-  cancelBtn.onclick = () => {
-    input.value = "";
-    addBtn.classList.remove("dp-none");
-    cancelBtn.classList.add("dp-none");
-    acceptBtn.classList.add("dp-none");
-    separator.classList.add("dp-none");
+  const $ = id => document.getElementById(id), input = $("edit-subtask"),
+    btns = ["edit-Add-subtask-img", "edit-cancel-task-img", "edit-accept-task-img", "edit-small-separator"]
+    .map(id => $(id)), toggle = showAdd => btns.forEach((b, i) => b.classList.toggle("dp-none", showAdd ? i !== 0 : i === 0));
+
+  input.onclick = () => toggle(false);
+  btns[1].onclick = () => { input.value = ""; toggle(true); };
+  btns[2].onclick = () => {
+    const v = input.value.trim();
+    if (!v) return;
+    editSubtasks.push({ title: v, checked: false });
+    input.value = ""; renderEditSubtasks(); toggle(true);
   };
 }
-
 /**
  * Renders all current subtasks in the edit overlay.
  */

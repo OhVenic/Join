@@ -180,10 +180,18 @@ function goToSummary() {
 window.addEventListener("load", () => {
   const greeting = document.querySelector(".greeting");
   const logo = document.querySelector(".greeting-logo");
+  const targetLogo = document.querySelector(".join-header-logo");
+  const targetRect = targetLogo.getBoundingClientRect();
+  const logoRect = logo.getBoundingClientRect();
+  const deltaX = targetRect.left + targetRect.width / 2 - (logoRect.left + logoRect.width / 2);
+  const deltaY = targetRect.top + targetRect.height / 2 - (logoRect.top + logoRect.height / 2);
+  const scale = targetRect.width / logoRect.width;
+
   setTimeout(() => {
-    logo.classList.add("shrink");
-  }, 500);
+    logo.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
+  }, 300);
+
   setTimeout(() => {
     greeting.classList.add("hide");
-  }, 500);
+  }, 1300);
 });

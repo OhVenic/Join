@@ -16,16 +16,20 @@
   padding: 24px;
   padding-bottom: 0px;
   border-radius: 24px;
-  width: 400px;
+  width: 430px;
   height: 600px;
-  overflow-y: auto;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  overflow: hidden;
 }
 
-.card-details-content::-webkit-scrollbar {
-  height: 100%;
+.card-main-content {
+  overflow-y: auto;
+}
+
+.card-overlay-content-scrollbar {
+  overflow-y: auto;
 }
 
 .margin-bottom {

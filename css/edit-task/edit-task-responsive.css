@@ -4,20 +4,24 @@
   }
 }
 
-@media (max-width: 800px) {
-  .change-input input {
-    width: 250px !important;
-  }
-}
 @media (max-width: 500px) {
   .card-details-content {
     height: 450px;
-    width: 280px;
+    width: 300px;
     padding: 12px 12px 0 12px;
   }
 
   .card-details-content p {
     font-size: 16px;
+  }
+
+  .prio-btn {
+    width: 120px !important;
+  }
+
+  .priority-btn-group {
+    flex-direction: column;
+    align-items: center;
   }
 
   .task-title {
@@ -78,7 +82,7 @@
     font-size: 16px !important;
   }
 
-  .edit-input-subtask {
+  .edit-input-subtask-overlay {
     font-size: 16px !important;
     width: 180px !important;
   }

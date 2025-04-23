@@ -113,6 +113,7 @@ function getCardDetailsTemplate(task, initialsHTML) {
  */
 function getEditTaskTemplate(task) {
   return `
+  <div class="card-overlay-content-scrollbar">
     <div class="card-overlay-content-${task.id}">
       <div class="card-overlay-header-flex-right">
         <img onclick="closeCardDetails()" class="add-task-close-btn" src="./assets/icons/cancel.svg" alt="Close">
@@ -221,6 +222,7 @@ function getEditTaskTemplate(task) {
         </div>
       </div>
     </div>
+    </div>
   `;
 }
 /**
@@ -240,7 +242,7 @@ function getEditSubtaskTemplate(index, subtask) {
       </div>
     </div>
     <div id="input-container-${index}" class="change-input dp-none">
-      <input id="input-${index}" type="text" class="edit-input-subtask">
+      <input id="input-${index}" type="text" class="edit-input-subtask-overlay">
       <img class="subtask-edit-icons delete-2" onclick="deleteEditSubtask(${index})" src="./assets/icons/delete.svg" alt="Delete Subtask Icon"/>
       <div class="subtask-list-item-separator-2"></div>
       <img class="subtask-edit-icons accept" onclick="editAcceptSubtaskItem(${index})" src="./assets/icons/check.svg" alt="Accept Subtask Icon"/>

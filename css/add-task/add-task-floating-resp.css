@@ -24,7 +24,7 @@
     font-size: 14px;
     padding: 12px 6px 12px 6px;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 200px !important;
   }
 }
@@ -117,7 +117,7 @@
   .subtask-list {
     width: 420px;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 80% !important;
   }
 }
@@ -291,7 +291,7 @@
   .small-separator {
     top: 40px;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 450px !important;
   }
 }
@@ -332,7 +332,7 @@
   .small-separator {
     top: 42px;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 350px !important;
   }
 }
@@ -381,7 +381,7 @@
   .change-input {
     width: 100%;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 80% !important;
   }
 }
@@ -429,7 +429,7 @@
   #assigned-to {
     width: 280px;
   }
-  .change-input input {
+  .change-input .edit-input-subtask {
     width: 200px !important;
   }
 }
