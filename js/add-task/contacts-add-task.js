@@ -25,6 +25,7 @@ function showContactList(event) {
   } else {
     closeContactList();
   }
+  closeCategoryList();
 }
 
 /**

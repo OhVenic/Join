@@ -60,9 +60,6 @@
   .separator-search {
     right: 45px;
   }
-  .search-container {
-    height: 67px;
-  }
 }
 
 @media (max-width: 850px) {

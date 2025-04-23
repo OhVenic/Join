@@ -18,6 +18,7 @@ function showCategoryList(event) {
   } else {
     closeCategoryList();
   }
+  closeContactList();
 }
 
 /**
