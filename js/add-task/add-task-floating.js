@@ -10,6 +10,7 @@ function closeAddTaskModal() {
     addTaskContent.classList.add("dp-none");
   }, 300);
   document.getElementById("overlay").classList.add("dp-none");
+  document.querySelector("body").style.overflow = "auto";
 }
 
 /**
@@ -20,6 +21,7 @@ function openFloatingAddTask() {
   document.getElementById("add-task-content").classList.remove("dp-none");
   document.getElementById("add-task-content").classList.remove("closing");
   document.documentElement.style.overflow = "hidden";
+  document.querySelector("body").style.overflow = "hidden";
 }
 
 /**

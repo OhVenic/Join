@@ -87,7 +87,6 @@ async function logOut() {
  * Logs in as a guest user and redirects to the dashboard.
  */
 async function loginGuest() {
-  console.log("guest logged in");
   await putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: true, userLoggedIn: { name: "", avatar: "" } });
   window.location.href = "./dashboard.html";
 }
