@@ -128,7 +128,6 @@ function findTask() {
   let taskNotFoundElement = document.getElementById("task-not-found");
   if (inputValue.length > 2) {
     searchTaskTitles();
-    searchTaskDescription();
   } else {
     filteredTasks = [];
     updateHTML();
@@ -142,36 +141,21 @@ function findTask() {
 let filteredTasks = [];
 
 /**
- * Searches for tasks by their titles and updates the UI.
+ * Searches for tasks by their titles or descriptions and updates the UI.
  */
 function searchTaskTitles() {
-  let searchFieldRef = document.getElementById("searchfield");
-  let taskNotFoundElement = document.getElementById("task-not-found");
-  let searchValue = searchFieldRef.value.toLowerCase();
-  if (searchValue.length > 2) {
-    filteredTasks = tasksArr.filter((task) => task.title.toLowerCase().includes(searchValue));
-    updateHTML();
-  }
-  let noTasksFound = filteredTasks.length === 0;
-  if (taskNotFoundElement) {
-    taskNotFoundElement.classList.toggle("dp-none", !noTasksFound);
-  }
-  searchFieldRef.style.borderColor = noTasksFound ? "red" : "";
-}
-
-function searchTaskDescription() {
-  let searchFieldRef = document.getElementById("searchfield");
-  let taskNotFoundElement = document.getElementById("task-not-found");
-  let searchValue = searchFieldRef.value.toLowerCase();
-  if (searchValue.length > 2) {
-    filteredTasks = tasksArr.filter((task) => task.description.toLowerCase().includes(searchValue));
-    updateHTML();
-  }
-  let noTasksFound = filteredTasks.length === 0;
-  if (taskNotFoundElement) {
-    taskNotFoundElement.classList.toggle("dp-none", !noTasksFound);
-  }
-  searchFieldRef.style.borderColor = noTasksFound ? "red" : "";
+  const searchValue = document.getElementById("searchfield").value.toLowerCase();
+  const taskNotFoundElement = document.getElementById("task-not-found");
+  filteredTasks =
+    searchValue.length > 2
+      ? tasksArr.filter((task) =>
+          [task.title, task.description].some((field) => field?.toLowerCase().includes(searchValue))
+        )
+      : [];
+  updateHTML();
+  const noTasksFound = filteredTasks.length === 0;
+  taskNotFoundElement?.classList.toggle("dp-none", !noTasksFound);
+  document.getElementById("searchfield").style.borderColor = noTasksFound ? "red" : "";
 }
 
 /**
