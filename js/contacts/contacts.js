@@ -347,9 +347,10 @@ function openEditMenu() {
  * Closes the edit menu for a contact.
  */
 function closeEditMenu() {
-  if (document.getElementById("contact-edit-delete").classList.contains("open-menu")) {
-    document.getElementById("contact-edit-delete").classList.remove("open-menu");
-    document.getElementById("contact-edit-delete").classList.add("close-menu");
+  const editMenu = document.getElementById("contact-edit-delete");
+  if (editMenu && editMenu.classList.contains("open-menu")) {
+    editMenu.classList.remove("open-menu");
+    editMenu.classList.add("close-menu");
   }
 }
 /**
