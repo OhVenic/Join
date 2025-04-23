@@ -12,7 +12,7 @@
   .drop-down-category-list,
   .subtask-list {
     width: 280px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .add-task-1,
@@ -21,7 +21,7 @@
     width: 280px;
   }
   .priority-btn {
-    font-size: 14px;
+    font-size: 16px;
     padding: 12px 6px 12px 6px;
   }
   .change-input input {
@@ -75,7 +75,7 @@
     width: 360px;
   }
   .priority-btn {
-    font-size: 14px;
+    font-size: 16px;
     padding: 12px 6px 12px 6px;
   }
 
@@ -261,12 +261,12 @@
   }
   .clear-btn,
   .form-btn {
-    font-size: 15px;
+    font-size: 16px;
     height: 42px;
     width: 150px;
   }
   .footnote {
-    font-size: 14px;
+    font-size: 16px;
   }
   input::placeholder,
   .add-task-description::placeholder {
@@ -364,10 +364,10 @@
   }
   input::placeholder,
   .add-task-description::placeholder {
-    font-size: 13px;
+    font-size: 16px;
   }
   .priority-btns {
-    font-size: 14px;
+    font-size: 16px;
   }
   .add-subtask-img,
   .cancel-or-accept {
@@ -388,7 +388,7 @@
 
 @media (max-width: 400px) {
   .priority-btns {
-    font-size: 13px;
+    font-size: 16px;
   }
   .priority-btn {
     padding: 0;
@@ -413,13 +413,13 @@
   }
   .clear-btn,
   .form-btn {
-    font-size: 12px;
+    font-size: 16px;
     height: 40px;
-    width: 140px;
+    width: 153px;
   }
 
   .clear-btn {
-    width: 120px;
+    width: 100px;
   }
   .drop-down-contact-list,
   .drop-down-category-list,

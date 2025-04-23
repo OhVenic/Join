@@ -191,7 +191,7 @@
     width: 150px;
   }
   .footnote {
-    font-size: 14px;
+    font-size: 16px;
   }
   input::placeholder,
   .add-task-description::placeholder {
@@ -254,7 +254,7 @@
   input::placeholder,
   .add-task-description::placeholder,
   input[type="date"] {
-    font-size: 15px;
+    font-size: 16px;
   }
   .cancel-task-img,
   .accept-task-img,
@@ -295,10 +295,10 @@
   }
   input::placeholder,
   .add-task-description::placeholder {
-    font-size: 13px;
+    font-size: 16px;
   }
   .priority-btns {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .cancel-or-accept {
@@ -311,7 +311,7 @@
 
 @media (max-width: 400px) {
   .priority-btns {
-    font-size: 13px;
+    font-size: 16px;
   }
   .priority-btn {
     padding: 0;
@@ -348,16 +348,19 @@
   }
   .clear-btn,
   .form-btn {
-    font-size: 12px;
+    font-size: 16px;
     height: 40px;
-    width: 140px;
+    width: 153px;
+  }
+  .clear-btn {
+    width: 100px;
   }
 
   .clear-btn {
-    width: 120px;
+    width: 100px;
   }
   .contact {
-    font-size: 12px;
+    font-size: 16px;
   }
   .avatar {
     width: 25px;

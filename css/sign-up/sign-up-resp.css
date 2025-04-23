@@ -92,7 +92,7 @@
     top: 220px;
   }
   .disable {
-    width: 100px;
+    width: 120px;
     height: 40px;
     font-size: 16px;
   }
@@ -155,7 +155,7 @@
   }
   .disable {
     padding: 18px;
-    width: 90px;
+    width: 100px;
     height: 30px;
     font-size: 16px;
   }
@@ -196,7 +196,6 @@
   }
   .disable {
     padding: 16px;
-    width: 88px;
     height: 25px;
     font-size: 16px;
   }
@@ -216,6 +215,9 @@
   }
   .signup-separator {
     width: 62px;
+  }
+  .accept-pp {
+    align-items: normal;
   }
 }
 
