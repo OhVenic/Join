@@ -106,13 +106,6 @@ button {
   justify-content: center;
   align-items: center;
 }
-/* .footer-content {
-  font-size: 14px;
-  padding: 20px;
-  display: flex;
-  color: rgba(168, 168, 168, 1);
-} */
-
 .footer-btn {
   width: 121px;
   height: 35px;
@@ -166,7 +159,7 @@ button {
 }
 
 .error-msg {
-  font-size: 13px;
+  font-size: 16px;
   color: red;
 }
 

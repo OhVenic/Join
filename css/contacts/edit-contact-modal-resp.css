@@ -171,15 +171,15 @@
     gap: 0px;
   }
   .edit-contact-modal-form input::placeholder {
-    font-size: 12px;
+    font-size: 16px;
   }
   .edit-contact-modal-form input {
-    font-size: 12px;
+    font-size: 16px;
   }
   .edited-contact-msg {
     width: 230px;
     height: 60px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .edit-contact-modal-btns {
     margin-bottom: 40px;
@@ -197,7 +197,7 @@
   .create-contact {
     height: 40px;
     width: 170px;
-    font-size: 14px;
+    font-size: 16px;
   }
   .edit-main-modal-cont {
     padding-bottom: 10px;
@@ -212,9 +212,9 @@
     right: 10px;
   }
   .edit-contact-modal-form input::placeholder {
-    font-size: 11px;
+    font-size: 16px;
   }
   .edit-contact-modal-form input {
-    font-size: 11px;
+    font-size: 16px;
   }
 }

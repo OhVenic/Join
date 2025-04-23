@@ -94,7 +94,7 @@
   .disable {
     width: 100px;
     height: 40px;
-    font-size: 14px;
+    font-size: 16px;
   }
   .checkbox {
     width: 20px;
@@ -102,7 +102,7 @@
   }
   .accept-pp p,
   .footer-btn {
-    font-size: 14px;
+    font-size: 16px;
   }
   .accept-pp {
     align-items: flex-end;
@@ -157,7 +157,7 @@
     padding: 18px;
     width: 90px;
     height: 30px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .checkbox {
     width: 18px;
@@ -165,7 +165,7 @@
   }
   .accept-pp p,
   .footer-btn {
-    font-size: 13px;
+    font-size: 16px;
   }
   .go-back-arrow {
     top: 6px;
@@ -186,7 +186,7 @@
   .signup-inputs input {
     width: 240px;
     height: 37px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .inputfield {
     height: 60px;
@@ -198,7 +198,7 @@
     padding: 16px;
     width: 88px;
     height: 25px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .checkbox {
     width: 16px;
@@ -206,7 +206,7 @@
   }
   .accept-pp p,
   .footer-btn {
-    font-size: 12px;
+    font-size: 16px;
   }
   .go-back-arrow {
     top: 4px;

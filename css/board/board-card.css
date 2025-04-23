@@ -26,11 +26,11 @@
   font-weight: 700;
 }
 .description-card-s {
-  font-size: 14px;
+  font-size: 16px;
   color: rgba(168, 168, 168, 1);
 }
 .subtask-nr-s {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 #selected-avatars {
@@ -46,7 +46,7 @@
   height: 13px;
   border-radius: 50%;
   padding: 16px;
-  font-size: 12px;
+  font-size: 16px;
   margin-left: -10px;
 }
 
@@ -60,7 +60,7 @@
   height: 13px;
   border-radius: 50%;
   padding: 16px;
-  font-size: 12px;
+  font-size: 16px;
   margin: 4px 12px 4px 24px;
 }
 

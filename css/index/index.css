@@ -193,7 +193,7 @@ input:-ms-input-placeholder {
   display: flex;
 }
 .footer-content {
-  font-size: 14px;
+  font-size: 16px;
   padding: 20px;
   display: flex;
   color: rgba(168, 168, 168, 1);
@@ -225,7 +225,7 @@ main {
 }
 
 .error-msg {
-  font-size: 13px;
+  font-size: 16px;
   color: red;
 }
 

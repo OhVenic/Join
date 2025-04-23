@@ -114,10 +114,10 @@
     width: 430px;
   }
   .add-contact-modal-form input::placeholder {
-    font-size: 14px;
+    font-size: 16px;
   }
   .add-contact-modal-form input {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -148,13 +148,13 @@
     height: 40px;
   }
   .red {
-    font-size: 10px;
+    font-size: 16px;
   }
   .modal-title {
     font-size: 32px !important;
   }
   .modal-subtitle {
-    font-size: 14px !important;
+    font-size: 16px !important;
   }
   .add-contact-modal-form {
     width: 250px;
@@ -164,7 +164,7 @@
   .created-contact-msg {
     width: 230px;
     height: 60px;
-    font-size: 13px;
+    font-size: 16px;
   }
 }
 @media (max-width: 400px) {
@@ -175,7 +175,7 @@
   .create-contact {
     height: 40px;
     width: 170px;
-    font-size: 14px;
+    font-size: 16px;
   }
   .main-modal-cont {
     padding-bottom: 10px;

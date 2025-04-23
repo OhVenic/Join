@@ -46,22 +46,22 @@
 
   .prio-btn {
     width: 75px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .contact-list-name {
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   .avatar-card-edit {
     width: 30px;
     height: 30px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .subtask {
     width: 245px;
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   .edit-cancel-task-img,
@@ -75,11 +75,11 @@
   }
 
   .subtask-list-item li {
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   .edit-input-subtask {
-    font-size: 12px !important;
+    font-size: 16px !important;
     width: 180px !important;
   }
 
