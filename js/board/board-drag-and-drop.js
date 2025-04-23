@@ -48,7 +48,6 @@ async function editColumnChange(id, tasksArr) {
       method: "PUT",
       body: JSON.stringify(task),
     });
-    console.log(`Task with ID ${id} successfully updated in Firebase.`);
   } catch (error) {
     console.error(`Failed to update task with ID ${id} in Firebase:`, error);
   }
@@ -95,7 +94,6 @@ function moveTaskRespMenu(id, event) {
   menuElement.classList.remove("dp-none");
   const currentColumn = tasksArr.find((task) => String(task.id) === String(id))?.column;
   if (!currentColumn) {
-    console.error(`Task with ID ${id} not found or column is undefined.`);
     return;
   }
   const columnOptions = getColumnOptions(currentColumn);
