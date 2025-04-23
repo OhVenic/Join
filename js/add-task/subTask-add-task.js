@@ -3,6 +3,8 @@
  * @type {Array<Object>}
  */
 let subtasks = [];
+let isEditingSubtask = false;
+let justOpenedEdit = false;
 
 /**
  * Resets the subtask buttons to their default state.
@@ -111,8 +113,7 @@ function editSubtaskItem(id) {
   };
 }
 
-let isEditingSubtask = false;
-let justOpenedEdit = false;
+
 
 /**
  * Handles click events to manage subtask editing and saving.

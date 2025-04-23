@@ -1,3 +1,5 @@
+let scrollerElement = document.querySelector(".scroller");
+
 /**
  * Closes the "Add Task" modal by adding a closing animation and hiding the overlay.
  */
@@ -20,14 +22,12 @@ function openFloatingAddTask() {
   document.documentElement.style.overflow = "hidden";
 }
 
-let scrollerElement = document.querySelector(".scroller");
-
+/**
+ * Handles click events within the "scroller" element to manage subtask editing and saving.
+ * Closes the editing mode if the user clicks outside the input field.
+ * @param {MouseEvent} event - The click event object.
+ */
 if (scrollerElement) {
-  /**
-   * Handles click events within the "scroller" element to manage subtask editing and saving.
-   * Closes the editing mode if the user clicks outside the input field.
-   * @param {MouseEvent} event - The click event object.
-   */
   scrollerElement.addEventListener("click", function (event) {
     if (!isEditingSubtask || justOpenedEdit) return;
     let openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');

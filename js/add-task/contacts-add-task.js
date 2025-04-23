@@ -1,3 +1,6 @@
+let selectedContacts = [];
+let selectedContactsNames = [];
+
 /**
  * Renders the contact list dropdown by populating it with contact items.
  */
@@ -54,9 +57,6 @@ function selectContact(i) {
   }
   showSelectedAvatar(i);
 }
-
-let selectedContacts = [];
-let selectedContactsNames = [];
 
 /**
  * Unselects a contact from the dropdown list.

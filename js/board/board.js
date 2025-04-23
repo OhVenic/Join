@@ -128,6 +128,7 @@ function findTask() {
   let taskNotFoundElement = document.getElementById("task-not-found");
   if (inputValue.length > 2) {
     searchTaskTitles();
+    searchTaskDescription();
   } else {
     filteredTasks = [];
     updateHTML();
@@ -149,6 +150,21 @@ function searchTaskTitles() {
   let searchValue = searchFieldRef.value.toLowerCase();
   if (searchValue.length > 2) {
     filteredTasks = tasksArr.filter((task) => task.title.toLowerCase().includes(searchValue));
+    updateHTML();
+  }
+  let noTasksFound = filteredTasks.length === 0;
+  if (taskNotFoundElement) {
+    taskNotFoundElement.classList.toggle("dp-none", !noTasksFound);
+  }
+  searchFieldRef.style.borderColor = noTasksFound ? "red" : "";
+}
+
+function searchTaskDescription() {
+  let searchFieldRef = document.getElementById("searchfield");
+  let taskNotFoundElement = document.getElementById("task-not-found");
+  let searchValue = searchFieldRef.value.toLowerCase();
+  if (searchValue.length > 2) {
+    filteredTasks = tasksArr.filter((task) => task.description.toLowerCase().includes(searchValue));
     updateHTML();
   }
   let noTasksFound = filteredTasks.length === 0;

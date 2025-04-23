@@ -5,6 +5,22 @@
 const BASE_URL = "https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
+ * Array to store contacts.
+ * @type {Array<Object>}
+ */
+let contacts = [];
+/**
+ * Array to store login information.
+ * @type {Array<Object>}
+ */
+let loginInfo = [];
+
+/**
+ * Array to store tasks.
+ * @type {Array<Object>}
+ */
+let tasksArr = [];
+/**
  * Toggles the visibility of the logged-in submenu.
  */
 function showSubMenuLoggedIn() {
@@ -27,12 +43,6 @@ function closeSubMenu() {
     document.getElementById("subMenu").classList.add("dp-none");
   }
 }
-
-/**
- * Array to store login information.
- * @type {Array<Object>}
- */
-let loginInfo = [];
 
 /**
  * Loads login information from the database.
@@ -83,12 +93,6 @@ async function loginGuest() {
 }
 
 /**
- * Array to store tasks.
- * @type {Array<Object>}
- */
-let tasksArr = [];
-
-/**
  * Loads tasks from the database.
  * @param {string} [path=""] - The path to the tasks in the database.
  */
@@ -103,12 +107,6 @@ async function loadTasks(path = "") {
     console.error("Response Failed");
   }
 }
-
-/**
- * Array to store contacts.
- * @type {Array<Object>}
- */
-let contacts = [];
 
 /**
  * Loads contacts from the database.

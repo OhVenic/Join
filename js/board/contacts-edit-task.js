@@ -1,6 +1,9 @@
 /** @type {string[]} List of currently assigned contact names */
 let assignedContactNames = [];
 
+/** @type {boolean} Indicates whether the dropdown menu is open */
+let editDropdownOpen = false;
+
 /**
  * Loads the contacts from the Firebase database and renders them in the dropdown menu.
  * If contacts are already selected, it marks them in the UI.
@@ -23,9 +26,6 @@ function loadContactsForDropdown() {
     .catch(console.error);
 }
 
-/** @type {boolean} Indicates whether the dropdown menu is open */
-let editDropdownOpen = false;
-
 /**
  * Opens or closes the contact selection dropdown menu.
  * @param {string|number} taskId - The ID of the task to load assigned contacts for.
@@ -34,7 +34,6 @@ function toggleEditContactDropdown(taskId) {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
   const imgDown = document.getElementById("assigned-to-img-down");
   const imgUp = document.getElementById("assigned-to-img-up");
-
   if (!editDropdownOpen) {
     dropdown.classList.remove("dp-none");
     imgDown.classList.add("dp-none");
@@ -45,7 +44,6 @@ function toggleEditContactDropdown(taskId) {
     imgDown.classList.remove("dp-none");
     imgUp.classList.add("dp-none");
   }
-
   editDropdownOpen = !editDropdownOpen;
 }
 
@@ -56,11 +54,8 @@ function toggleEditContactDropdown(taskId) {
 function checkAndCloseEditDropdown(event) {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
   const input = document.getElementById("edit-assigned-to");
-
   if (!editDropdownOpen) return;
-
   if (dropdown.contains(event.target) || input.contains(event.target)) return;
-
   closeEditContactDropdown();
 }
 
@@ -71,7 +66,6 @@ function closeEditContactDropdown() {
   const dropdown = document.getElementById("edit-drop-down-contact-list");
   const imgDown = document.getElementById("assigned-to-img-down");
   const imgUp = document.getElementById("assigned-to-img-up");
-
   dropdown.classList.add("dp-none");
   imgDown.classList.remove("dp-none");
   imgUp.classList.add("dp-none");

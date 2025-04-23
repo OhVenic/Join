@@ -28,7 +28,6 @@ function closeAddContactModal() {
  */
 function createContact() {
   let { name, email, phone } = getContactInputs();
-
   if (validateContactInputs(name, email, phone)) {
     processNewContact(name, email, phone);
   }

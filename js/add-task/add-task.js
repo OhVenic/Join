@@ -1,3 +1,5 @@
+let selectedColumn = "to-do";
+
 /**
  * Initializes the application by loading contacts, tasks, and user info.
  */
@@ -160,7 +162,6 @@ function saveTaskInputs() {
   }
 }
 
-let selectedColumn = "to-do";
 /**
  * Creates a task object with the provided ID.
  * @param {string} id - The unique ID for the task.

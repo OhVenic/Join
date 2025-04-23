@@ -8,44 +8,34 @@ let editSubtasks = [];
 function setupEditSubtaskInput(task) {
   editSubtasks = task.subtasks || [];
   renderEditSubtasks();
-
   const input = document.getElementById("edit-subtask");
   const addBtn = document.getElementById("edit-Add-subtask-img");
   const cancelBtn = document.getElementById("edit-cancel-task-img");
   const acceptBtn = document.getElementById("edit-accept-task-img");
   const separator = document.getElementById("edit-small-separator");
-
   input.addEventListener("click", () => {
     addBtn.classList.add("dp-none");
     cancelBtn.classList.remove("dp-none");
     acceptBtn.classList.remove("dp-none");
     separator.classList.remove("dp-none");
   });
-
   input.addEventListener("input", () => {
     const hasText = input.value.trim().length > 0;
-    // Here you could add visual feedback if desired.
   });
-
   acceptBtn.onclick = () => {
     const value = input.value.trim();
     if (value) {
       editSubtasks.push({ title: value, checked: false });
       input.value = "";
       renderEditSubtasks();
-
-      // Reset the UI
       addBtn.classList.remove("dp-none");
       cancelBtn.classList.add("dp-none");
       acceptBtn.classList.add("dp-none");
       separator.classList.add("dp-none");
     }
   };
-
   cancelBtn.onclick = () => {
     input.value = "";
-
-    // Reset the UI
     addBtn.classList.remove("dp-none");
     cancelBtn.classList.add("dp-none");
     acceptBtn.classList.add("dp-none");
@@ -81,11 +71,9 @@ function editEditSubtaskItem(index) {
   const inputContainer = document.getElementById(`input-container-${index}`);
   const listItem = document.getElementById(`subtask-list-item-${index}`);
   const inputField = document.getElementById(`input-${index}`);
-
   inputContainer.classList.remove("dp-none");
   listItem.classList.add("dp-none");
   inputField.value = editSubtasks[index].title;
-
   inputField.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -101,7 +89,6 @@ function editEditSubtaskItem(index) {
 function editAcceptSubtaskItem(index) {
   const inputField = document.getElementById(`input-${index}`);
   const newValue = inputField.value.trim();
-
   if (newValue !== "") {
     editSubtasks[index].title = newValue;
     renderEditSubtasks();
@@ -115,10 +102,8 @@ function editAcceptSubtaskItem(index) {
 function handleSubtaskEnter(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-
     const input = document.getElementById("edit-subtask");
     const value = input.value.trim();
-
     if (value) {
       addEditSubtask(value);
       input.value = "";

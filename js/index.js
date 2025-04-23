@@ -2,13 +2,14 @@
  * Initializes the application by fetching users, loading login info, and setting default login info.
  */
 
+let userData = {};
+let usersArr = [];
+
 function init() {
   getUsersFromDatabase();
   loadLoginInfo("whoIsLoggedIn");
   putLoginInfo("whoIsLoggedIn", { isGuestLoggedIn: false, userLoggedIn: { name: "", avatar: "" } });
 }
-
-let usersArr = [];
 
 /**
  * Fetches users from the database and populates the `usersArr` array.
@@ -36,8 +37,6 @@ async function getAllUsers(path) {
   let response = await fetch(BASE_URL + path + ".json");
   return (responseToJson = await response.json());
 }
-
-let userData = {};
 
 /**
  * Handles the login process by validating inputs and navigating to the summary page if successful.

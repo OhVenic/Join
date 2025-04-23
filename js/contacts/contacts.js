@@ -1,3 +1,5 @@
+let usersArr = [];
+
 /**
  * Initializes the application by fetching users, rendering contacts, and showing logged-in user info.
  */
@@ -20,8 +22,6 @@ async function showLoggedInInfo() {
     document.getElementById("initialLetter").innerHTML = loginInfo[0].userLoggedIn.avatar;
   }
 }
-
-let usersArr = [];
 
 /**
  * Fetches users from the database and populates the `usersArr` array.
