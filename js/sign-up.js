@@ -221,10 +221,7 @@ function goToLogin() {
   }, 1000);
 }
 
-/**
- * Handles the sign-up process, including validation and user creation.
- * @param {Event} event - The form submission event.
- */
+// Update the signUp function to include the new email existence check
 async function signUp(event) {
   event.preventDefault();
   if (isUsersArrEmpty()) return;
@@ -232,11 +229,11 @@ async function signUp(event) {
   const name = document.getElementById("name");
   if (handleEmptyInputs()) return;
   if (handleInvalidEmail(email)) return;
+  if (handleExistingEmail(email.value, email)) return; // New email existence check
   if (handleExistingUser(email.value, name.value, name)) return;
   if (handlePasswordMismatch()) return;
   completeSignUp();
 }
-
 /**
  * Checks if the `usersArr` array is empty.
  * @returns {boolean} True if the array is empty, false otherwise.
@@ -289,6 +286,31 @@ function handleExistingUser(emailVal, nameVal, nameEl) {
     return true;
   }
   return false;
+}
+
+/**
+ * Checks if the email already exists and shows an error message if necessary.
+ * @param {string} emailVal - The email value to check.
+ * @param {HTMLElement} emailEl - The email input element.
+ * @returns {boolean} True if the email already exists, false otherwise.
+ */
+function handleExistingEmail(emailVal, emailEl) {
+  if (emailAlreadyExists(usersArr, emailVal)) {
+    document.getElementById("error-email-3").classList.remove("dp-none");
+    emailEl.style.borderColor = "red";
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks if an email already exists in the `usersArr` array.
+ * @param {Array} usersArr - The array of users.
+ * @param {string} email - The email to check.
+ * @returns {boolean} True if the email already exists, false otherwise.
+ */
+function emailAlreadyExists(usersArr, email) {
+  return usersArr.some((user) => user.user.email === email);
 }
 
 /**
@@ -351,21 +373,24 @@ function areInputsEmpty() {
  * Shows error messages for required fields that are empty.
  */
 function showRequiredFields() {
-  if (document.getElementById("name").value === "") {
-    document.getElementById("name").style.borderColor = "red";
-    document.getElementById("error-name").classList.remove("dp-none");
-  }
-  if (document.getElementById("email").value === "") {
-    document.getElementById("email").style.borderColor = "red";
-    document.getElementById("error-email-1").classList.remove("dp-none");
-  }
-  if (document.getElementById("password").value === "") {
-    document.getElementById("password").style.borderColor = "red";
-    document.getElementById("error-pw").classList.remove("dp-none");
-  }
-  if (document.getElementById("confirm-password").value === "") {
-    document.getElementById("confirm-password").style.borderColor = "red";
-    document.getElementById("error-confirm-pw").classList.remove("dp-none");
+  checkAndShowError("name", "error-name");
+  checkAndShowError("email", "error-email-1");
+  checkAndShowError("password", "error-pw");
+  checkAndShowError("confirm-password", "error-confirm-pw");
+}
+
+/**
+ * Checks if an input field is empty and shows the corresponding error message.
+ * @param {string} inputId - The ID of the input field.
+ * @param {string} errorId - The ID of the error message element.
+ */
+function checkAndShowError(inputId, errorId) {
+  const inputElement = document.getElementById(inputId);
+  const errorElement = document.getElementById(errorId);
+
+  if (inputElement.value === "") {
+    inputElement.style.borderColor = "red";
+    errorElement.classList.remove("dp-none");
   }
 }
 

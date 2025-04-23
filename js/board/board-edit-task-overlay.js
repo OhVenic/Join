@@ -120,15 +120,12 @@ function editTask(id) {
   setupEditSubtaskInput(task);
 }
 
-// Helper Funktion zur Validierung
 function resetEditFormErrors() {
   const title = document.getElementById("edit-title");
   const date = document.getElementById("edit-date");
   const titleError = document.getElementById("edit-title-error");
   const [dateEmptyMsg, datePastMsg] = document.getElementById("edit-date-error").querySelectorAll("p");
   const dateWrapper = document.getElementById("edit-date-error");
-
-  // Reset styles and messages
   titleError.classList.add("dp-none");
   dateWrapper.classList.add("dp-none");
   dateEmptyMsg.classList.add("dp-none");
@@ -140,15 +137,13 @@ function resetEditFormErrors() {
 function validateEditFormFields() {
   const title = document.getElementById("edit-title");
   const date = document.getElementById("edit-date");
-  resetEditFormErrors(); // Reset errors first
+  resetEditFormErrors();
   let hasError = false;
-  // Title validation
   if (!title.value.trim()) {
     document.getElementById("edit-title-error").classList.remove("dp-none");
     title.style.border = "1px solid red";
     hasError = true;
   }
-  // Date validation
   if (validateDate(date)) {
     hasError = true;
   }
@@ -160,7 +155,6 @@ function validateDate(date) {
   const dateWrapper = document.getElementById("edit-date-error");
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   if (!date.value) {
     dateWrapper.classList.remove("dp-none");
     dateEmptyMsg.classList.remove("dp-none");
@@ -183,7 +177,6 @@ function validateDate(date) {
 async function saveEditedTaskManual(taskId) {
   resetEditFormErrors(); // Reset errors before validation
   if (validateEditFormFields()) return; // Wenn Validierung fehlschlägt, abbrechen
-
   const updatedTask = {
     ...tasksArr.find((task) => String(task.id) === String(taskId)),
     title: document.getElementById("edit-title").value.trim(),
@@ -193,7 +186,6 @@ async function saveEditedTaskManual(taskId) {
     assigned_to: assignedContactNames,
     subtasks: editSubtasks,
   };
-
   await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
     method: "PUT",
     body: JSON.stringify(updatedTask),

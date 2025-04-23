@@ -15,6 +15,7 @@
     flex-direction: row;
     width: 100%;
     min-width: 90%;
+    min-height: 0px;
     height: auto;
     overflow-y: auto;
     flex-shrink: 0;
@@ -48,8 +49,19 @@
   .separator-search {
     right: 45px;
   }
+  .title-cont h1 {
+    font-size: 61px;
+  }
 }
 
+@media (max-width: 1000px) {
+  .title {
+    flex-direction: column;
+  }
+  .board-columns {
+    padding-top: 70px;
+  }
+}
 @media (max-width: 970px) {
   .searchfield {
     width: 60%;
@@ -64,13 +76,21 @@
 
 @media (max-width: 850px) {
   .search_add_task_btn {
+    height: 150px !important;
     flex-direction: column;
-    gap: 20px;
+    align-items: normal;
     margin-bottom: 115px;
     height: 0px;
+    gap: 0;
   }
   .error-msg-not-found {
     font-size: 16px;
+  }
+  .board-columns {
+    padding-top: 150px;
+  }
+  .search-container {
+    height: 75px;
   }
 }
 
@@ -154,6 +174,7 @@
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     gap: 10px;
+    padding-top: 40px;
   }
 
   .column {
@@ -180,13 +201,15 @@
   .card-s-move-resp-menu {
     right: -50px;
     font-size: 16px;
-    width: 150px;
   }
 }
-
-@media (max-width: 500px) {
+@media (max-width: 600px) {
+  .search-container,
   .search-field-and-icons,
-  #searchfield {
-    width: 250px;
+  .search-field-and-icons input {
+    width: 100%;
+  }
+  .searchfield::placeholder {
+    font-size: 16px;
   }
 }

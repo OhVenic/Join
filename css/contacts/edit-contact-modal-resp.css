@@ -116,10 +116,10 @@
     width: 430px;
   }
   .edit-contact-modal-form input::placeholder {
-    font-size: 14px;
+    font-size: 16px;
   }
   .edit-contact-modal-form input {
-    font-size: 14px;
+    font-size: 16px;
   }
   .delete,
   .save-contact {
@@ -138,7 +138,7 @@
   .save-contact {
     height: 30px;
     width: 100px;
-    font-size: 13px;
+    font-size: 16px;
   }
   .name,
   .email,

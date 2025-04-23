@@ -113,8 +113,6 @@ function editSubtaskItem(id) {
   };
 }
 
-
-
 /**
  * Handles click events to manage subtask editing and saving.
  * Closes the editing mode if the user clicks outside the input field.
@@ -122,19 +120,12 @@ function editSubtaskItem(id) {
  */
 document.addEventListener("click", function (event) {
   if (!isEditingSubtask || justOpenedEdit) return;
-  let openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
-  if (!openInput) return;
-  let clickedInsideInput = document.querySelector('[id^="input-container-"]:not(.dp-none)').contains(event.target);
-  let clickedEditButton = event.target.closest(".edit-button");
-  if (clickedInsideInput || clickedEditButton) return;
-  let mainElement = document.querySelector("main");
-  if (mainElement.contains(event.target)) {
-    let value = document.getElementById(`input-${openInput.id.split("input-container-")[1]}`).value.trim();
-    if (value !== "") {
-      acceptSubtaskItem(openInput.id.split("input-container-")[1]);
-    } else {
-      deleteSubtaskItem(openInput.id.split("input-container-")[1]);
-    }
+  const openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
+  if (!openInput || openInput.contains(event.target) || event.target.closest(".edit-button")) return;
+  if (document.querySelector("main").contains(event.target)) {
+    const subtaskId = openInput.id.split("input-container-")[1];
+    const value = document.getElementById(`input-${subtaskId}`).value.trim();
+    value ? acceptSubtaskItem(subtaskId) : deleteSubtaskItem(subtaskId);
     isEditingSubtask = false;
   }
 });
