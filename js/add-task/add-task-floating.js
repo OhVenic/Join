@@ -30,18 +30,11 @@ function openFloatingAddTask() {
 if (scrollerElement) {
   scrollerElement.addEventListener("click", function (event) {
     if (!isEditingSubtask || justOpenedEdit) return;
-    let openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
-    if (!openInput) return;
-    let clickedInsideInput = openInput.contains(event.target);
-    let clickedEditButton = event.target.closest(".edit-button");
-    if (clickedInsideInput || clickedEditButton) return;
-
-    let value = document.getElementById(`input-${openInput.id.split("input-container-")[1]}`).value.trim();
-    if (value !== "") {
-      acceptSubtaskItem(openInput.id.split("input-container-")[1]);
-    } else {
-      deleteSubtaskItem(openInput.id.split("input-container-")[1]);
-    }
+    const openInput = document.querySelector('[id^="input-container-"]:not(.dp-none)');
+    if (!openInput || openInput.contains(event.target) || event.target.closest(".edit-button")) return;
+    const subtaskId = openInput.id.split("input-container-")[1];
+    const value = document.getElementById(`input-${subtaskId}`).value.trim();
+    value ? acceptSubtaskItem(subtaskId) : deleteSubtaskItem(subtaskId);
     isEditingSubtask = false;
   });
 }

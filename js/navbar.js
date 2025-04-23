@@ -5,7 +5,6 @@ function highlightMenuActual() {
   const menuMappings = getMenuMappings();
   const responsiveStyles = getResponsiveStyles();
   const path = window.location.pathname;
-
   if (menuMappings[path]) {
     menuMappings[path].forEach((id, index) => {
       const element = document.getElementById(id);

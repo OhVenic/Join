@@ -89,23 +89,21 @@ function toggleContactSelection(i) {
  * @param {number} i - The index of the contact in the array.
  */
 function showSelectedAvatar(i) {
-  let selectedAvatarsContainer = document.getElementById("selected-avatars");
-  let element = document.getElementById(`avatar-${i}`);
+  const container = document.getElementById("selected-avatars");
+  const element = document.getElementById(`avatar-${i}`);
   if (!element) {
-    selectedAvatarsContainer.innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
+    container.innerHTML += `<div class="selected-avatar" style="background-color:${contacts[i].color};" id="avatar-${i}">${contacts[i].avatar}</div>`;
   }
-  let selectedAvatars = selectedContacts.map((contactIndex) => ({
-    color: contacts[contactIndex].color,
-    avatar: contacts[contactIndex].avatar,
-  }));
-  if (selectedAvatars.length > 4) {
-    selectedAvatarsContainer.innerHTML = "";
-    for (let j = 0; j < 4; j++) {
-      selectedAvatarsContainer.innerHTML += `<div class="selected-avatar" style="background-color:${selectedAvatars[j].color};">${selectedAvatars[j].avatar}</div>`;
-    }
-    let extraCount = selectedAvatars.length - 4;
-    selectedAvatarsContainer.innerHTML += `<div class="selected-avatar extra-avatar">+${extraCount}</div>`;
-  }
+  const selectedAvatars = selectedContacts
+    .slice(0, 4)
+    .map(
+      (index) =>
+        `<div class="selected-avatar" style="background-color:${contacts[index].color};">${contacts[index].avatar}</div>`
+    )
+    .join("");
+  const extraCount = selectedContacts.length - 4;
+  container.innerHTML =
+    selectedAvatars + (extraCount > 0 ? `<div class="selected-avatar extra-avatar">+${extraCount}</div>` : "");
 }
 
 /**

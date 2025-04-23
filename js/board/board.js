@@ -1,3 +1,5 @@
+let filteredTasks = [];
+
 /**
  * Initializes the application by loading contacts, tasks, and login info, then updates the UI.
  */
@@ -54,17 +56,13 @@ function renderContactAvatars(displayedContacts, contacts) {
  */
 function getInitials(element, contacts) {
   if (!element["assigned_to"]) return "";
-
   let assignedContacts = element["assigned_to"];
-  let displayedContacts = assignedContacts.slice(0, 4); // Get the first 4 contacts
-  let remainingCount = assignedContacts.length - 4; // Calculate remaining contacts
-
+  let displayedContacts = assignedContacts.slice(0, 4);
+  let remainingCount = assignedContacts.length - 4;
   let initials = renderContactAvatars(displayedContacts, contacts);
-
   if (remainingCount > 0) {
     initials += `<div class="selected-avatar-card-s more-avatars" style="background-color: #ccc;">+${remainingCount}</div>`;
   }
-
   return initials;
 }
 
@@ -80,6 +78,7 @@ function getShortenedDescription(description) {
     let shortDescription = newDescriptionArr.join(" ");
     return shortDescription + "...";
   }
+  return description;
 }
 
 /**
@@ -137,8 +136,6 @@ function findTask() {
     inputValueRef.style.borderColor = "";
   }
 }
-
-let filteredTasks = [];
 
 /**
  * Searches for tasks by their titles or descriptions and updates the UI.

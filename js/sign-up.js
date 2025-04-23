@@ -373,21 +373,24 @@ function areInputsEmpty() {
  * Shows error messages for required fields that are empty.
  */
 function showRequiredFields() {
-  if (document.getElementById("name").value === "") {
-    document.getElementById("name").style.borderColor = "red";
-    document.getElementById("error-name").classList.remove("dp-none");
-  }
-  if (document.getElementById("email").value === "") {
-    document.getElementById("email").style.borderColor = "red";
-    document.getElementById("error-email-1").classList.remove("dp-none");
-  }
-  if (document.getElementById("password").value === "") {
-    document.getElementById("password").style.borderColor = "red";
-    document.getElementById("error-pw").classList.remove("dp-none");
-  }
-  if (document.getElementById("confirm-password").value === "") {
-    document.getElementById("confirm-password").style.borderColor = "red";
-    document.getElementById("error-confirm-pw").classList.remove("dp-none");
+  checkAndShowError("name", "error-name");
+  checkAndShowError("email", "error-email-1");
+  checkAndShowError("password", "error-pw");
+  checkAndShowError("confirm-password", "error-confirm-pw");
+}
+
+/**
+ * Checks if an input field is empty and shows the corresponding error message.
+ * @param {string} inputId - The ID of the input field.
+ * @param {string} errorId - The ID of the error message element.
+ */
+function checkAndShowError(inputId, errorId) {
+  const inputElement = document.getElementById(inputId);
+  const errorElement = document.getElementById(errorId);
+
+  if (inputElement.value === "") {
+    inputElement.style.borderColor = "red";
+    errorElement.classList.remove("dp-none");
   }
 }
 

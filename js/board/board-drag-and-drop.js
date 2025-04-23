@@ -122,18 +122,12 @@ function getColumnOptions(currentColumn) {
  * @param {Array} options - The available column options.
  */
 function updateMenuOptions(id, options) {
-  options.forEach((option, index) => {
-    const columnId = `column-${index + 1}-${id}`;
-    const columnElement = document.getElementById(columnId);
-    if (!columnElement) {
-      console.error(`Element with ID ${columnId} not found.`);
-      return;
-    }
-    const textElement = columnElement.querySelector("p");
-    if (textElement) {
-      textElement.innerHTML = option.text;
-    }
-    columnElement.onclick = (e) => {
+  options.forEach((option, i) => {
+    const el = document.getElementById(`column-${i + 1}-${id}`);
+    if (!el) return console.error(`Element with ID column-${i + 1}-${id} not found.`);
+    const p = el.querySelector("p");
+    if (p) p.innerHTML = option.text;
+    el.onclick = function (e) {
       e.stopPropagation();
       moveToColumn(id, option.column);
     };
