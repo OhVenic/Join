@@ -297,6 +297,7 @@ svg {
 
     .card.small {
         width: 90px;
+        padding: 12px;
     }
 
     .number {

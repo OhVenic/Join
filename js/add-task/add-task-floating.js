@@ -20,7 +20,6 @@ function openFloatingAddTask() {
   document.getElementById("overlay").classList.remove("dp-none");
   document.getElementById("add-task-content").classList.remove("dp-none");
   document.getElementById("add-task-content").classList.remove("closing");
-  document.querySelector("body").style.overflow = "hidden";
 }
 
 /**

@@ -160,6 +160,7 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 12px;
+  margin-top: 6px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
@@ -269,6 +270,7 @@
 
 .edit-form {
   width: 350px;
+  margin-left: 8px;
 }
 
 #edit-drop-down-contact-list {
