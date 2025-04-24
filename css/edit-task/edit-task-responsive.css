@@ -6,7 +6,7 @@
 
 @media (max-width: 500px) {
   .card-details-content {
-    height: 450px;
+    height: 500px;
     width: 300px;
     padding: 12px 12px 0 12px;
   }
@@ -36,12 +36,13 @@
     width: 250px;
   }
 
+
   .edit-textarea {
     width: 245px;
   }
 
   .card-overlay-header-flex-right {
-    width: 230px;
+    width: 100%;
   }
 
   .selection {
