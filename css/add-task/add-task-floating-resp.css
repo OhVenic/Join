@@ -451,3 +451,26 @@
     width: 200px !important;
   }
 }
+
+@media (max-width: 350px) {
+  .add-task-content {
+    width: 290px;
+  }
+  .drop-down-contact-list,
+  .drop-down-category-list,
+  .subtask-list,
+  #category,
+  #subtask,
+  #assigned-to {
+    width: 260px;
+  }
+  input,
+  .add-task-description,
+  .priority-btns {
+    width: 260px;
+  }
+  .add-task-1,
+  .add-task-2 {
+    width: 260px;
+  }
+}
