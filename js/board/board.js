@@ -81,6 +81,9 @@ function getShortenedDescription(description) {
   return description;
 }
 
+function goToAddTask() {
+  window.location.href = "./add-task.html";
+}
 /**
  * Generates HTML for the progress bar of subtasks.
  * @param {Object[]} subtasksArr - Array of subtasks.
