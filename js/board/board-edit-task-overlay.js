@@ -91,6 +91,8 @@ async function confirmDeleteTask() {
     taskToDelete = null;
     document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
     closeCardDetails();
+    showLogTaskDeleted();
+    hideLogTaskDeleted();
   }
 }
 
@@ -191,6 +193,34 @@ async function saveEditedTaskManual(taskId) {
     body: JSON.stringify(updatedTask),
   });
   closeCardDetails();
+  showLogTaskEdited();
+  hideLogTaskEdited();
+}
+
+function showLogTaskEdited() {
+  document.getElementById("logTaskEdited").innerHTML = `<div class="task-edited-msg" id="task-edited-msg">
+        <p>Task successfully edited</p>
+        <img src="./assets/icons/added-to-board.svg" alt="Board image" />
+      </div>`;
+}
+
+function hideLogTaskEdited() {
+  setTimeout(() => {
+    document.getElementById("task-edited-msg").classList.add("closingEdited");
+  }, 1000);
+}
+
+function showLogTaskDeleted() {
+  document.getElementById("logTaskDeleted").innerHTML = `<div class="task-deleted-msg" id="task-deleted-msg">
+        <p>Task successfully deleted</p>
+        <img src="./assets/icons/added-to-board.svg" alt="Board image" />
+      </div>`;
+}
+
+function hideLogTaskDeleted() {
+  setTimeout(() => {
+    document.getElementById("task-deleted-msg").classList.add("closingDeleted");
+  }, 1000);
 }
 /**
  * Updates the priority selection in the edit task overlay.
