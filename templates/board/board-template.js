@@ -74,10 +74,10 @@ function getCardDetailsTemplate(task, initialsHTML) {
         ${
           task.subtasks
             ?.map(
-              (st) => `
+              (st, index) => `
           <li class="task-list">
-            <input type="checkbox" ${st.status === "done" ? "checked" : ""} 
-              onchange="updateSubtaskStatus(${task.id}, '${st.title}')" class="edit-checkbox"> 
+            <img id="checkbox-subtask-${sanitizeId(st.title)}-${index}" src="${getCorrectCheckbox(st.status)}" 
+  onclick="updateSubtaskStatus('${task.id}', '${st.title}', ${index})" class="edit-checkbox"> 
             <p class="card-overlay-subtask-title">${st.title}</p>
           </li>
         `

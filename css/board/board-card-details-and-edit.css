@@ -362,15 +362,15 @@
   top: 50%;
   transform: translate(-50%, -50%);
   animation: editedIn 0.15s forwards;
-  z-index: 9999; /* Animation duration and forwards to keep the end position */
+  z-index: 9999;
 }
 
 @keyframes editedIn {
   0% {
-    transform: translate(-50%, 100vh); /* Start from the bottom of the viewport */
+    transform: translate(-50%, 100vh);
   }
   100% {
-    transform: translate(-50%, -50%); /* Move to the middle of the viewport */
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -383,7 +383,7 @@
     transform: translate(-50%, -50%);
   }
   100% {
-    transform: translate(-50%, 100vh); /* Move to the bottom of the viewport */
+    transform: translate(-50%, 100vh);
   }
 }
 
@@ -402,7 +402,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   animation: deleted 0.15s forwards;
-  z-index: 9999; /* Animation duration and forwards to keep the end position */
+  z-index: 9999;
 }
 
 .closingDeleted {
@@ -414,6 +414,11 @@
     transform: translate(-50%, -50%);
   }
   100% {
-    transform: translate(-50%, 100vh); /* Move to the bottom of the viewport */
+    transform: translate(-50%, 100vh);
   }
+}
+
+.edit-checkbox {
+  width: 24px;
+  height: 24px;
 }
