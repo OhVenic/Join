@@ -12,7 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* flex: 1; */
+  flex: 1;
+  margin-top: 15px;
 }
 .go-back-arrow {
   position: absolute;
@@ -20,6 +21,9 @@
   left: -120px;
 }
 
+.sign-up-title {
+  font-size: 61px;
+}
 .signup-window-header {
   position: relative;
 }
@@ -119,6 +123,7 @@ button {
   font-weight: 700;
 }
 .footer-btns {
+  height: 130px;
   width: 100%;
   display: flex;
   align-items: center;

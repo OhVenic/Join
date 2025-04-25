@@ -37,6 +37,7 @@ function generateAssignedToHTML(assignedTo) {
   return assignedTo
     .map((name) => {
       const contact = contacts.find((c) => c.name === name);
+      if (!contact) return "";
       const color = contact?.color || "#999";
       const avatar = contact?.avatar || "G";
       return `
@@ -45,6 +46,7 @@ function generateAssignedToHTML(assignedTo) {
               <p class="margin-left">${name}</p>
             </div>`;
     })
+    .filter((html) => html !== "")
     .join(" ");
 }
 
@@ -53,7 +55,7 @@ function generateAssignedToHTML(assignedTo) {
  * @param {string} taskId - The ID of the task containing the subtask.
  * @param {string} subtaskTitle - The title of the subtask to update.
  */
-async function updateSubtaskStatus(taskId, subtaskTitle) {
+async function updateSubtaskStatus(taskId, subtaskTitle, index) {
   const response = await fetch(
     `https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`
   );
@@ -61,6 +63,7 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   const subtask = task.subtasks.find((st) => st.title === subtaskTitle);
   if (subtask) {
     subtask.status = subtask.status === "done" ? "undone" : "done";
+    updateCheckboxSubtask(subtask, subtask.status, index);
     await fetch(`https://join-382e0-default-rtdb.europe-west1.firebasedatabase.app/taskList/${taskId}.json`, {
       method: "PUT",
       body: JSON.stringify(task),
@@ -69,8 +72,46 @@ async function updateSubtaskStatus(taskId, subtaskTitle) {
   }
 }
 
+/**
+ * Sanitizes a string to be used as an HTML id.
+ * Replaces spaces and special characters with safe characters.
+ * @param {string} str - The string to sanitize.
+ * @returns {string} The sanitized string.
+ */
+function sanitizeId(str) {
+  return str.replace(/[^a-zA-Z0-9-_]/g, "-");
+}
+
 let taskToDelete = null;
 
+/**
+ * Updates the checkbox icon for a subtask based on its status.
+ * @param {Object} subtask - The subtask object containing its details.
+ * @param {string} subtaskStatus - The status of the subtask ("done" or "undone").
+ */
+function updateCheckboxSubtask(subtask, subtaskStatus, index) {
+  const sanitizedId = `checkbox-subtask-${sanitizeId(subtask.title)}-${index}`;
+  const checkbox = document.getElementById(sanitizedId);
+  if (checkbox) {
+    checkbox.src =
+      subtaskStatus === "done" ? "./assets/icons/btn-checked-blue.svg" : "./assets/icons/btn-unchecked.svg";
+  }
+}
+
+/**
+ * Returns the correct checkbox icon source based on the subtask status.
+ * @param {string} subtaskStatus - The status of the subtask ("done" or "undone").
+ * @returns {string} The file path to the corresponding checkbox icon.
+ */
+function getCorrectCheckbox(subtaskStatus) {
+  let src = "";
+  if (subtaskStatus === "done") {
+    src = "./assets/icons/btn-checked-blue.svg";
+  } else if (subtaskStatus === "undone") {
+    src = "./assets/icons/btn-unchecked.svg";
+  }
+  return src;
+}
 /**
  * Marks a task for deletion and displays the confirmation overlay.
  * @param {string} id - The ID of the task to delete.
@@ -91,6 +132,8 @@ async function confirmDeleteTask() {
     taskToDelete = null;
     document.getElementById("delete-confirmation-overlay").classList.add("dp-none");
     closeCardDetails();
+    showLogTaskDeleted();
+    hideLogTaskDeleted();
   }
 }
 
@@ -191,6 +234,46 @@ async function saveEditedTaskManual(taskId) {
     body: JSON.stringify(updatedTask),
   });
   closeCardDetails();
+  showLogTaskEdited();
+  hideLogTaskEdited();
+}
+
+/**
+ * Displays a log message indicating that a task was successfully edited.
+ */
+function showLogTaskEdited() {
+  document.getElementById("logTaskEdited").innerHTML = `<div class="task-edited-msg" id="task-edited-msg">
+        <p>Task successfully edited</p>
+        <img src="./assets/icons/added-to-board.svg" alt="Board image" />
+      </div>`;
+}
+
+/**
+ * Hides the log message for a successfully edited task after a short delay.
+ */
+function hideLogTaskEdited() {
+  setTimeout(() => {
+    document.getElementById("task-edited-msg").classList.add("closingEdited");
+  }, 1000);
+}
+
+/**
+ * Displays a log message indicating that a task was successfully deleted.
+ */
+function showLogTaskDeleted() {
+  document.getElementById("logTaskDeleted").innerHTML = `<div class="task-deleted-msg" id="task-deleted-msg">
+        <p>Task successfully deleted</p>
+        <img src="./assets/icons/added-to-board.svg" alt="Board image" />
+      </div>`;
+}
+
+/**
+ * Hides the log message for a successfully deleted task after a short delay.
+ */
+function hideLogTaskDeleted() {
+  setTimeout(() => {
+    document.getElementById("task-deleted-msg").classList.add("closingDeleted");
+  }, 1000);
 }
 /**
  * Updates the priority selection in the edit task overlay.

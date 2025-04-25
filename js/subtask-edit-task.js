@@ -1,4 +1,4 @@
-/** @type {{title: string, checked: boolean}[]} The currently edited subtasks */
+/** @type {{title: string, status: "done" | "undone"}[]} The currently edited subtasks */
 let editSubtasks = [];
 
 /**
@@ -6,21 +6,36 @@ let editSubtasks = [];
  * @param {Object} task - The task whose subtasks are being edited.
  */
 function setupEditSubtaskInput(task) {
-  editSubtasks = task.subtasks || [];
+  // Normalize any existing subtasks to ensure they have status
+  editSubtasks = (task.subtasks || []).map((st) => ({
+    title: st.title,
+    status: st.status || "undone",
+  }));
+
   renderEditSubtasks();
-  const $ = id => document.getElementById(id), input = $("edit-subtask"),
-    btns = ["edit-Add-subtask-img", "edit-cancel-task-img", "edit-accept-task-img", "edit-small-separator"]
-    .map(id => $(id)), toggle = showAdd => btns.forEach((b, i) => b.classList.toggle("dp-none", showAdd ? i !== 0 : i === 0));
+
+  const $ = (id) => document.getElementById(id),
+    input = $("edit-subtask"),
+    btns = ["edit-Add-subtask-img", "edit-cancel-task-img", "edit-accept-task-img", "edit-small-separator"].map((id) =>
+      $(id)
+    ),
+    toggle = (showAdd) => btns.forEach((b, i) => b.classList.toggle("dp-none", showAdd ? i !== 0 : i === 0));
 
   input.onclick = () => toggle(false);
-  btns[1].onclick = () => { input.value = ""; toggle(true); };
+  btns[1].onclick = () => {
+    input.value = "";
+    toggle(true);
+  };
   btns[2].onclick = () => {
     const v = input.value.trim();
     if (!v) return;
-    editSubtasks.push({ title: v, checked: false });
-    input.value = ""; renderEditSubtasks(); toggle(true);
+    editSubtasks.push({ title: v, status: "undone" });
+    input.value = "";
+    renderEditSubtasks();
+    toggle(true);
   };
 }
+
 /**
  * Renders all current subtasks in the edit overlay.
  */
@@ -94,16 +109,16 @@ function handleSubtaskEnter(event) {
  * @param {string} subtaskText - The title of the new subtask.
  */
 function addEditSubtask(subtaskText) {
-  editSubtasks.push({ title: subtaskText, done: false });
+  editSubtasks.push({ title: subtaskText, status: "undone" });
   renderEditSubtasks();
 }
 
 /**
- * (Optional, not currently in use)
- * Toggles the status of a subtask between "checked" and "unchecked".
+ * Toggles the status of a subtask between "done" and "undone".
  * @param {number} index - The index of the subtask in the array.
  */
 function toggleEditSubtask(index) {
-  editSubtasks[index].checked = !editSubtasks[index].checked;
+  const current = editSubtasks[index].status;
+  editSubtasks[index].status = current === "done" ? "undone" : "done";
   renderEditSubtasks();
 }

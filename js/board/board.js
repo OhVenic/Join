@@ -41,22 +41,26 @@ function renderContactAvatars(displayedContacts, contacts) {
   return displayedContacts
     .map((name) => {
       let contact = contacts.find((c) => c.name === name);
+      if (!contact) return "";
       let color = contact && contact.color ? contact.color : "#999";
       let avatar = contact && contact.avatar ? contact.avatar : "G";
       return `<div class="selected-avatar-card-s" style="background-color: ${color};">${avatar}</div>`;
     })
+    .filter((html) => html !== "")
     .join("");
 }
 
 /**
  * Generates HTML for the initials of assigned contacts, including a "more" indicator if there are additional contacts.
+ * Filters out missing contacts from the `contacts` array.
  * @param {Object} element - The task element containing the `assigned_to` property.
  * @param {Object[]} contacts - Array of contact objects, each containing `name`, `color`, and `avatar` properties.
  * @returns {string} HTML string for the initials of assigned contacts.
  */
 function getInitials(element, contacts) {
   if (!element["assigned_to"]) return "";
-  let assignedContacts = element["assigned_to"];
+  // Filter out assigned contacts that no longer exist in the contacts array
+  let assignedContacts = element["assigned_to"].filter((name) => contacts.some((contact) => contact.name === name));
   let displayedContacts = assignedContacts.slice(0, 4);
   let remainingCount = assignedContacts.length - 4;
   let initials = renderContactAvatars(displayedContacts, contacts);

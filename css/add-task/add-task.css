@@ -292,7 +292,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   justify-content: space-between;
   align-items: flex-end;
   padding-bottom: 20px;
-  z-index: 3;
+  z-index: 999;
 }
 
 .footer-resp {
@@ -520,7 +520,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .change-input {
-  width:100%;
+  width: 100%;
   gap: 20px;
   position: relative;
 }
