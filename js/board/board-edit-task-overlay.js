@@ -37,6 +37,7 @@ function generateAssignedToHTML(assignedTo) {
   return assignedTo
     .map((name) => {
       const contact = contacts.find((c) => c.name === name);
+      if (!contact) return "";
       const color = contact?.color || "#999";
       const avatar = contact?.avatar || "G";
       return `
@@ -45,6 +46,7 @@ function generateAssignedToHTML(assignedTo) {
               <p class="margin-left">${name}</p>
             </div>`;
     })
+    .filter((html) => html !== "")
     .join(" ");
 }
 

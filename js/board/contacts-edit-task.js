@@ -131,6 +131,11 @@ async function renderAssignedAvatars() {
   const container = document.getElementById("edit-selected-avatars");
   container.innerHTML = "";
   const contacts = await fetchContacts();
+  const filteredAssignedContactNames = assignedContactNames.filter((name) =>
+    Object.values(contacts).some((contact) => contact.name === name)
+  );
+  assignedContactNames = filteredAssignedContactNames;
+
   const { visibleContacts, extraContacts } = categorizeContacts(contacts);
   renderVisibleContacts(container, visibleContacts);
   renderExtraContacts(container, extraContacts);
